@@ -1,0 +1,36 @@
+.fish-card{
+    background-color:red;
+    width:calc(100% /4);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 17px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+
+    img{
+        width:100%;
+    }
+
+    &__info{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom:10px;
+    }
+
+    &__content{
+        padding: 10px;
+    }
+
+    &:hover{
+        transform: scale(1.05)
+    }
+    button{
+        width:100%;
+        padding: 10px 20px;
+        border-radius: 20px;
+        border: none;
+
+    }
+    .description{
+        height: 100px;
+    }
+}
