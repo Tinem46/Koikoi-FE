@@ -1,0 +1,51 @@
+.auth-layout {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden; // Thêm dòng này
+  margin: 0;
+  padding: 0;
+
+
+  .background-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center; 
+    // Tăng độ sáng và độ tương phản một chút
+    filter: brightness(1.05) contrast(1.1) saturate(1.1);
+    will-change: transform; // Tối ưu hóa hiệu suất
+    backface-visibility: hidden; // Add this line to prevent delay after seeking
+    pointer-events: none; // Add this line to prevent delay after seeking
+    transform: scale(1.01); // Giảm scale để tránh làm mờ video
+    image-rendering: high-quality; // Thêm dòng này để cải thiện chất lượng rendering
+  }
+}
+
+
+
+// .content-overlay {
+//   position: relative;
+//   z-index: 1;
+//   width: 100%;
+//   height: 100%;
+// }
+
+// Thêm một media query cho màn hình có độ phân giải cao
+@media screen and (min-width: 2560px) {
+  .video-container .background-video {
+    image-rendering: crisp-edges; // Sử dụng crisp-edges cho màn hình 4K
+  }
+}

@@ -1,0 +1,146 @@
+.header {
+    background-color:rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  
+
+
+  &__logo {
+    cursor: pointer; // Thêm hiệu ứng con trỏ cho logo
+  }
+  &__nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-grow: 1;
+      margin-left: 20px;
+
+      &-center {
+          flex-grow: 1;
+          display: flex;
+          justify-content: center;
+
+          ul {
+              display: flex;
+              list-style-type: none;
+              padding: 0;
+              margin: 0;
+              gap: 30px;
+              font-size: 18px;
+
+              li {
+                  color: white;
+                  cursor: pointer;
+              }
+          }
+      }
+
+      &-right {
+          ul {
+              display: flex;
+              list-style-type: none;
+              padding: 0;
+              margin: 0;
+              gap: 20px;
+              font-size: 30px;
+
+              li {
+                  color: white;
+                  cursor: pointer;
+
+                  .ant-dropdown-trigger {
+                    color: white;
+                  }
+              }
+          }
+      }
+
+      &-left, &-right {
+          ul {
+              display: flex;
+              list-style-type: none;
+              padding: 0;
+              margin: 0;
+              gap: 30px;
+              font-size: 30px;
+
+              li {
+                  color: white;
+                  a {
+                      color: white;
+                      text-decoration: none;
+                  }
+                  cursor: pointer; // Thêm hiệu ứng con trỏ cho các mục trong danh sách
+
+                  .ant-dropdown-trigger {
+                    color: white;
+                  }
+              }
+          }
+      }
+
+      &-left {
+          flex-grow: 1;
+          display: flex;
+          justify-content: center;
+      }
+
+      &-right {
+          ul {
+              gap: 20px;
+          }
+      }
+
+      &-center, &-right {
+          ul {
+              display: flex;
+              list-style-type: none;
+              padding: 0;
+              margin: 0;
+              gap: 30px;
+              font-size: 18px;
+
+              li {
+                  color: white;
+                  cursor: pointer;
+              }
+          }
+      }
+  }
+  
+  &__search-input {
+    width: 0;
+    opacity: 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+  }
+
+  &__search-input.show {
+    width: 200px;
+    opacity: 1;
+  }
+
+  &__dropdown-menu {
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 8px 0;
+
+    li {
+      color: black;
+      padding: 8px 16px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+  
+}

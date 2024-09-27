@@ -1,0 +1,85 @@
+.login-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+
+  .ant-form-item-label > label {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .ant-input,
+  .ant-input-password {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid white;
+    color: white;
+    padding: 10px 0;
+    font-size: 16px;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    &:focus {
+      box-shadow: none;
+      border-color: white;
+    }
+  }
+
+  .ant-input-password-icon {
+    color: white;
+  }
+
+  .ant-btn-primary {
+    background-color: #ff4081;
+    border-color: #ff4081;
+    height: 40px;
+    font-size: 16px;
+    font-weight: bold;
+
+    &:hover,
+    &:focus {
+      background-color: #f50057;
+      border-color: #f50057;
+    }
+  }
+
+  .google-login-btn {
+    margin-top: 0; // Removed top margin
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    height: 40px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      margin-right: 10px;
+    }
+  }
+
+  .signup-link {
+    margin-top: 20px;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+
+    a {
+      color: #ff4081;
+      font-weight: bold;
+    }
+  }
+
+  .or-divider {
+    text-align: center;
+    margin: 15px 0; // Slightly increased margin
+    color: white; // Changed color to white for better visibility
+    font-size: 14px; // Added font size
+  }
+}

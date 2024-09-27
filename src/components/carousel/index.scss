@@ -1,0 +1,16 @@
+.carousel {
+    img {       
+      width: 100%;
+      height: 80dvh;
+     
+      border-radius: 10px;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    
+      }  
+      &.multi-item {
+        img {
+          width: 30%;
+          height: 40dvh;
+        }
+      }
+    }        
