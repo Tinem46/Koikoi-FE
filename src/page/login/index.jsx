@@ -14,47 +14,31 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   const handleLogin = async (values) => {
     try {
       const response = await api.post("account/login", values);
-      const { token, ...userData } = response.data.token;
-      
+      const {token, role} = response.data;
       localStorage.setItem("token", token);
-      toast.success("Login success!");
-      navigate(`/`);
+      localStorage.setItem("role", role);
+
+      if(role === "MANAGER"){
+        navigate("/dashboard");
+        toast.success("Login success!");
+
+
+      }
+      else{
+        navigate("/");
+        toast.success("Login success!");
+      }
+     
 
       // Dispatch login action with user data
-      dispatch(login(userData));
+      dispatch(login(response.data));
     } catch (err) {
-      toast.error(err.response.data);
-    }
-
-
-
-
-
-    // try {
-    //   const reponse = await api.post("account/login", values);
-
-    //   const { token } = reponse.data;
-    //   console.log(reponse.data)
-      
-    //   localStorage.setItem("token", reponse.data.username);
-    //   console.log(token)
-    //   // chạy xuống đây => account này có tồn tại
-    //   toast.success("Login success!");
-    //   // chuyển đến trang chủ
-    //   navigate(`/`);
-
-    //   // lưu trữ thông tin của user
-    //   // dispatch action
-    //   dispatch(login(reponse.data));
-    // } catch (err) {
-    //   toast.error(err.response.data);
-    }
-
-  
+      toast.error(err.response?.data || "Login failed");
+    }   
+  };
 
   const handleLoginGoogle = async () => {
     try {
@@ -111,6 +95,5 @@ function Login() {
     </AuthLayout>
   )
 }
-
 
 export default Login

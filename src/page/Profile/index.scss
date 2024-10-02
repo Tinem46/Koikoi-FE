@@ -1,30 +1,56 @@
 .profile-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f2f5;
+    flex-direction: row; // Ensure row direction
+    justify-content: center; // Center horizontally
+    align-items: flex-start; // Align items to the top
+    min-height: 100vh;
+
+}
+
+.profile-image {
+    flex: 1; // Chiếm 1 phần của container
+    display: flex;
+    margin-right: 0; // Remove margin to bring image closer to table
+    margin-bottom: 0; // Remove bottom margin
+    margin-top: 500px;
+    img {
+        max-width: 750px;
+        height: 500px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 }
 
 .profile-table {
+    flex: 2; // Chiếm 2 phần của container
     background-color: white;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
     overflow: hidden;
-    width: 80%;
-    max-width: 600px;
+    width: 800px;
+    max-width: 1000px;
+    height: 900px;
+    margin-top: 100px; // Remove margin-top to align with image
+
+   
 
     th, td {
         padding: 15px;
-        text-align: left;
+        text-align: center;
+        
     }
 
     th {
-        background-color: #1890ff;
+        background-color: #333;
         color: white;
-        font-size: 1.2em;
+        font-size: 1.1em;
         text-transform: uppercase;
+        letter-spacing: 0.1em;
+        width: 100%;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
     }
 
     tr:nth-child(even) {
@@ -34,5 +60,141 @@
     td:first-child {
         font-weight: bold;
         width: 40%;
+        color: #333;
     }
+
+    td:last-child {
+        color: #555;
+    }
+}
+
+.profile {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-info {
+        p {
+            margin-bottom: 10px;
+            
+            strong {
+                font-weight: bold;
+                margin-right: 5px;
+            }
+        }
+    }
+}
+
+// New styles for the edit form
+.edit-form {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 100px;
+
+    .form-group {
+        margin-bottom: 15px;
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+
+            &:focus {
+                outline: none;
+                border-color: #4a90e2;
+                box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+            }
+        }
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &[type="button"] {
+                background-color: #777; // Lighter shade for cancel button
+                color: white;
+                order: 1;
+
+                &:hover {
+                    background-color: #555; // Darker shade for hover
+                }
+            }
+
+            &[type="submit"] {
+                background-color: #333; // Darker shade for save changes button
+                color: white;
+                order: 2;
+
+                &:hover {
+                    background-color: #111; // Even darker shade for hover
+                }
+            }
+        }
+    }
+
+    h2 {
+        text-align: center; // Add this line
+        margin-bottom: 20px;
+    }
+}
+
+// Style for the "Edit Profile" button
+.edit-button {
+    margin-top: 0px;
+    padding: 10px 20px;
+    background-color:  #555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width:54%;
+    margin-left: 42px;
+
+    &:hover {
+        background-color: #334965;
+    }
+}
+
+// Style for the new heading
+.profile-heading {
+    width: 100%; // Thay đổi từ 1000000px thành 100%
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 100px;
+    background-color: #333;
+    color: white;
+    
 }

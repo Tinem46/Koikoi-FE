@@ -1,9 +1,15 @@
 import PropTypes from 'prop-types';
 import "./index.scss";
+import { addToCart } from '../redux/features/cartSlice';
+import { useDispatch } from 'react-redux';
 
 function Card({ fish }) {
   const { name, price, description, image } = fish;
 
+  const handleAddToCart = ()=>{
+    dispatch(addToCart(fish));
+  }
+const dispatch = useDispatch();
   return (
     <div className="fish-card">
       <img src={image} alt={name} />
@@ -17,9 +23,9 @@ function Card({ fish }) {
             ? `${description.substring(0, 100)}...`
             : description}
         </p>
+        </div>
+        <button className="button" onClick={handleAddToCart}>Thêm vào giỏ hàng</button>
       </div>
-      <button>Add to cart</button>
-    </div>
   );
 }
 

@@ -30,7 +30,7 @@ function Header() {
   function handleProfile() {
     const token = localStorage.getItem("token");
     if (token) {
-      navigate(`/profile/1`);
+      navigate(`/profile`);
     } else {
       navigate(`/login`);
     }

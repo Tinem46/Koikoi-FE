@@ -5,20 +5,26 @@ import { createSlice } from "@reduxjs/toolkit";
 // default value
 const initialState = {
   isLoggedIn: false,
-  // ... other user-related state
+  id: null,
+  username: null,
+  // Add other user fields as needed
 };
 
 export const userSlice = createSlice({
   name: "user",
-  initialState, //initialState: initialState
+  initialState,
   reducers: {
     login: (state, action) => {
       state.isLoggedIn = true;
-      // ... update other user data
+      state.id = action.payload.id;
+      state.username = action.payload.username;
+      // Update other user fields
     },
     logout: (state) => {
       state.isLoggedIn = false;
-      // ... reset other user data
+      state.id = null;
+      state.username = null;
+      // Reset other user fields
     },
   },
 });
