@@ -9,8 +9,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import uploadFile from '../utils/upload'; // Import the uploadFile utility
+import { DeleteOutlined } from '@ant-design/icons';
 
-function DashboardTemplate({ columns, apiURI, formItems, title }) {
+function DashboardTemplate({ columns, apiURI, formItems, title, resetImage}) {
     const [categories, setCategories] = useState([]);
     const [open, setOpen] = useState(false);
     const [form] = useForm();
@@ -52,7 +53,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title }) {
         console.log(values)
         setLoading(true);
         try {
-         const img =  await uploadFile(values.image[0].originFileObj);
+         const img =  await uploadFile(values.image.fileList[0].originFileObj);
             console.log(img)
             values.image = img
             if (values.id) {
@@ -67,6 +68,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title }) {
             toast.error(err.response?.data || "An error occurred");
         } finally {
             setLoading(false);
+            resetImage();
         }
     };
 
@@ -84,27 +86,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title }) {
         fetchCategory();
     }, []);
 
-    const handleEdit = (record) => {
-        const newRecord = Object.entries(record).reduce((acc, [key, value]) => {
-            acc[key] = dayjs(value).isValid() ? dayjs(value) : value;
-            return acc;
-        }, {});
 
-        form.setFieldsValue(newRecord);
-        if (record.image) {
-            setFileList([
-                {
-                    uid: '-1',
-                    name: 'image.png',
-                    status: 'done',
-                    url: record.image,
-                },
-            ]);
-        } else {
-            setFileList([]);
-        }
-        setOpen(true);
-    };
 
     const handleCancel = () => {
         setOpen(false);
@@ -112,12 +94,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title }) {
         setFileList([]);
     };
 
-    const uploadButton = (
-        <div>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    );
+
 
     return (
         <div>
@@ -134,7 +111,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title }) {
                             <React.Fragment key={record.id}>
                                 <Button 
                                     type="primary" 
-                                    onClick={() => handleEdit(record)}
+                                    
                                 >
                                     Edit
                                 </Button>
@@ -142,7 +119,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title }) {
                                     title={`Are you sure you want to delete ${record.name}?`}
                                     onConfirm={() => handleDelete(record.id)}
                                 >
-                                    <Button type="primary" danger>Delete</Button>
+                                    <Button type="primary" danger><DeleteOutlined /></Button>
                                 </Popconfirm>
                             </React.Fragment>
                         )
@@ -172,35 +149,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title }) {
                     <Form.Item name="id" label="id" hidden>
                         <Input/>
                     </Form.Item>
-                    {React.Children.map(formItems, child => {
-                        if (child.props.name === 'image') {
-                            return (
-                                <Form.Item
-                                    label="Image"
-                                    name="image"
-                                    valuePropName="fileList"
-                                    getValueFromEvent={(e) => {
-                                        if (Array.isArray(e)) {
-                                            return e;
-                                        }
-                                        return e && e.fileList;
-                                    }}
-                                    rules={[{ required: true, message: 'Please upload an image!' }]}
-                                >
-                                    <Upload
-                                        listType="picture-card"
-                                        fileList={fileList}
-                                        onPreview={handlePreview}
-                                        onChange={handleChange}
-                                        beforeUpload={() => false}
-                                    >
-                                        {fileList.length >= 1 ? null : uploadButton}
-                                    </Upload>
-                                </Form.Item>
-                            );
-                        }
-                        return child;
-                    })}
+                   {formItems}
                 </Form>
             </Modal>
             {previewImage && (

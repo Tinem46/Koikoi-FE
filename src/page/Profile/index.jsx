@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../config/api';
 import './index.scss';
+import Header from '../../components/header';
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -65,9 +66,6 @@ const Profile = () => {
 
     return (
         <div className="profile-container">
-            <div className="profile-image">
-                <img src="://th.bing.com/th/id/R.e7f026e16798c830e44144bd461bcde1?rik=9A%2f8JXrjYat9kA&pid=ImgRaw&r=0" alt="Profile" />
-            </div>
             {isEditing ? (
                 <form className="edit-form" onSubmit={handleSubmit}>
                     <h2>Edit Profile</h2>

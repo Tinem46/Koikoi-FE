@@ -5,12 +5,19 @@
      
       border-radius: 10px;
       box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-    
-      }  
-      &.multi-item {
+      object-fit: cover; // Ensures the image covers the container without distortion
+      transition: transform 0.3s ease; // Adds a smooth transition effect
+    }
+
+    img:hover {
+        transform: scale(1.05); // Slight zoom effect on hover
+    }
+
+    &.multi-item {
         img {
           width: 30%;
           height: 40dvh;
+          margin: 0 5px; // Adds spacing between images
         }
       }
     }        

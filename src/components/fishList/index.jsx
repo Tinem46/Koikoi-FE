@@ -9,7 +9,7 @@ function FishList() {
 
   const fetchFish = async () => {
     try {
-      const response = await api.get("product");
+      const response = await api.get("Koi");
       setFish(response.data);
     } catch (error) {
       toast.error(error.response.data);

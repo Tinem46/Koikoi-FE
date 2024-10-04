@@ -1,24 +1,14 @@
 .profile-container {
     display: flex;
-    flex-direction: row; // Ensure row direction
-    justify-content: center; // Center horizontally
-    align-items: flex-start; // Align items to the top
+    flex-direction: column; // Change to column for better mobile responsiveness
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
-
+    padding: 20px; // Add padding for better spacing
+    margin-bottom: 100px;
 }
 
-.profile-image {
-    flex: 1; // Chiếm 1 phần của container
-    display: flex;
-    margin-right: 0; // Remove margin to bring image closer to table
-    margin-bottom: 0; // Remove bottom margin
-    margin-top: 500px;
-    img {
-        max-width: 750px;
-        height: 500px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-}
+
 
 .profile-table {
     flex: 2; // Chiếm 2 phần của container

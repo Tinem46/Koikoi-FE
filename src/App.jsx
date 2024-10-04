@@ -8,7 +8,10 @@ import Dashboard from "./components/dashboard"
 import ManageCategory from "./page/admin/category"
 import ManageVoucher from "./page/admin/voucher"
 import ManagementFish from "./page/admin/fish"
-
+import Cart from "./components/cart"
+import ForgotPassword from "./page/forgotPassword"
+import ResetPassword from "./page/resetPassword"
+import Checkout from "./page/checkout"; // Import the Checkout component
 
 function App() {
   const router = createBrowserRouter([
@@ -32,6 +35,23 @@ function App() {
           path:"/profile",
           element: <Profile />,
         },
+        {
+          path:"/cart",
+          element: <Cart />,
+        },
+        {
+          path:"/forgot-password",
+          element:<ForgotPassword />
+        },
+        {
+          path:"/reset-password",
+          element:<ResetPassword />
+
+        },
+        {
+          path:"/checkout", // Add the checkout route
+          element: <Checkout />
+        }
       ],
     },
     {
@@ -48,7 +68,8 @@ function App() {
         {
           path: "fish",
           element: <ManagementFish />,
-        }
+        },
+
       ],
     },
   ])

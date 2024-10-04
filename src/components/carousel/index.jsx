@@ -11,7 +11,7 @@ import axios from "axios";
 
 export default function Carousel({
   numberOfSlides = 1,
-  category = "Tropical",
+  category = "Trending",
   autoplay = false,
 }) {
   const [movies, setMovies] = useState([]);

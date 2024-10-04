@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 import { Dropdown } from "antd";
 
-function Header() {
+function Header({ backgroundColor = 'rgba(0, 0, 0, 0.25)' }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,7 +18,7 @@ function Header() {
 
   const userMenu = (
     <ul className="header__dropdown-menu">
-      <li onClick={handleProfile}>Profile</li>
+      {isLoggedIn && <li onClick={handleProfile}>Profile</li>} 
       {isLoggedIn ? (
         <li onClick={handleLogout}>Logout</li>
       ) : (
@@ -42,8 +42,11 @@ function Header() {
     navigate("/login");
   }
 
+  const cart = useSelector((state) => state.cart.products);
+  const cartItemCount = cart.reduce((count, item) => count + item.quantity, 0);
+
   return (
-    <header className="header">
+    <header className="header" style={{ backgroundColor }}>
       <div className="header__logo" onClick={() => navigate("/")}>
         <img src={logo} alt="logo" width={80} />
       </div>
@@ -79,6 +82,7 @@ function Header() {
             </li>
             <li>
               <ShoppingCartOutlined style={{ cursor: 'pointer' }} onClick={() => navigate("/cart")} />
+              {cartItemCount > 0 && <span className="cart-count">{cart.length}</span>}
             </li>
           </ul>
         </div>

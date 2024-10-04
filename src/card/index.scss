@@ -1,5 +1,4 @@
 .fish-card{
-    background-color:red;
     width:calc(100% /4);
     border-radius: 10px;
     overflow: hidden;
@@ -8,29 +7,62 @@
 
     img{
         width:100%;
+        aspect-ratio: 3/2;
+        object-fit: cover;
     }
 
     &__info{
         display: flex;
         justify-content: space-between;
-        margin-bottom:10px;
+        font-weight: 600;
+        margin-bottom: 8px;
     }
 
     &__content{
-        padding: 10px;
+        padding: 20px;
     }
 
     &:hover{
         transform: scale(1.05)
     }
-    button{
-        width:100%;
-        padding: 10px 20px;
-        border-radius: 20px;
+    .button{
+        display: block;
+        margin: auto;
+        background-color: #1e1b1c;
+        padding: 20px;
         border: none;
+        color: #eae0e0;
+        font-size: 14px;
+        font-weight: 700;
+        border-radius: 60px;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover{
+            background-color: #db0707;
+            color: #1e1b1c;
+        }
 
     }
-    .description{
-        height: 100px;
+    &__description{
+        height: 50px;
+        font-size: 14px;
+        color: #707070;
+        font-weight: 300px;
     }
+}
+
+@keyframes flyToCart {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(900px, -100px) scale(0.3); // Adjust these values
+        opacity: 0;
+    }
+}
+
+.fish-card__fly {
+    animation: flyToCart 0.5s ease-in-out forwards;
 }

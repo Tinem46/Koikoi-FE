@@ -88,10 +88,14 @@ function Login() {
           </Button>
         </Form.Item>
 
-        <div className="signup-link">
+        <Form.Item className="signup-link">
           You don't have account? <Link to="/register">Sign up</Link>
-        </div>
+        </Form.Item>
+              <Form.Item className="forgot-link">
+        Forgot your password? <Link to="/forgot-password">Reset password</Link>
+      </Form.Item>
       </Form>
+
     </AuthLayout>
   )
 }

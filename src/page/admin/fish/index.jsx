@@ -4,7 +4,7 @@ import DashboardTemplate from '../../../dashboard-template';
 import { useState } from 'react';
 
 function ManagementFish() {
-    const [fileList, setFileList] = useState([]);
+    const [fileList, setFileList] = useState([]); // Ensure fileList is initialized as an array
 
     const columns = [
         {
@@ -55,7 +55,7 @@ function ManagementFish() {
           key: 'image',
           render: (text) => <img src={text} alt="product" style={{ width: 50 }} />, // Render an image
         }
-    
+        
     ];
 
     const uploadButton = (
@@ -99,13 +99,6 @@ function ManagementFish() {
             <Form.Item
                 name="image"
                 label="Image"
-                valuePropName="fileList"
-                getValueFromEvent={(e) => {
-                    if (Array.isArray(e)) {
-                        return e;
-                    }
-                    return e && e.fileList;
-                }}
                 rules={[{ required: true, message: 'Please upload an image!' }]}
             >
                 <Upload
@@ -121,7 +114,7 @@ function ManagementFish() {
     );
 
     return (
-        <DashboardTemplate columns={columns} apiURI="Koi" formItems={formItems} title="Fish" />
+        <DashboardTemplate columns={columns} apiURI="Koi" formItems={formItems} title="Fish"  resetImage={() => setFileList([])}  />
     )
 }
 

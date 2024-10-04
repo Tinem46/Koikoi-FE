@@ -26,8 +26,23 @@ export const userSlice = createSlice({
       state.username = null;
       // Reset other user fields
     },
+    forgotPassword: (state, action) => {
+      state.isLoggedIn = false;
+      state.id = null;
+      state.username = null;
+      state.email = action.payload.email;
+      state.otp = action.payload.otp;
+      // Reset other user fields
+    },
+    verifyEmail: (state, action) => {
+      state.isLoggedIn = false;
+      state.id = null;
+      state.username = null;
+      state.email = action.payload.email;
+      // Reset other user fields
+    },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, forgotPassword, verifyEmail } = userSlice.actions;
 export default userSlice.reducer;
