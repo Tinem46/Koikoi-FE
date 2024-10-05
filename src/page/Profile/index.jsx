@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../config/api';
 import './index.scss';
-import Header from '../../components/header';
+import profileImage from '../../assets/image/profile.jpeg';
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -66,6 +66,7 @@ const Profile = () => {
 
     return (
         <div className="profile-container">
+            
             {isEditing ? (
                 <form className="edit-form" onSubmit={handleSubmit}>
                     <h2>Edit Profile</h2>
@@ -182,7 +183,9 @@ const Profile = () => {
                     </table>
                 </>
             )}
-        </div>
+            </div>
+           
+
     );
 };
 

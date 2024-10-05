@@ -9,11 +9,16 @@
     left: 0;
     right: 0;
     z-index: 1000;
-  
+    width: 100%;
+    transition: background-color 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.2); 
 
+    &.scrolled {
+        background-color: rgb(59, 90, 102);
+    }
 
   &__logo {
-    cursor: pointer; // Thêm hiệu ứng con trỏ cho logo
+    cursor: pointer;
   }
   &__nav {
       display: flex;

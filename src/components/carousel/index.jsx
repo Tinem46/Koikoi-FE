@@ -32,7 +32,7 @@ export default function Carousel({
       <Swiper
         slidesPerView={numberOfSlides}
         autoplay={{
-          delay: 2500,
+          delay: 3000,
           disableOnInteraction: false,
         }}
         pagination={true}

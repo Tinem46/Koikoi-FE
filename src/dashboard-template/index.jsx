@@ -7,18 +7,18 @@ import api from "../config/api";
 import dayjs from "dayjs";
 import PropTypes from 'prop-types';
 import React from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import uploadFile from '../utils/upload'; // Import the uploadFile utility
-import { DeleteOutlined } from '@ant-design/icons';
 
-function DashboardTemplate({ columns, apiURI, formItems, title, resetImage}) {
+import uploadFile from '../utils/upload'; // Import the uploadFile utility
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'; // Import the EditOutlined icon
+
+function DashboardTemplate({ columns, apiURI, formItems, title, resetImage }) {
     const [categories, setCategories] = useState([]);
     const [open, setOpen] = useState(false);
     const [form] = useForm();
     const [loading, setLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState("");
+    const [editingRecord, setEditingRecord] = useState(null); // New state for editing record
+
     const fetchCategory = async () => {
         try {
             setLoading(true);
@@ -31,24 +31,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage}) {
             setLoading(false);
         }
     };
-    const handlePreview = async (file) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
-        }
-        setPreviewImage(file.url || file.preview);
-        setPreviewOpen(true);
-    };
-
-    const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-
-    const getBase64 = (file) =>
-        new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
-
+ 
     const handleSubmit = async (values) => {
         console.log(values)
         setLoading(true);
@@ -56,14 +39,15 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage}) {
          const img =  await uploadFile(values.image.fileList[0].originFileObj);
             console.log(img)
             values.image = img
-            if (values.id) {
-                await api.put(`${apiURI}/${values.id}`, values);
+            if (editingRecord) {
+                await api.put(`${apiURI}/${values.id}`, values); // Updated line
             } else {
                 await api.post(`${apiURI}`,values);
             }
             toast.success("Operation successful!");
             setOpen(false);
             fetchCategory();
+            setEditingRecord(null); // Reset editing record after submission
         } catch (err) {
             toast.error(err.response?.data || "An error occurred");
         } finally {
@@ -82,23 +66,26 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage}) {
         }
     };
 
+    const handleEdit = (record) => {
+        setEditingRecord(record); 
+        form.setFieldsValue(record); 
+        setOpen(true); 
+    };
+
     useEffect(() => {
         fetchCategory();
     }, []);
-
-
 
     const handleCancel = () => {
         setOpen(false);
         form.resetFields();
         setFileList([]);
+        setEditingRecord(null); 
     };
-
-
 
     return (
         <div>
-            <Button onClick={() => {form.resetFields(); setOpen(true)}}>
+            <Button onClick={() => { form.resetFields(); setOpen(true); setEditingRecord(null); }}>
                 Create new {title.toLowerCase()}
             </Button>
             <Table 
@@ -111,15 +98,22 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage}) {
                             <React.Fragment key={record.id}>
                                 <Button 
                                     type="primary" 
-                                    
+                                    onClick={() => handleEdit(record)} 
+                                    // Inline styles for Edit button
                                 >
-                                    Edit
+                                    <EditOutlined /> {/* Use the EditOutlined icon */}
                                 </Button>
                                 <Popconfirm 
                                     title={`Are you sure you want to delete ${record.name}?`}
                                     onConfirm={() => handleDelete(record.id)}
                                 >
-                                    <Button type="primary" danger><DeleteOutlined /></Button>
+                                    <Button 
+                                        type="primary" 
+                                        danger 
+                                        style={{ backgroundColor: '#f44336', borderColor: '#f44336',marginLeft:'10px' }} // Inline styles for Delete button
+                                    >
+                                        <DeleteOutlined />
+                                    </Button>
                                 </Popconfirm>
                             </React.Fragment>
                         )
@@ -129,7 +123,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage}) {
                 loading={loading} 
             />
             <Modal 
-                title={`Create/Edit ${title}`}
+                title={`${editingRecord ? 'Edit' : 'Create'} ${title}`} // Change title based on mode
                 open={open}
                 onCancel={handleCancel}
                 footer={[
@@ -152,19 +146,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage}) {
                    {formItems}
                 </Form>
             </Modal>
-            {previewImage && (
-                <Image
-                    wrapperStyle={{
-                        display: "none",
-                    }}
-                    preview={{
-                        visible: previewOpen,
-                        onVisibleChange: (visible) => setPreviewOpen(visible),
-                        afterOpenChange: (visible) => !visible && setPreviewImage(""),
-                    }}
-                    src={previewImage}
-                />
-            )}
+    
         </div>
     );
 }

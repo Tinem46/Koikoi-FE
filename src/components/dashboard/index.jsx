@@ -46,9 +46,9 @@ const Dashboard = () => {
 
     return (
         <Layout style={{ minHeight: '100vh' }} >
-            <Header style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', background: '#000038' }}>
-                <h1 style={{ color: 'white', marginRight: '570px' }}>Dashboard</h1>
-                <Button onClick={handleLogout}>
+            <Header style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#000038' }}>
+                <h1 style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>Dashboard</h1>
+                <Button onClick={handleLogout} style={{ position: 'absolute', right: '20px' }}>
                     <LogoutOutlined style={{ fontSize: '18px', color: 'blue' }} /> 
                 </Button>
             </Header>

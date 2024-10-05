@@ -1,18 +1,17 @@
 import "./index.scss";
 import { UserOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "../../assets/image/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
-import { Dropdown } from "antd";
+import { Dropdown, Input } from "antd";
+import { Modal } from "antd"; 
 
-function Header({ backgroundColor = 'rgba(0, 0, 0, 0.25)' }) {
+function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const user = useSelector((state) => state.user);
   const isLoggedIn = user ? user.isLoggedIn : false;
 
@@ -45,8 +44,39 @@ function Header({ backgroundColor = 'rgba(0, 0, 0, 0.25)' }) {
   const cart = useSelector((state) => state.cart.products);
   const cartItemCount = cart.reduce((count, item) => count + item.quantity, 0);
 
+  const handleSearchClick = () => {
+    console.log("Search icon clicked");
+    setIsModalVisible(true);
+  };
+
+  const handleModalOk = () => {
+    console.log("Modal OK clicked"); 
+    setIsModalVisible(false); 
+  };
+
+  const handleModalCancel = () => {
+    console.log("Modal Cancel clicked");
+    setIsModalVisible(false);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const header = document.querySelector('.header');
+      if (window.scrollY > 0) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="header" style={{ backgroundColor }}>
+    <header className="header" >
       <div className="header__logo" onClick={() => navigate("/")}>
         <img src={logo} alt="logo" width={80} />
       </div>
@@ -64,16 +94,15 @@ function Header({ backgroundColor = 'rgba(0, 0, 0, 0.25)' }) {
         <div className="header__nav-right">
           <ul>
             <li>
-              {showSearch && (
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search..."
-                  className={`header__search-input ${showSearch ? 'show' : ''}`}
-                />
-              )}
-              <SearchOutlined style={{ cursor: 'pointer' }} onClick={() => setShowSearch(!showSearch)} />
+              <SearchOutlined style={{ cursor: 'pointer' }} onClick={handleSearchClick} />
+              <Modal
+                title="Search"
+                visible={isModalVisible}
+                onOk={handleModalOk}
+                onCancel={handleModalCancel}
+              >
+                <Input type="text" placeholder="Search..." />
+              </Modal>
             </li>
             <li>
               <Dropdown overlay={userMenu} trigger={['hover']}>

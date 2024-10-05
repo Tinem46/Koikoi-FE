@@ -1,14 +1,14 @@
 .profile-container {
     display: flex;
-    flex-direction: column; // Change to column for better mobile responsiveness
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 20px; // Add padding for better spacing
-    margin-bottom: 100px;
+    padding: 30px; // Add padding for better spacing
+    margin-bottom: 0px;
+    background-image: url('https://tse3.mm.bing.net/th?id=OIG4.WCYmflArU3rw3aVLXcMa&pid=ImgGn');
+    background-size: cover;
+    background-size: contain;
 }
-
-
 
 .profile-table {
     flex: 2; // Chiếm 2 phần của container
@@ -19,10 +19,11 @@
     overflow: hidden;
     width: 800px;
     max-width: 1000px;
-    height: 900px;
-    margin-top: 100px; // Remove margin-top to align with image
-
-   
+    height: 500px;
+    margin-top: 200px; 
+    position: relative; 
+    z-index: 1; 
+    
 
     th, td {
         padding: 15px;
@@ -58,30 +59,7 @@
     }
 }
 
-.profile {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
-    h1 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .profile-info {
-        p {
-            margin-bottom: 10px;
-            
-            strong {
-                font-weight: bold;
-                margin-right: 5px;
-            }
-        }
-    }
-}
 
 // New styles for the edit form
 .edit-form {
@@ -91,7 +69,8 @@
     padding: 20px;
     width: 100%;
     max-width: 600px;
-    margin-top: 100px;
+    margin-top: 200px;
+
 
     .form-group {
         margin-bottom: 15px;
@@ -188,3 +167,6 @@
     color: white;
     
 }
+
+// Add CSS for the profile-image class
+

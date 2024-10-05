@@ -1,49 +1,98 @@
 .checkout {
-    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #161414;
+    padding: 40px; 
+    background-color: white;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 120px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+
 }
 
-.checkout h2 {
-    text-align: center;
+.img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+   
+}
+
+.billing-details, .order-summary {
+    width: 48%;
+    background-color: white;
+    padding: 30px; 
+ 
+}
+
+.billing-details h2, .order-summary h2 {
     margin-bottom: 20px;
-    color: #fff;
+    color: #333;
+    text-align: center;
+    font-size: 24px; // Increased font size for better readability
+    font-weight: 600;
 }
 
-.checkout ul {
+.billing-details input, .billing-details select, .billing-details textarea {
+    width: 100%;
+    padding: 12px; // Slightly increased padding for better usability
+    margin-bottom: 20px; // Adjusted spacing between inputs
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px; // Adjusted for consistency
+    transition: border-color 0.3s; // Added transition for focus effect
+
+    &:focus {
+        border-color: #1890ff; // Highlight border on focus
+    }
+}
+
+.order-summary ul {
     list-style-type: none;
     padding: 0;
 }
 
-.checkout li {
+.order-summary li {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
 }
 
-.checkout li span {
+.order-summary li span {
     font-size: 16px;
-    color: #f1eaea;
+    color: #333;
 }
 
-.checkout h3 {
+.order-summary h3 {
     text-align: right;
     margin-top: 20px;
-    color: #f1eaea;
+    color: #333;
+    font-size: 20px; // Increased font size for better readability
 }
 
-.checkout .ant-btn-primary {
+.order-summary .ant-btn-primary {
     width: 100%;
     margin-top: 20px;
     background-color: #1890ff;
     border-color: #1890ff;
+    font-size: 18px; // Increased font size for better visibility
+    padding: 12px; // Increased padding for a more substantial button
     &:hover {
         background-color: #40a9ff;
         border-color: #40a9ff;
     }
+}
+
+.payment-methods {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.name-fields {
+    display: flex;
+    gap: 10px; // Adjust the gap as needed
 }
