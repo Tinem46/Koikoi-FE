@@ -31,6 +31,7 @@ function Cart() {
 
   // Mapping cart data to be used in the table
   useEffect(() => {
+    
     if (cart) {
       const tableData = cart.map((item) => ({
         key: item.id,

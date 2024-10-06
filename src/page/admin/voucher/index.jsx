@@ -4,7 +4,10 @@ import dayjs from 'dayjs'
 import DashboardTemplate  from '../../../dashboard-template'
 
 
+
 function ManageVoucher() {
+ 
+   
 
     const columns= [
         {
@@ -60,7 +63,7 @@ function ManageVoucher() {
     </Form.Item>
     </>
   return (
-    <DashboardTemplate columns={columns} apiURI="voucher" formItems={formIterms} title="Voucher" />
+    <DashboardTemplate columns={columns} apiURI="voucher" formItems={formIterms} title="Voucher" resetImage={[]} />
   )
 }
 

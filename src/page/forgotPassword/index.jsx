@@ -10,7 +10,7 @@ function ForgotPassword() {
     const [showOtpModal, setShowOtpModal] = useState(false);
     const [otp, setOtp] = useState(Array(6).fill(""));
     const inputRefs = useRef([]);
-    const [email, setEmail] = useState("");
+    const [isemail, setEmail] = useState("");
     const [timer, setTimer] = useState(70);
     const [loading, setLoading] = useState(false);
     const [loadingVerify, setLoadingVerify] = useState(false);
@@ -22,13 +22,13 @@ function ForgotPassword() {
 
   
 
-    const handleSubmit = async (values) => {
-        const emailValue = values.email; // Access email directly from values
+    const handleSubmit = async () => {
+        const emailValue = isemail.email; // Access email directly from values
         setEmail(emailValue);
         setLoading(true);
     
         try {
-          const response = await api.post(`account/verifyEmail/${emailValue}`);
+          const response = await api.post(`account/verifyEmail/${emailValue}`, isemail);
           
           console.log(response.data); // Check the response data
           if (response.data.code === 1000) {
@@ -70,17 +70,17 @@ function ForgotPassword() {
     
   
 
-      const handleOtpSubmit = async (values) => {
+      const handleOtpSubmit = async () => {
      
         
         setLoadingVerify(true);
         
         try {
-          const response = await api.post(`account/verifyOtp/${values.email}/${values.otp}`);
+          const response = await api.post(`account/verifyOtp/${isemail.email }/${otp.join('')}`, isemail , otp);
           if (response.data.code === 1000) {
             setShowOtpModal(false);
             navigate("/resetPassword", { 
-              state: { verified: true, email: values.email } 
+              state: { verified: true, email: isemail.email } 
             });
           } else {
             toast.error("Invalid OTP");

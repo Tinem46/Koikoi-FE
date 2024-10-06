@@ -1,17 +1,15 @@
 import "./index.scss";
 import { UserOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import logo from "../../assets/image/logo.png";
+import { useEffect } from "react";
+import logo from "../../assets/image/Remove-bg.ai_1728219384890.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
-import { Dropdown, Input } from "antd";
-import { Modal } from "antd"; 
+import { Dropdown, Input} from "antd";
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const user = useSelector((state) => state.user);
   const isLoggedIn = user ? user.isLoggedIn : false;
 
@@ -44,21 +42,6 @@ function Header() {
   const cart = useSelector((state) => state.cart.products);
   const cartItemCount = cart.reduce((count, item) => count + item.quantity, 0);
 
-  const handleSearchClick = () => {
-    console.log("Search icon clicked");
-    setIsModalVisible(true);
-  };
-
-  const handleModalOk = () => {
-    console.log("Modal OK clicked"); 
-    setIsModalVisible(false); 
-  };
-
-  const handleModalCancel = () => {
-    console.log("Modal Cancel clicked");
-    setIsModalVisible(false);
-  };
-
   useEffect(() => {
     const handleScroll = () => {
       const header = document.querySelector('.header');
@@ -78,7 +61,7 @@ function Header() {
   return (
     <header className="header" >
       <div className="header__logo" onClick={() => navigate("/")}>
-        <img src={logo} alt="logo" width={80} />
+        <img src={logo} alt="logo" width={120} />
       </div>
       <nav className="header__nav">
         <div className="header__nav-center">
@@ -94,15 +77,9 @@ function Header() {
         <div className="header__nav-right">
           <ul>
             <li>
-              <SearchOutlined style={{ cursor: 'pointer' }} onClick={handleSearchClick} />
-              <Modal
-                title="Search"
-                visible={isModalVisible}
-                onOk={handleModalOk}
-                onCancel={handleModalCancel}
-              >
-                <Input type="text" placeholder="Search..." />
-              </Modal>
+              <div className="search-bar">
+                <Input type="text" placeholder="Tìm kiếm..." suffix={<SearchOutlined style={{ cursor: 'pointer' }} />}/>
+              </div>
             </li>
             <li>
               <Dropdown overlay={userMenu} trigger={['hover']}>

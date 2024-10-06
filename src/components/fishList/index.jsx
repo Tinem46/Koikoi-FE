@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import api from "../../config/api";
-import { toast } from "react-toastify";
 import Card from "../../card";
 import "./index.scss";
 
@@ -12,7 +11,7 @@ function FishList() {
       const response = await api.get("Koi");
       setFish(response.data);
     } catch (error) {
-      toast.error(error.response.data);
+      console.log(error)
     }
   };
 

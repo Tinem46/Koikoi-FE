@@ -14,6 +14,8 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Check for token in localStorage on component mount
+
   const handleLogin = async (values) => {
     try {
       const response = await api.post("account/login", values);

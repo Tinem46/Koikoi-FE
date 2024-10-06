@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../config/api';
 import './index.scss';
-import profileImage from '../../assets/image/profile.jpeg';
+
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -45,7 +45,7 @@ const Profile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.put('account/Profile', editedUser);
+            const response = await api.put(`account/${editedUser.id}`, editedUser);
             setUser(response.data);
             setIsEditing(false);
             toast.success("Profile updated successfully!");

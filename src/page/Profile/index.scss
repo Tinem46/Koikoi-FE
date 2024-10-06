@@ -5,7 +5,6 @@
     min-height: 100vh;
     padding: 30px; // Add padding for better spacing
     margin-bottom: 0px;
-    background-image: url('https://tse3.mm.bing.net/th?id=OIG4.WCYmflArU3rw3aVLXcMa&pid=ImgGn');
     background-size: cover;
     background-size: contain;
 }
@@ -17,10 +16,11 @@
     border-spacing: 0;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    width: 800px;
-    max-width: 1000px;
+    width: 100px;
+    max-width: 1200px;
     height: 500px;
-    margin-top: 200px; 
+    margin-top: 50px; 
+    margin-left: 70px;
     position: relative; 
     z-index: 1; 
     
@@ -69,7 +69,8 @@
     padding: 20px;
     width: 100%;
     max-width: 600px;
-    margin-top: 200px;
+    margin-top: 50px;
+    margin-left: 100px;
 
 
     .form-group {
