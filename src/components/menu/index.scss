@@ -1,0 +1,29 @@
+.containerMenuAndFishList {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  margin-bottom: 20px;
+  padding-right: 10px;
+}
+
+.menuBar {
+  width: 200px; /* Fixed width of 200px for the menu */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.menuFish {
+  display: grid; /* Grid layout for fish items */
+  grid-template-columns: repeat(4, 1fr); /* 4 items per row */
+  grid-gap: 20px; /* 10px gap between the items */
+  flex-grow: 1; /* Allow this section to take remaining space */
+  padding-left: 10px; /* Space between menu and fish-list */
+  width: 500px;
+}
+
+.fish-list .card {
+  width: 100%;
+  box-sizing: border-box; /* Ensure padding does not affect width */
+}
+.fish-card {
+  width: auto;
+}

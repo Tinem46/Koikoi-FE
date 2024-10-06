@@ -1,65 +1,70 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Home from "./page/home"
-import Layout from "./components/layout"
-import Login from "./page/login/index"
-import Register from "./page/register"
-import Profile from "./page/Profile"
-import Dashboard from "./components/dashboard"
-import ManageCategory from "./page/admin/category"
-import ManageVoucher from "./page/admin/voucher"
-import ManagementFish from "./page/admin/fish"
-import Cart from "./page/cart"
-import ForgotPassword from "./page/forgotPassword"
-import ResetPassword from "./page/resetPassword"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./page/home";
+import Layout from "./components/layout";
+import Login from "./page/login/index";
+import Register from "./page/register";
+import Profile from "./page/Profile";
+import Dashboard from "./components/dashboard";
+import ManageCategory from "./page/admin/category";
+import ManageVoucher from "./page/admin/voucher";
+import ManagementFish from "./page/admin/fish";
+import Cart from "./page/cart";
+import ForgotPassword from "./page/forgotPassword";
+import ResetPassword from "./page/resetPassword";
 import Checkout from "./page/checkout"; // Import the Checkout component
+import FishShop from "./page/shopFish"; // Import the Checkout component
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: <Layout />,
       children: [
         {
-          path:"",
+          path: "",
           element: <Home />,
         },
         {
-          path:"/login",
+          path: "/login",
           element: <Login />,
         },
         {
-          path:"/register",
+          path: "/register",
           element: <Register />,
         },
         {
-          path:"/profile",
+          path: "/profile",
           element: <Profile />,
         },
         {
-          path:"/cart",
+          path: "/cart",
           element: <Cart />,
         },
         {
-          path:"/forgot-password",
-          element:<ForgotPassword />
+          path: "/forgot-password",
+          element: <ForgotPassword />,
         },
         {
-          path:"/reset-password",
-          element:<ResetPassword />
-
+          path: "/reset-password",
+          element: <ResetPassword />,
         },
         {
-          path:"/checkout", // Add the checkout route
-          element: <Checkout />
-        }
+          path: "/checkout", // Add the checkout route
+          element: <Checkout />,
+        },
+        {
+          path: "/FishShop", // Add the checkout route
+          element: <FishShop />,
+        },
       ],
     },
     {
-      path: "/dashboard", element: <Dashboard />,
+      path: "/dashboard",
+      element: <Dashboard />,
       children: [
         {
           path: "category",
-          element: <ManageCategory />
+          element: <ManageCategory />,
         },
         {
           path: "voucher",
@@ -69,13 +74,10 @@ function App() {
           path: "fish",
           element: <ManagementFish />,
         },
-
       ],
     },
-  ])
-  return (
-    <RouterProvider router={router} />
-  )
+  ]);
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;

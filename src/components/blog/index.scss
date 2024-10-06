@@ -1,0 +1,61 @@
+.blog-post-container {
+  text-align: center;
+  padding: 50px;
+  background-color: black;
+  color: white;
+
+  .blog-title {
+    font-size: 2.5rem;
+    font-family: "Georgia", serif;
+    margin-bottom: 30px;
+  }
+
+  .post-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .post {
+    background-color: #fff;
+    color: black;
+    //   border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    text-align: left;
+
+    .post-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .post-content {
+      padding: 20px;
+
+      h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+
+      p {
+        margin-bottom: 10px;
+        color: #555;
+      }
+
+      .see-more-btn {
+        background-color: black;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #333;
+        }
+      }
+    }
+  }
+}
