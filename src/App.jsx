@@ -12,6 +12,7 @@ import Cart from "./page/cart"
 import ForgotPassword from "./page/forgotPassword"
 import ResetPassword from "./page/resetPassword"
 import Checkout from "./page/checkout"; // Import the Checkout component
+import AboutUs from "./page/aboutUs"
 
 function App() {
   const router = createBrowserRouter([
@@ -51,6 +52,10 @@ function App() {
         {
           path:"/checkout", // Add the checkout route
           element: <Checkout />
+        },
+        {
+          path:"/about-us",
+          element: <AboutUs />
         }
       ],
     },
