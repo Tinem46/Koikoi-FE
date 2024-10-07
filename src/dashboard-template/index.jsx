@@ -23,7 +23,8 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage }) {
         try {
             setLoading(true);
             const response = await api.get(apiURI);
-            setCategories(response.data);
+            console.log(response)
+            setCategories(response?.data.content || response.data);
         } catch (err) {
             console.error("Error fetching categories:", err);
             toast.error(err.response?.data?.message || "An error occurred while fetching categories");

@@ -38,12 +38,36 @@ function Checkout() {
         }
     };
 
-    const handlePayment = () => {
-       
+    const handlePayment = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                toast.error("No token found. Please log in.");
+                navigate('/login');
+                return; 
+            }
+
+            const orderData = {
+                id: user?.id, 
+                customer_Name: user?.username,
+                customer_Email: user?.email,
+                product_Name: cart.map(item => item.name).join(', '),
+                quantity: cart.reduce((total, item) => total + item.quantity, 0),
+                price: totalAmount
+            };
+
+            const response = await api.post('orders', orderData);
+               
+
+
             toast.success('Payment successful!');
             dispatch(reset());
             navigate('/');
-        
+            console.log(response);
+        } catch (error) {
+            console.error('Error processing payment:', error);
+            toast.error('Failed to process payment. Please try again.');
+        }
     };
 
     return (
