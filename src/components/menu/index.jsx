@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Input, Menu } from "antd";
 import "./index.scss";
 import { useEffect, useState } from "react";
@@ -13,21 +14,21 @@ function MenuForShop({ setSelectedMenu, resetFish }) {
     try {
       const response = await api.get("Koi");
       setFish(response.data);
-      setFilteredFish(response.data); // Initially show all fish
+      setFilteredFish(response.data); 
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchFish(); // Fetch the fish list on component mount
+    fetchFish(); 
   }, []);
 
-  // This useEffect will reset the fish list when resetFish is true
+  
   useEffect(() => {
     if (resetFish) {
-      setFilteredFish(fish); // Reset to show all fish
-      setSelectedMenu(""); // Clear the breadcrumb selection
+      setFilteredFish(fish); 
+      setSelectedMenu(""); 
     }
   }, [resetFish, fish, setSelectedMenu]);
 
@@ -45,18 +46,18 @@ function MenuForShop({ setSelectedMenu, resetFish }) {
     { label: "String", key: "string" },
   ];
 
-  // Handle the menu item click and filter the fish
+  
   const onClickMenu = (e) => {
     const clickedKey = e.key;
     if (clickedKey === "search") {
-      setFilteredFish(fish); // Reset to show all fish when clicking on search
-      setSelectedMenu(""); // Clear breadcrumb when clicking search
+      setFilteredFish(fish); 
+      setSelectedMenu(""); 
     } else {
       const filtered = fish.filter(
         (item) => item.name.toLowerCase() === clickedKey.toLowerCase()
       );
       setFilteredFish(filtered);
-      setSelectedMenu(clickedKey); // Update breadcrumb with selected filter
+      setSelectedMenu(clickedKey); 
     }
   };
 

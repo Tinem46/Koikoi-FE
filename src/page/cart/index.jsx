@@ -8,6 +8,7 @@ import { Image, Table, InputNumber, Button, Space, Input, Popconfirm } from "ant
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Naviagtion from "../../components/navigation";
 
 function Cart() {
   // Redux: Getting cart data from the store
@@ -102,7 +103,9 @@ function Cart() {
 
   return (
     <div className="outlet-Cart">
+      <Naviagtion name="Cart" link="/cart"/>
       <div className="cart">
+        
         <span className="title-Cart">Cart</span>
         <ShoppingCartOutlined className="icon-Cart" />
 

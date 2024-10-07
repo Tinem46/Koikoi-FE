@@ -70,7 +70,7 @@ function Header() {
               Home
             </li>
             <li onClick={() => navigate("/FishShop")}>Fish</li>
-            <li onClick={() => navigate("/consignment")}>Consignment</li>S
+            <li onClick={() => navigate("/consignment")}>Consignment</li>
             <li onClick={() => navigate("/about-us")}>About Us</li>
           </ul>
         </div>

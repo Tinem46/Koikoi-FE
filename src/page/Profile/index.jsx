@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../config/api';
 import './index.scss';
+import Naviagtion from '../../components/navigation';
 
 
 const Profile = () => {
@@ -66,7 +67,7 @@ const Profile = () => {
 
     return (
         <div className="profile-container">
-            
+            <Naviagtion name="Profile" link="/profile" />
             {isEditing ? (
                 <form className="edit-form" onSubmit={handleSubmit}>
                     <h2>Edit Profile</h2>

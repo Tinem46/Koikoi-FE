@@ -1,11 +1,12 @@
 .outlet-Cart {
-    padding-top: 160px;
-    padding-bottom: 20px;
+    padding-top: 0px;
+    padding-bottom:40px;
     display: flex;
     align-items: center;
     flex-direction: column;
   }
   .cart {
+    margin-top: 50px;
     width: 1100px;
     .title-Cart {
       font-size: 30px;

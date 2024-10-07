@@ -1,15 +1,16 @@
+/* eslint-disable react/prop-types */
 import { Breadcrumb } from "antd";
 import logo2 from "../../assets/image/Poster_5.webp";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
 
-function Naviagtion({ selectedMenu, triggerReset }) {
+function Naviagtion({ selectedMenu="", triggerReset=()=>{}, name="shop", link="/"}) {
   const navigate = useNavigate();
   return (
     <div className="navigation">
       <img className="pictureOutline" src={logo2} alt="Koi pond background" />
       <div className="container">
-        <h1 className="shopTitle">Shop</h1>
+        <h1 className="shopTitle">{name}</h1>
         <div className="breadcrumbBar">
           <Breadcrumb>
             {/* Home should navigate to / */}
@@ -27,14 +28,14 @@ function Naviagtion({ selectedMenu, triggerReset }) {
               <span
                 onClick={() => {
                   triggerReset(); // Trigger the reset function to reset the fish list
-                  navigate("/FishShop"); // Navigate to /FishShop
+                  navigate({link}); // Navigate to /FishShop
                 }}
                 style={{
                   cursor: "pointer",
                   fontWeight: !selectedMenu ? "bold" : "normal",
                 }}
               >
-                Shop
+                {name}
               </span>
             </Breadcrumb.Item>
 

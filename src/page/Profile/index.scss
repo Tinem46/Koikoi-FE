@@ -1,40 +1,32 @@
 .profile-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 30px; // Add padding for better spacing
-    margin-bottom: 0px;
-    background-size: cover;
-    background-size: contain;
+   
 }
 
 .profile-table {
-    flex: 2; // Chiếm 2 phần của container
+ 
     background-color: white;
     border-collapse: separate;
     border-spacing: 0;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    width: 100px;
+    width: 100%;
     max-width: 1200px;
-    height: 500px;
     margin-top: 50px; 
-    margin-left: 70px;
+    margin-left: 350px;
     position: relative; 
     z-index: 1; 
-    
+
 
     th, td {
-        padding: 15px;
+        padding: 20px; // Increased padding for better spacing
         text-align: center;
-        
+        font-size: 1em; // Adjusted font size for better readability
     }
 
     th {
         background-color: #333;
         color: white;
-        font-size: 1.1em;
+        font-size: 1.2em; // Increased font size for headers
         text-transform: uppercase;
         letter-spacing: 0.1em;
         width: 100%;
@@ -59,33 +51,30 @@
     }
 }
 
-
-
 // New styles for the edit form
 .edit-form {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 30px; // Increased padding for better spacing
     width: 100%;
-    max-width: 600px;
-    margin-top: 50px;
-    margin-left: 100px;
-
+    max-width: 1000px;
+    margin-top: 30px;
+    margin-left: 480px;
 
     .form-group {
-        margin-bottom: 15px;
+        margin-bottom: 20px; // Increased margin for better spacing
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px; // Increased margin for better spacing
             font-weight: bold;
             color: #555;
         }
 
         input {
             width: 100%;
-            padding: 10px;
+            padding: 12px; // Increased padding for better spacing
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
@@ -101,10 +90,10 @@
     .button-group {
         display: flex;
         justify-content: space-between;
-        margin-top: 20px;
+        margin-top: 30px; // Increased margin for better spacing
 
         button {
-            padding: 10px 20px;
+            padding: 12px 24px; // Increased padding for better spacing
             border: none;
             border-radius: 4px;
             font-size: 16px;
@@ -135,7 +124,7 @@
 
     h2 {
         text-align: center; // Add this line
-        margin-bottom: 20px;
+        margin-bottom: 30px; // Increased margin for better spacing
     }
 }
 
