@@ -54,6 +54,10 @@ function App() {
           element: <Checkout />
         },
         {
+          path: "/FishShop", // Add the checkout route
+          element: <FishShop />,
+        },
+        {
           path:"/about-us",
           element: <AboutUs />
         }
