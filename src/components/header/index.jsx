@@ -71,7 +71,7 @@ function Header() {
             </li>
             <li onClick={() => navigate("/FishShop")}>Fish</li>
             <li onClick={() => navigate("/consignment")}>Consignment</li>
-            <li onClick={() => navigate("/info")}>Info</li>
+            <li onClick={() => navigate("/about-us")}>About Us</li>
           </ul>
         </div>
         <div className="header__nav-right">

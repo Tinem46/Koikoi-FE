@@ -12,7 +12,11 @@ import Cart from "./page/cart";
 import ForgotPassword from "./page/forgotPassword";
 import ResetPassword from "./page/resetPassword";
 import Checkout from "./page/checkout"; // Import the Checkout component
+<<<<<<< HEAD
 import FishShop from "./page/shopFish"; // Import the Checkout component
+=======
+import AboutUs from "./page/aboutUs"
+>>>>>>> 48e5ea28042386ca14e7add27b4d0327edacc567
 
 function App() {
   const router = createBrowserRouter([
@@ -49,6 +53,7 @@ function App() {
           element: <ResetPassword />,
         },
         {
+<<<<<<< HEAD
           path: "/checkout", // Add the checkout route
           element: <Checkout />,
         },
@@ -56,6 +61,15 @@ function App() {
           path: "/FishShop", // Add the checkout route
           element: <FishShop />,
         },
+=======
+          path:"/checkout", // Add the checkout route
+          element: <Checkout />
+        },
+        {
+          path:"/about-us",
+          element: <AboutUs />
+        }
+>>>>>>> 48e5ea28042386ca14e7add27b4d0327edacc567
       ],
     },
     {
