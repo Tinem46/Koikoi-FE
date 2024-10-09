@@ -3,7 +3,7 @@ import { Form, Input, Button, Spin, Modal } from 'antd' // Import Button
 import api from '../../config/api'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { useRef, useState,useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 function ForgotPassword() {
     const navigate = useNavigate()
@@ -11,32 +11,46 @@ function ForgotPassword() {
     const [otp, setOtp] = useState(Array(6).fill(""));
     const inputRefs = useRef([]);
     const [isemail, setEmail] = useState("");
-    const [timer, setTimer] = useState(70);
+    const [timer, setTimer] = useState(10);
     const [loading, setLoading] = useState(false);
     const [loadingVerify, setLoadingVerify] = useState(false);
+
+    useEffect(() => {
+        if (showOtpModal) { // Start the timer only when the OTP modal is shown
+            const interval = setInterval(() => {
+                setTimer((prevTimer) => {
+                    if (prevTimer > 0) {
+                        return prevTimer - 1;
+                    } else {
+                        clearInterval(interval);
+                        setShowOtpModal(false);
+                        return 0;
+                    }
+                });
+            }, 1000);
+
+            return () => clearInterval(interval); // Cleanup interval on component unmount or when modal closes
+        }
+    }, [showOtpModal]); // Dependency array includes showOtpModal
 
     const resetOtpState = () => {
         setOtp(Array(6).fill(""));
         setTimer(70);
     };
 
-  
-
-    const handleSubmit = async () => {
-        const emailValue = isemail.email; // Access email directly from values
-        setEmail(emailValue);
+    const handleSubmit = async (values) => { 
+        const emailValue = values.email; 
+        setEmail(emailValue); 
         setLoading(true);
     
         try {
-          const response = await api.post(`account/verifyEmail/${emailValue}`, isemail);
+          //const response = await api.post(`account/verifyEmail/${emailValue}`, isemail);
+          const response = await api.post(`account/verifyEmail/${emailValue}`); // Send email in the request body
           
-          console.log(response.data); // Check the response data
-          if (response.data.code === 1000) {
-            setShowOtpModal(true); // Show OTP modal
-            resetOtpState();
-            // Assuming the OTP is returned in the response, you can set it here
-            // setOtp(response.data.otp.split('')); // Uncomment if OTP is returned
-          }
+          console.log(response.data); 
+          setShowOtpModal(true);
+          resetOtpState();
+
         } catch (error) {
           console.error(error);
           toast.error({
@@ -54,7 +68,7 @@ function ForgotPassword() {
           const newOtp = [...otp];
           newOtp[index] = value;
           setOtp(newOtp);
-    
+
           // Move to the next input if not empty
           if (value !== "" && index < otp.length - 1) {
             inputRefs.current[index + 1].focus();
@@ -68,24 +82,22 @@ function ForgotPassword() {
         }
       };
     
-  
-
       const handleOtpSubmit = async () => {
-     
-        
+        console.log(otp)
+        console.log(Number(otp.join('')))
+        console.log(isemail)
         setLoadingVerify(true);
         
         try {
-          const response = await api.post(`account/verifyOtp/${isemail.email }/${otp.join('')}`, isemail , otp);
-          if (response.data.code === 1000) {
-            setShowOtpModal(false);
-            navigate("/resetPassword", { 
-              state: { verified: true, email: isemail.email } 
-            });
-          } else {
-            toast.error("Invalid OTP");
-          }
-        } catch (error) {
+          const response = await api.post(`account/verifyOtp/${Number(otp.join(''))}/${isemail }`);
+          navigate("/resetPassword", { 
+            state: { verified: true, email: isemail.email } 
+          }); 
+          console.log(response)
+          }  
+            
+        
+         catch (error) {
           console.error(error);
           toast.error("Failed to verify OTP");
         } finally {
@@ -95,46 +107,56 @@ function ForgotPassword() {
 
     return (
         <div>
-            <AuthLayout>
+    <AuthLayout>
                 <Form layout="vertical" onFinish={handleSubmit} className="login-form">
                     <Form.Item
-                        name="email" // Add name attribute
+                        name="email" 
                         rules={[{ required: true, message: "Please enter your email" }]} // Add validation
                     >
                         <Input placeholder="Enter your email" />
                     </Form.Item>
-                   
-                    <Form.Item>
                         <Button type="primary" htmlType="submit" block disabled={loading} >{loading ? <Spin size="small" /> : "CONTINUE"} Send OTP by Email</Button> 
-                    </Form.Item>
-   
                 </Form>
 
                 <Modal
                     title="Enter OTP"
-                    visible={showOtpModal} // Ensure this is correctly set
+                    open={showOtpModal} // Ensure this is correctly set
                     onCancel={() => setShowOtpModal(false)}
                     footer={[
                         <Button key="cancel" onClick={() => setShowOtpModal(false)}>
                             Cancel
                         </Button>,
-                        <Button key="submit" type="primary" loading={loadingVerify} onClick={handleOtpSubmit}>
+                        <Button key="submit" type="primary" loading={loadingVerify} onClick={handleOtpSubmit}  >  
                             Verify OTP
                         </Button>,
                     ]}
                 >
-                    {otp.map((_, index) => (
-                        <Input
-                            key={index}
-                            value={otp[index]}
-                            onChange={(e) => handleChange(e, index)}
-                            onKeyDown={(e) => handleKeyDown(e, index)}
-                            maxLength={1}
-                            ref={(el) => (inputRefs.current[index] = el)}
-                            style={{ width: '3rem', marginRight: '0.5rem', textAlign: 'center' }}
-                        />
-                    ))}
-                    <div>{timer} seconds remaining</div>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}> 
+                        {otp.map((_, index) => (
+                            <Input
+                                key={index}
+                                value={otp[index]}
+                                onChange={(e) => handleChange(e, index)}
+                                onKeyDown={(e) => handleKeyDown(e, index)}
+                                maxLength={1} // Ensure only one character is allowed
+                                ref={(el) => (inputRefs.current[index] = el)}
+                                style={{
+                                    width: '3rem',
+                                    height: '3rem',
+                                    marginRight: '0.5rem',
+                                    textAlign: 'center',
+                                    fontSize: '1.5rem',
+                                    borderRadius: '0.5rem',
+                                    border: '1px solid #d9d9d9',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                }}
+                            />
+                        ))}
+
+                    </div>
+                    <div style={{ textAlign: 'center', fontSize: '1rem', color: '#888' }}>
+                        <span style={{ color: '#000' }}>{timer} seconds remaining</span> 
+                    </div>
                 </Modal>
             </AuthLayout>
 

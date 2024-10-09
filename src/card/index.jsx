@@ -2,14 +2,25 @@
 import "./index.scss";
 import { addToCart } from '../redux/features/cartSlice';
 import { useDispatch } from 'react-redux';
+import axios from "axios";
 
 function Card({ fish }) {
   const dispatch = useDispatch();
+  // const user = useSelector((state) => state.user.user);
+   
+  // ... existing code ...
 
-  const handleAddToCart = () => {
-    dispatch(addToCart(fish))
+  const handleAddToCart = async (values) => {
+    try {
+      const response = await axios.post(`/cart`);
+      console.log(response.data);
+    } catch (err) {
+      console.error(err.response.data);
+    }
+    dispatch(addToCart(fish));
   };
 
+// ... existing code ...
   return (
     <div className="fish-card">
       <img src={fish.image} />

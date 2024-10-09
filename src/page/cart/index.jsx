@@ -45,11 +45,7 @@ function Cart() {
       }));
       setDataSource(tableData);
       // Calculate total price
-      const total = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-      );
-      setTotalPrice(total);
+      
     }
   }, [cart]);
 

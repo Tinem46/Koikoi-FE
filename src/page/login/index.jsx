@@ -9,6 +9,7 @@ import { login } from '../../redux/features/userSlice';
 import {signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../config/firebase";
 import './index.scss'; // Add this import
+import { alertSuccess } from '../../assets/image/hook';
 
 function Login() {
   const dispatch = useDispatch();
@@ -25,13 +26,16 @@ function Login() {
 
       if(role === "MANAGER"){
         navigate("/dashboard");
-        toast.success("Login success!");
+        // toast.success("Login success!");
+        alertSuccess("Login success!");
+
 
 
       }
       else{
         navigate("/");
-        toast.success("Login success!");
+        // toast.success("Login success!");
+        alertSuccess("Login success!");
       }
      
 

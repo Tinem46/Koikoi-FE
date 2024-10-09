@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "antd/es/form/Form";
 import api from "../config/api";
-import dayjs from "dayjs";
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -23,8 +22,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage }) {
         try {
             setLoading(true);
             const response = await api.get(apiURI);
-            console.log(response)
-            setCategories(response?.data.content || response.data);
+            setCategories(response.data);
         } catch (err) {
             console.error("Error fetching categories:", err);
             toast.error(err.response?.data?.message || "An error occurred while fetching categories");
@@ -41,14 +39,14 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage }) {
             console.log(img)
             values.image = img
             if (editingRecord) {
-                await api.put(`${apiURI}/${values.id}`, values); // Updated line
+                await api.put(`${apiURI}/${values.id}`, values); 
             } else {
                 await api.post(`${apiURI}`,values);
             }
             toast.success("Operation successful!");
             setOpen(false);
             fetchCategory();
-            setEditingRecord(null); // Reset editing record after submission
+            setEditingRecord(null); 
         } catch (err) {
             toast.error(err.response?.data || "An error occurred");
         } finally {

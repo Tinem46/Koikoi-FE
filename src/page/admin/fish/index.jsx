@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 function ManagementFish() {
     const [fileList, setFileList] = useState([]); // Ensure fileList is initialized as an array
-
+    const categories = ['Trending', 'Kohaku', 'Sanke', 'Showa',"Tancho","Utsurimono","Asagi"];
     const columns = [
         {
           title: 'Name',
@@ -42,6 +42,16 @@ function ManagementFish() {
           title: 'Origin',
           dataIndex: 'origin',
           key: 'origin',
+        },
+        {
+          title: 'Quantity',
+          dataIndex: 'quantity',
+          key: 'quantity',
+        },
+        {
+          title: 'Category',
+          dataIndex: 'category',
+          key: 'category',
         },
 
         {
@@ -89,6 +99,22 @@ function ManagementFish() {
             </Form.Item>
             <Form.Item name="origin" label="Origin">
                 <Input/>
+            </Form.Item>
+            <Form.Item name="quantity" label="Quantity">
+                <InputNumber/>
+            </Form.Item>
+            <Form.Item 
+              label="Category" 
+              name="category"
+              rules={[{ required: true, message: 'Please select a category!' }]}
+            >
+              <Select>
+                {categories.map(category => (
+                  <Select.Option key={category} value={category}>
+                    {category}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
             <Form.Item name="gender" label="Gender">
                 <Select>

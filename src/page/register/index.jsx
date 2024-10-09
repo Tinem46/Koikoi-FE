@@ -3,7 +3,6 @@ import AuthLayout from '../../auth-layout'
 import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom'; // Add Link to the import
 import api from '../../config/api';
-import './index.scss'; // Make sure this import is present
 import { Row, Col } from 'antd'; // Make sure this import is present
 
 function Register() {
@@ -26,7 +25,7 @@ function Register() {
     }
   return (
     <AuthLayout>
-        <div className="register-container">
+        <div className="login-form">
             <Form
                 layout="vertical"
                 name="userForm"

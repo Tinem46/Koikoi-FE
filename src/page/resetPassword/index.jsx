@@ -1,25 +1,24 @@
 import { useState, useEffect } from 'react';
-import { Button, Form, Input, message, Modal } from 'antd'; // Import Modal
+import { Button, Form, Input } from 'antd'; // Import Modal
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from "../../config/api";
 import AuthLayout from "../../auth-layout";
+import { alertFail, alertSuccess } from '../../assets/image/hook';
 
 function ResetPassword() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const location = useLocation();
   const { email } = location.state || {};
   const [loading, setLoading] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false); // State for modal visibility
+  
 
   useEffect(() => {
-    // Check if the user was verified
     if (!location.state?.verified) {
       navigate('/login/forgetPassword');
     } else {
-      setIsModalVisible(true); // Show modal if verified
+      alertSuccess("success OTP");
     }
   }, [location.state, navigate]);
 
@@ -31,44 +30,22 @@ function ResetPassword() {
         password: values.password,
         repassword: values.repeatPassword
       });
-      if (response.data.code === 1000) {
-        navigate("/login");
-      }
+      navigate("/login");
+      console.log(response.data);
     } catch (error) {
       console.error(error);
-      messageApi.open({
-        type: 'error',
-        content: error.response.data.message,
-      });
+      alertFail(error.response.data.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleModalOk = () => {
-    setIsModalVisible(false);
-  };
 
   return (
     <AuthLayout>
-      {contextHolder}
-      <Modal
-        title="Email Verified"
-        visible={isModalVisible}
-        onOk={handleModalOk}
-        onCancel={handleModalOk}
-        footer={[
-          <Button key="ok" type="primary" onClick={handleModalOk}>
-            OK
-          </Button>,
-        ]}
-      >
-        <p>Your email has been successfully verified. You can now reset your password.</p>
-      </Modal>
+
       <Form layout="vertical" onFinish={handleResetPassword} className="login-form" name="reset-password" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-        <Form.Item name="otp" rules={[{ required: true, message: "Please enter the OTP" }]}>
-          <Input placeholder="OTP" />
-        </Form.Item>
+       
         <Form.Item name="password" rules={[{ required: true, message: "Please enter your new password" }]}>
           <Input.Password 
             placeholder="New Password" 
@@ -106,5 +83,4 @@ function ResetPassword() {
     </AuthLayout>
   );
 }
-
 export default ResetPassword;

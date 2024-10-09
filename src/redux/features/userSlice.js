@@ -12,7 +12,6 @@ const initialState = (() => {
     isLoggedIn: false,
     id: null,
     username: null,
-    // Add other user fields as needed
   };
 })();
 

@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react';
 import './index.scss';
 import { toast } from 'react-toastify';
 import { reset } from '../../redux/features/cartSlice';
-import cartNo from '../../assets/image/profile.jpeg';
 import api from '../../config/api';
+import Naviagtion from '../../components/navigation';
 
 function Checkout() {
     const cart = useSelector((state) => state.cart.products);
@@ -72,7 +72,7 @@ function Checkout() {
 
     return (
         <div className="checkout-container">
-            <img src={cartNo} alt="" className='img'/>
+           <Naviagtion name="Checkout" link="/checkout"/>
             <div className="checkout">
                 <div className="billing-details">
                     <h2>Billing Details</h2>

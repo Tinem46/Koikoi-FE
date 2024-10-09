@@ -2,10 +2,11 @@ import "./index.scss";
 import { UserOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import logo from "../../assets/image/Remove-bg.ai_1728219384890.png";
+import logo from "../../assets/image/Remove-bg.ai_1728447299695.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 import { Dropdown, Input} from "antd";
+import { alertSuccess } from "../../assets/image/hook";
 
 function Header() {
   const navigate = useNavigate();
