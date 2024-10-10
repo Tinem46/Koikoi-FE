@@ -59,7 +59,7 @@ function MenuForShop({ setSelectedMenu, resetFish }) {
       setSelectedMenu("");
     } else {
       const filtered = fish.filter(
-        (item) => item.name.toLowerCase() === clickedKey.toLowerCase()
+        (item) => item.category.toLowerCase() === clickedKey.toLowerCase()
       );
       setFilteredFish(filtered);
       setSelectedMenu(clickedKey);

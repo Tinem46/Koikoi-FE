@@ -125,8 +125,8 @@ function ManagementFish() {
             >
               <Select>
                 {categories.map(category => (
-                  <Select.Option key={category.id} value={category.id}>
-                    {category.category} {/* Access the correct property to display */}
+                  <Select.Option key={category.category} value={category.category}>
+                    {category.category} 
                   </Select.Option>
                 ))}
               </Select>

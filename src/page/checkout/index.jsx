@@ -104,12 +104,12 @@ function Checkout() {
                                 <span>{item.name}</span>
                                 <div>
                                     <span>Quantity: {item.quantity}</span><br />
-                                    <span>Price: ${item.price.toFixed(2)}</span>
+                                    <span>Price: ${new Intl.NumberFormat('en-US').format(item.price)}</span>
                                 </div>
                             </li>
                         ))}
                     </ul>
-                    <h3>Total: ${totalAmount.toFixed(2)}</h3>
+                    <h3>Total: ${new Intl.NumberFormat('en-US').format(totalAmount)}</h3>
                     
                     {/* Payment Methods */}
                     <div className="payment-methods">

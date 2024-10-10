@@ -37,7 +37,7 @@ function Cart() {
       const tableData = cart.map((item) => ({
         key: item.id,
         name: item.name,
-        price: item.price * item.quantity,
+        price: "$"+new Intl.NumberFormat('en-US').format(item.price * item.quantity) ,
         image: item.image,
         quantity: item.quantity,
         totalPrice: item.price * item.quantity,
