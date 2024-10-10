@@ -1,39 +1,31 @@
+import { useState } from 'react'
 import DashboardTemplate from '../../../dashboard-template'
 import { Form, Input } from 'antd'
 
 function ManageCategory() {
-
+const [fileList, setFileList] = useState([])
     const columns = [
+     
         {
-            title: "ID",
-            dataIndex: "id",
-            key: "id",
-        },
-        {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
-        },
-        {
-            title: "Description",
-            dataIndex: "description",
-            key: "description",
-        },
+            title: "Category",
+            dataIndex: "category",
+            key: "category",
+        }
     ]
 
     const formItems = (
         <>
-        <Form.Item name="name" label="Name">
+        <Form.Item name="category" label="Category">
             <Input/>
-        </Form.Item>
-        <Form.Item name="description" label="Description">
-            <Input.TextArea/>
         </Form.Item>
         </>
     )
 
+  
+
   return (
-    <DashboardTemplate columns={columns} apiURI="category" formItems={formItems} title="Category" />
+    <DashboardTemplate columns={columns} apiURI="KoiTypes" formItems={formItems} title="Category" resetImage={() => setFileList([])}/>
+    
   )
 }
 

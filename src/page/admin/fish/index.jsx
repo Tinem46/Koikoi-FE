@@ -1,11 +1,26 @@
 import { Form, Input, InputNumber,  Select,  Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons';
 import DashboardTemplate from '../../../dashboard-template';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import api from '../../../config/api'; 
 
 function ManagementFish() {
-    const [fileList, setFileList] = useState([]); // Ensure fileList is initialized as an array
-    const categories = ['Trending', 'Kohaku', 'Sanke', 'Showa',"Tancho","Utsurimono","Asagi"];
+    const [fileList, setFileList] = useState([]); 
+    const [categories, setCategories] = useState([]); 
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await api.get('KoiTypes'); 
+                setCategories(response.data);
+            } catch (err) {
+                console.error("Error fetching categories:", err);
+            }
+        };
+
+        fetchCategories();
+    }, []); 
+
     const columns = [
         {
           title: 'Name',
@@ -110,8 +125,8 @@ function ManagementFish() {
             >
               <Select>
                 {categories.map(category => (
-                  <Select.Option key={category} value={category}>
-                    {category}
+                  <Select.Option key={category.id} value={category.id}>
+                    {category.category} {/* Access the correct property to display */}
                   </Select.Option>
                 ))}
               </Select>

@@ -12,7 +12,7 @@ function Card({ fish }) {
 
   const handleAddToCart = async (values) => {
     try {
-      const response = await axios.post(`/cart`);
+      const response = await axios.post(`cart`);
       console.log(response.data);
     } catch (err) {
       console.error(err.response.data);

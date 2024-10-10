@@ -2,7 +2,7 @@ import "./index.scss";
 import { UserOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import logo from "../../assets/image/Remove-bg.ai_1728447299695.png";
+import logo from "../../assets/image/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 import { Dropdown, Input} from "antd";
