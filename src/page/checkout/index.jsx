@@ -42,7 +42,7 @@ function Checkout() {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                toast.error("No token found. Please log in.");
+                toast.error("Please login to proceed to checkout");
                 navigate('/login');
                 return; 
             }

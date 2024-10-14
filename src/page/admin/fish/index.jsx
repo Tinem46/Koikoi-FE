@@ -7,12 +7,16 @@ import api from '../../../config/api';
 function ManagementFish() {
     const [fileList, setFileList] = useState([]); 
     const [categories, setCategories] = useState([]); 
+    const [selectedCategoryId, setSelectedCategoryId] = useState(null); // New state for selected category ID
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
                 const response = await api.get('KoiTypes'); 
                 setCategories(response.data);
+                if (response.data.length > 0) {
+                    setSelectedCategoryId(response.data[0].id); // Set default category ID
+                }
             } catch (err) {
                 console.error("Error fetching categories:", err);
             }
@@ -123,10 +127,10 @@ function ManagementFish() {
               name="category"
               rules={[{ required: true, message: 'Please select a category!' }]}
             >
-              <Select>
+              <Select onChange={(value) => setSelectedCategoryId(value)}> {/* Update state on change */}
                 {categories.map(category => (
-                  <Select.Option key={category.category} value={category.category}>
-                    {category.category} 
+                  <Select.Option key={category.id} value={category.id}> {/* Use category ID */}
+                    {category.category}
                   </Select.Option>
                 ))}
               </Select>
@@ -154,8 +158,17 @@ function ManagementFish() {
         </>
     );
 
+    
+    const apiURI = selectedCategoryId ? `Koi/${selectedCategoryId}` : 'Koi';
+
     return (
-        <DashboardTemplate columns={columns} apiURI="Koi" formItems={formItems} title="Fish"  resetImage={() => setFileList([])}  />
+        <DashboardTemplate 
+            columns={columns} 
+            apiURI={apiURI} // Use the validated apiURI
+            formItems={formItems} 
+            title="Fish" 
+            resetImage={() => setFileList([])} 
+        />
     )
 }
 

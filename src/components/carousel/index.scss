@@ -14,10 +14,21 @@
     }
 
     &.multi-item {
-        img {
-          width: 30%;
-          height: 40dvh;
-          margin: 0 5px; // Adds spacing between images
-        }
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width:60%;
+        height: 70dvh;
+        margin-left: 120px;
+        margin-right: auto;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
+
+        
       }
+    }
     }        

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Spin } from 'antd'
 import api from '../../config/api'
 import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom';
@@ -10,14 +10,17 @@ import {signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../config/firebase";
 import './index.scss'; // Add this import
 import { alertSuccess } from '../../assets/image/hook';
+import { useState } from 'react';
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // Check for token in localStorage on component mount
 
   const handleLogin = async (values) => {
+    setLoading(true); // Start loading
     try {
       const response = await api.post("account/login", values);
       const {token, role} = response.data;
@@ -25,12 +28,17 @@ function Login() {
       localStorage.setItem("role", role);
 
       if(role === "MANAGER"){
+        
         navigate("/dashboard");
         // toast.success("Login success!");
         alertSuccess("Login success!");
 
 
 
+      }
+      else if(role === "STAFF"){
+        navigate("/dashboard");
+        alertSuccess("Login success!");
       }
       else{
         navigate("/");
@@ -42,11 +50,13 @@ function Login() {
       // Dispatch login action with user data
       dispatch(login(response.data));
     } catch (err) {
+      setLoading(false);
       toast.error(err.response?.data || "Login failed");
     }   
   };
 
   const handleLoginGoogle = async () => {
+    setLoading(true); // Start loading
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log("Đăng nhập thành công:", result.user);
@@ -57,6 +67,8 @@ function Login() {
       console.error("Lỗi đăng nhập:", error);
       // Hiển thị thông báo lỗi cho người dùng
       alert("Đăng nhập thất bại. Vui lòng thử lại.");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -78,13 +90,13 @@ function Login() {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" block>Login</Button>
+          <Button type="primary" htmlType="submit" block disabled={loading}>{loading ? <Spin size="small" /> : "Login"}</Button>
         </Form.Item>
 
         <div className="or-divider">or</div>
 
         <Form.Item>
-          <Button className="google-login-btn" onClick={handleLoginGoogle} block>
+          <Button className="google-login-btn" onClick={handleLoginGoogle} loading={loading} block>
             <img
               src="https://th.bing.com/th/id/R.0fa3fe04edf6c0202970f2088edea9e7?rik=joOK76LOMJlBPw&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fgoogle-logo-png-open-2000.png&ehk=0PJJlqaIxYmJ9eOIp9mYVPA4KwkGo5Zob552JPltDMw%3d&risl=&pid=ImgRaw&r=0"
               alt="google"

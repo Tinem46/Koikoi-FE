@@ -6,19 +6,23 @@ import logo from "../../assets/image/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 import { Dropdown, Input} from "antd";
-import { alertSuccess } from "../../assets/image/hook";
+
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const isLoggedIn = user ? user.isLoggedIn : false;
+  const cart = useSelector((store) => store.cart.products); // Ensure you are selecting the correct part of the state
+  console.log(cart)
 
   const userMenu = (
     <ul className="header__dropdown-menu">
       {isLoggedIn && <li onClick={handleProfile}>Profile</li>} 
       {isLoggedIn ? (
-        <li onClick={handleLogout}>Logout</li>
+        <>
+          <li onClick={handleLogout}>Logout</li>
+        </>
       ) : (
         <li onClick={() => navigate("/login")}>Login</li>
       )}
@@ -39,9 +43,6 @@ function Header() {
     dispatch(logout());
     navigate("/login");
   }
-
-  const cart = useSelector((state) => state.cart.products);
-  const cartItemCount = cart.reduce((count, item) => count + item.quantity, 0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -89,7 +90,7 @@ function Header() {
             </li>
             <li>
               <ShoppingCartOutlined style={{ cursor: 'pointer' }} onClick={() => navigate("/cart")} />
-              {cartItemCount > 0 && <span className="cart-count">{cart.length}</span>}
+              <span className="cart-count">{cart.length}</span>
             </li>
           </ul>
         </div>

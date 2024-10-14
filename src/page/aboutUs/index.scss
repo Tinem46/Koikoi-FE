@@ -1,209 +1,152 @@
 .aboutUs {
-  padding: 100px 50px; // Increased padding for more space
-  background: linear-gradient(to right, #f9f9f9, #e0e0e0); // Added gradient background
-  font-size: 1.6rem; // Slightly increased font size
+  font-size: 1.4rem;
+  background-color: #f4f7f6; /* Màu nền nhẹ nhàng */
+  color: #333; /* Màu chữ đậm hơn một chút để dễ đọc */
 
-  &__line {
-    margin-top: 120px;
-    height: 4px;
-    background-color: #333; // Darker line for better contrast
-    margin-bottom: 30px; // Increased margin for spacing
+  /* Các phần nội dung */
+  &__content, &__history, &__content1, &__gallery, &__content2, &__locations {
+    padding: 40px 0;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
     transition: all 0.3s ease;
-  }
 
-  &__title {
-    margin-bottom: 120px;
-    font-size: 3.5rem; // Increased title size
-    font-weight: 800; // Bolder font weight
-    margin-top: 20px;
-    text-align: center;
-    color: #111;
-    letter-spacing: 2px; // Increased letter spacing
+    /* Hiệu ứng hover cho phần nội dung */
     &:hover {
-      color: #ff6f61;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); // Added text shadow on hover
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15); /* Đổ bóng khi hover */
+      transform: translateY(-10px); /* Dịch chuyển nhẹ lên trên */
+    }
+    
+    p {
+      font-weight: 400;
+      line-height: 1.8;
+      color: #555; /* Màu chữ nhẹ nhàng hơn */
+      text-indent: 20px;
+      margin-right: 20px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      position: relative;
+      color: #222;
+      text-align: center;
+      
+      /* Hiệu ứng khi hover tiêu đề */
+      &:hover {
+        color: #e67e22; /* Đổi màu tiêu đề khi hover */
+        transform: scale(1.05); /* Phóng to nhẹ khi hover */
+      }
+    }
+
+    img {
+      border-radius: 10px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      width: 35%; /* Tăng kích thước ảnh */
+      
+      &:hover {
+        transform: scale(1.1); /* Hiệu ứng zoom khi hover */
+        filter: brightness(1.15); /* Tăng độ sáng khi hover */
+      }
     }
   }
 
   &__content {
-    margin-top: 40px;
     display: flex;
-    gap: 30px; // Increased gap between elements
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0;
+    margin-top: 20px;
+    text-align: center;
+    gap: 40px; /* Tạo khoảng cách giữa các phần */
+    font-size: 1.8rem;
+
+    .WELCOME {
+      font-size: 3rem;
+    }
+  }
+
+  &__historyContent {
+    display: flex;
+    gap: 30px;
     align-items: center;
 
     p {
-      font-weight: 400;
-      margin-top: 10px;
-      text-align: justify;
-      line-height: 1.8;
-      text-indent: 20px;
-      color: #333;
-    }
-
-    .aboutUs__image {
-      width: 350px; // Increased image width
-      height: auto;
-      border-radius: 15px; // More rounded corners
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); // Enhanced shadow
-      transition: transform 0.3s ease;
-
-      &:hover {
-        transform: scale(1.1); // More pronounced hover effect
-      }
+      flex: 1;
     }
   }
 
-  &__history {
-    margin-top: 60px;
-    text-align: left;
+  &__content1 ul, &__locations ul {
+    list-style-type: none;
+    padding-left: 0;
 
-    h1 {
-      font-size: 2.8rem; // Increased font size
-      font-weight: 700;
-      color: #222;
-      margin-bottom: 25px;
+    li {
       position: relative;
-    }
-
-    &__historyContent {
-      display: flex;
-      gap: 30px;
-      align-items: center;
-
-      p {
-        font-weight: 400;
-        text-align: justify;
-        line-height: 1.8;
-        color: #333;
-        flex: 1;
-      }
-
-      .aboutUs__historyImage {
-        width: 350px;
-        height: auto;
-        border-radius: 15px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s ease;
-
-        &:hover {
-          transform: scale(1.1);
-        }
-      }
-    }
-  }
-
-  &__content1 {
-    margin-top: 60px;
-
-    h1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      color: #222;
-      margin-bottom: 25px;
-      position: relative;
+      padding-left: 30px;
+      margin-bottom: 15px;
+      line-height: 1.6;
+      font-size: 1.6rem;
 
       &::before {
-        content: '';
+        content: '✔'; /* Dấu kiểm */
+        color: #28a745; /* Màu xanh nổi bật cho dấu kiểm */
         position: absolute;
-        width: 20%; // Increased width of the underline
-        height: 4px;
-        background-color: #ff6f61;
-        bottom: -10px;
         left: 0;
+        top: 0;
+        font-size: 1.6rem;
       }
-    }
 
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-
-      li {
-        margin-top: 20px; // Increased margin for better spacing
-        line-height: 1.8;
-        position: relative;
-        padding-left: 35px; // Increased padding for better alignment
-
-        &::before {
-          content: '✔';
-          color: #ff6f61;
-          position: absolute;
-          left: 0;
-          top: 0;
-        }
+      &:hover {
+        color: #e67e22; /* Đổi màu khi hover */
+        transform: translateX(5px); /* Dịch chuyển nhẹ khi hover */
+        cursor: pointer;
       }
     }
   }
 
   &__gallery {
-    margin-top: 60px;
     text-align: center;
 
-    h1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      color: #222;
-      margin-bottom: 25px;
-    }
-
     .aboutUs__varietyImage {
-      width: 85%; // Increased image width
-      height: auto;
+      width: 65%; /* Tăng kích thước ảnh trong phần bộ sưu tập */
       border-radius: 15px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
 
       &:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng khi hover */
       }
     }
 
     p {
-      font-weight: 400;
-      margin-top: 25px;
-      text-align: center;
-      line-height: 1.8;
-      color: #333;
-      font-size: 1.6rem; // Increased font size
+      margin-top: 20px;
+      font-size: 1.4rem;
+      color: #777;
       font-style: italic;
     }
-
-    
   }
-  &__content2 {
-    margin-top: 60px;
 
-    h1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      color: #222;
-      margin-bottom: 15px;
-    }
+  &__content2 {
+    text-align: center;
+
     p {
       margin-bottom: 20px;
+      line-height: 1.8;
+      color: #555;
     }
   }
 
-
   &__locations {
-    margin-top: 60px;
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-    font-weight: 400;
-
-
-    h1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      color: #222;
-    }
 
     ul {
-      text-align:center;
-      list-style-type: none;
-      padding-left: 0;
-      margin-top: 20px;
       line-height: 1.8;
+      color: #555;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: bold;
       color: #333;
     }
   }

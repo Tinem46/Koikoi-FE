@@ -9,7 +9,7 @@ import api from "../../config/api";
 
 export default function Carousel({
   numberOfSlides = 1,
-  category = "Trending",
+  category = "Kohaku",
   autoplay = false,
 }) {
   const [koi, setKoi] = useState([]);
@@ -38,8 +38,8 @@ export default function Carousel({
         {koi
           .filter((fish) => fish.category === category)
           .map((fish) => (
-            // eslint-disable-next-line react/jsx-key
-            <SwiperSlide>
+           
+            <SwiperSlide key={fish.id}>
               <img src={fish.image} alt="" />
             </SwiperSlide>
           ))}

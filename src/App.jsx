@@ -14,6 +14,7 @@ import ResetPassword from "./page/resetPassword"
 import Checkout from "./page/checkout"; // Import the Checkout component
 import AboutUs from "./page/aboutUs"
 import FishShop from "./page/shopFish"
+import ProductDetails from "./page/ProductDetails"
 
 function App() {
   const router = createBrowserRouter([
@@ -42,7 +43,7 @@ function App() {
           element: <Cart />,
         },
         {
-          path:"/forgot-password",
+          path:"/forgot-Password",
           element:<ForgotPassword />
         },
         {
@@ -61,7 +62,13 @@ function App() {
         {
           path:"/about-us",
           element: <AboutUs />
-        }
+        },
+        
+        {
+          path: "/product-details/:id",
+          element: <ProductDetails />,
+        },
+
       ],
     },
     {

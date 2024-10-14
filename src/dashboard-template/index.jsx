@@ -32,24 +32,23 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage  }) {
     };
  
     const handleSubmit = async (values) => {
-        console.log(values)
+        console.log(values);
         setLoading(true);
         try {
-            if(values.image){
-                const img =  await uploadFile(values.image.fileList[0].originFileObj);
-                console.log(img)
-                values.image = img
+            if (values.image) {
+                const img = await uploadFile(values.image.fileList[0].originFileObj);
+                console.log(img);
+                values.image = img;
             }
             if (editingRecord) {
-                await api.put(`${apiURI}/${values.id}`, values); 
+                await api.put(`${apiURI}/${values.id}`, values);
             } else {
-                await api.post(`${apiURI}`,values);
-                console.log(values)
+                const response = await api.post(`${apiURI}`, values);
+                setDashboard((prevDashboard) => [...prevDashboard, response.data]); 
             }
             toast.success("Operation successful!");
             setOpen(false);
-                fetchDashboard();
-            setEditingRecord(null); 
+            setEditingRecord(null);
         } catch (err) {
             toast.error(err.response?.data || "An error occurred");
         } finally {

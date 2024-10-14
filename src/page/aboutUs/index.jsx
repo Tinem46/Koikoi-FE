@@ -2,19 +2,18 @@ import "./index.scss";
 import koiFishImage from "../../assets/image/Poster_5.webp";
 import koiHistoryImage from  "../../assets/image/Poster_4.webp";
 import koiFishVarietyImage from "../../assets/image/profile.jpeg"; // Additional image for Koi varieties
+import Naviagtion from '../../components/navigation';
+
 
 
 function AboutUs() {
   return (
     <div className="aboutUs">
-      <div className="aboutUs__line"></div>
-      <div className="aboutUs__title">
-        <h1>About Us</h1>
-      </div>
+      <Naviagtion name="About Us" link="/aboutUs" />
       <div className="aboutUs__content">
-        <img src={koiFishImage} alt="Koi Fish" className="aboutUs__image" />
+        
         <p>
-          Welcome to Koi Shop, your trusted source for premium quality Koi fish. 
+          WELCOME Koi Shop, your trusted source for premium quality Koi fish. 
           With a deep passion for Koi and years of experience, we are dedicated to 
           bringing the beauty and elegance of these majestic fish directly to your pond.
            Our mission is to provide Koi enthusiasts with a wide selection of healthy, 

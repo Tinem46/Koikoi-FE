@@ -24,12 +24,6 @@ function getItem(
     };
 }
 
-const items = [
-    getItem('Category', 'category', <PieChartOutlined />),
-    getItem('Voucher', 'voucher', <PieChartOutlined />),
-    getItem('Fish', 'fish', <PieChartOutlined />),
-];
-
 const Dashboard = () => {
     const [collapsed, setCollapsed] = useState(false);
     const {
@@ -38,11 +32,25 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    // Retrieve role from localStorage
+    const role = localStorage.getItem("role");
+
+    // Define menu items based on role
+    const items = role === "STAFF" ? [
+        getItem('Feedback', 'feedback', <PieChartOutlined />), // New menu item
+        getItem('User Info', 'user-info', <PieChartOutlined />), // New menu item
+        getItem('Fish Info', 'fish-info', <PieChartOutlined />), // New menu item
+    ] : [
+        getItem('Category', 'category', <PieChartOutlined />),
+        getItem('Voucher', 'voucher', <PieChartOutlined />),
+        getItem('Fish', 'fish', <PieChartOutlined />),
+    ];
+
     function handleLogout() {
-    localStorage.removeItem("token");
-    dispatch(logout());
-    navigate("/login");
-  }
+        localStorage.removeItem("token");
+        dispatch(logout());
+        navigate("/login");
+    }
 
     return (
         <Layout style={{ minHeight: '100vh' }} >
