@@ -1,14 +1,16 @@
-import {Button, Form, Input} from 'antd'
+import {Button, Form, Input, Spin} from 'antd'
 import AuthLayout from '../../auth-layout'
 import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom'; // Add Link to the import
 import api from '../../config/api';
-import './index.scss'; // Make sure this import is present
 import { Row, Col } from 'antd'; // Make sure this import is present
+import { useState } from 'react';
 
 function Register() {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const handleRegister = async (values) => {
+        setLoading(true);
         try {
             await api.post("account/register", values);
             toast.success("Register successful");
@@ -22,11 +24,13 @@ function Register() {
             } else {
                 toast.error("An unexpected error occurred");
             }
+        } finally {
+            setLoading(false);
         }
     }
   return (
     <AuthLayout>
-        <div className="register-container">
+        <div className="login-form">
             <Form
                 layout="vertical"
                 name="userForm"
@@ -145,9 +149,9 @@ function Register() {
                     </Col>
                 </Row>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" block>Register</Button>
+                    <Button type="primary" htmlType="submit" block disabled={loading}>{loading ? <Spin size="small" /> : "Register"} </Button>
                 </Form.Item>
-                <div className="login-link">
+                <div className="login-link" style={{marginTop: "10px", fontSize: "16px", color: "white",textAlign: "center"}}>
                     Already have an account? <Link to="/login">Log in</Link>
                 </div>
             </Form>

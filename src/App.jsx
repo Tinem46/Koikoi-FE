@@ -15,6 +15,7 @@ import Checkout from "./page/checkout"; // Import the Checkout component
 import AboutUs from "./page/aboutUs"
 import FishShop from "./page/shopFish"
 import ConsignmentScreen from "./page/consignmentScreen"
+import ProductDetails from "./page/ProductDetails"
 import ConsignmentPage from "./page/consigment"
 import ConsignmentForm from "./components/cosingmentForm"
 
@@ -45,11 +46,11 @@ function App() {
           element: <Cart />,
         },
         {
-          path:"/forgot-password",
+          path:"/forgot-Password",
           element:<ForgotPassword />
         },
         {
-          path:"/reset-password",
+          path:"/resetPassword",
           element:<ResetPassword />
 
         },
@@ -66,15 +67,20 @@ function App() {
           element: <ConsignmentScreen />
         },
         {
-          path:"/about-us",
-          element: <AboutUs />
-        },
-        {
-          path: "/ConsignmentPage",
+          path: "/consignment",
           element: <ConsignmentPage />
         },
         {
-          path: "/ConsignmentForm",
+          path:"/about-us",
+          element: <AboutUs />
+        },
+        
+        {
+          path:"/product-details",
+          element: <ProductDetails />
+        },
+        {
+          path:"/consignmentForm",
           element: <ConsignmentForm />
         }
       ],

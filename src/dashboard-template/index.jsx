@@ -1,54 +1,54 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Form, Image, Input, Modal, Popconfirm, Table, Upload } from "antd";
+import { Button, Form, Input, Modal, Popconfirm, Table} from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "antd/es/form/Form";
 import api from "../config/api";
-import dayjs from "dayjs";
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import uploadFile from '../utils/upload'; // Import the uploadFile utility
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'; // Import the EditOutlined icon
 
-function DashboardTemplate({ columns, apiURI, formItems, title, resetImage }) {
-    const [categories, setCategories] = useState([]);
+function DashboardTemplate({ columns, apiURI, formItems, title, resetImage  }) {
+    const [dashboard, setDashboard] = useState([]);
     const [open, setOpen] = useState(false);
     const [form] = useForm();
     const [loading, setLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
     const [editingRecord, setEditingRecord] = useState(null); // New state for editing record
 
-    const fetchCategory = async () => {
+    const fetchDashboard = async () => {
         try {
             setLoading(true);
             const response = await api.get(apiURI);
-            console.log(response)
-            setCategories(response?.data.content || response.data);
+            setDashboard(response.data);
         } catch (err) {
-            console.error("Error fetching categories:", err);
-            toast.error(err.response?.data?.message || "An error occurred while fetching categories");
+            console.error("Error fetching dashboard:", err);
+            toast.error(err.response?.data?.message || "An error occurred while fetching dashboard");
         } finally {
             setLoading(false);
         }
     };
  
     const handleSubmit = async (values) => {
-        console.log(values)
+        console.log(values);
         setLoading(true);
         try {
-         const img =  await uploadFile(values.image.fileList[0].originFileObj);
-            console.log(img)
-            values.image = img
+            if (values.image) {
+                const img = await uploadFile(values.image.fileList[0].originFileObj);
+                console.log(img);
+                values.image = img;
+            }
             if (editingRecord) {
-                await api.put(`${apiURI}/${values.id}`, values); // Updated line
+                await api.put(`${apiURI}/${values.id}`, values);
             } else {
-                await api.post(`${apiURI}`,values);
+                const response = await api.post(`${apiURI}`, values);
+                setDashboard((prevDashboard) => [...prevDashboard, response.data]); 
             }
             toast.success("Operation successful!");
             setOpen(false);
-            fetchCategory();
-            setEditingRecord(null); // Reset editing record after submission
+            setEditingRecord(null);
         } catch (err) {
             toast.error(err.response?.data || "An error occurred");
         } finally {
@@ -61,7 +61,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage }) {
         try {
             await api.delete(`${apiURI}/${id}`);
             toast.success("Delete successful");
-            fetchCategory();
+                fetchDashboard();
         } catch (err) {
             toast.error(err.response?.data || "An error occurred");
         }
@@ -74,7 +74,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage }) {
     };
 
     useEffect(() => {
-        fetchCategory();
+        fetchDashboard();
     }, []);
 
     const handleCancel = () => {
@@ -120,7 +120,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage }) {
                         )
                     }
                 ]} 
-                dataSource={categories} 
+                dataSource={dashboard} 
                 loading={loading} 
             />
             <Modal 

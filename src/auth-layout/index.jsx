@@ -18,9 +18,9 @@ function AuthLayout({ children }) {
       <div className="content-overlay">
         <Row justify="center" align="middle" gutter={[48, 0]} style={{ height: "100vh" }}>
           <Col xs={24} sm={24} md={10} lg={8} style={{ display: 'flex', justifyContent: 'center' }}>
-            <img src="https://pos.nvncdn.com/a7f3d4-30346/art/20200730_xjIUBuHVTXwLxxrqWkN78yxc.png" alt="logo" style={{ width: '60%', height: 'auto' }} />
+            <img src={logo} alt="logo" style={{ width: '60%', height: 'auto' }} />
           </Col>
-          <Divider type="vertical" style={{ height: '350px', borderColor: 'grey', borderWidth: '1px', marginLeft: '-80px' }} />
+          <Divider type="vertical" style={{ height: '350px', borderColor: 'grey', borderWidth: '1px', marginLeft: '-80px', marginTop: '60px' }} />
           <Col xs={24} sm={24} md={10} lg={8}>
             {children}
           </Col>

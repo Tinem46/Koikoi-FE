@@ -1,161 +1,176 @@
 .news-container {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between; /* Đảm bảo hai phần được đặt cạnh nhau */
+  align-items: stretch; /* Đảm bảo cả hai phần có chiều cao bằng nhau */
+ 
+  margin: 0; /* Không có khoảng cách */
+}
 
-    .container{
+.container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%; /* Đảm bảo chiều cao container bằng với viewport */
+  margin: 0; /* Không có khoảng cách */
+  margin-bottom: 50px;
+}
+
+.news, .help {
+  flex: 1; /* Đảm bảo hai phần có chiều rộng bằng nhau */
+  min-height: 100%; /* Đảm bảo chiều cao tối thiểu bằng với chiều cao màn hình */
+  margin: 0; /* Loại bỏ khoảng cách giữa hai phần */
+  overflow-y: auto; /* Thêm cuộn nếu nội dung quá dài */
+}
+
+/* Cập nhật phần news */
+.news {
+  background-color: rgba(237, 235, 235, 0.905);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.news-section {
+  width: 95%;
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
     display: flex;
+    align-items: center;
     justify-content: center;
-    height: 100%;
-    margin: 0 auto;
+    margin-top: 15px;
+  }
 
-        .news {
-            background-color: rgba(237, 235, 235, 0.905);
-            height: 100%;  
-    
-            .news-section {
-                width: 95%;          
-            
-                h1 {
-                  font-size: 2rem;
-                  margin-bottom: 15px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  margin-top: 15px;
-                }
-            
-                .news-items {
-                    display: flex;
-                    flex-direction: column;
-                    margin-left: 45px;
-              
-                    .news-item {
-                      display: flex;
-                      margin-bottom: 20px;
-                      padding: 15px;
-                      background-color: whitesmoke; // Thay đổi màu nền cho khác biệt
-                      border-radius: 10px;
-                      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Đổ bóng để làm nổi bật
-              
-                      transition: transform 0.3s ease; // Thêm hiệu ứng khi hover
-              
-                      &:hover {
-                        transform: translateY(-5px); // Khi hover, phần tử nổi lên một chút
-                      }
-            
-                    img {
-                      width: 150px;
-                      height: 100px;
-                      object-fit: cover;
-                      border-radius: 5px;
-                    }
-            
-                    .news-content {
-                      margin-left: 15px;
-            
-                      h3 {
-                        font-size: 1.25rem;
-                        margin-bottom: 10px;
-                      }
-            
-                      p {
-                        font-size: 1rem;
-                        margin-bottom: 5px;
-                      }
-            
-                      .publish-date {
-                        font-size: 0.8rem;
-                        color: gray;
-                      }
-                    }
-                  }
-                }
-            
-                .show-more {
-                  background-color: black;
-                  color: white;
-                  padding: 10px 20px;
-                  border: none;
-                  border-radius: 50px;
-                  cursor: pointer;
-                  margin-bottom: 20px;
-                  margin-left: 450px;
-                }
+  .news-items {
+    display: flex;
+    flex-direction: column;
+    margin-left: 45px;
+
+    .news-item {
+      display: flex;
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: whitesmoke;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+      }
+
+      img {
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+
+      .news-content {
+        margin-left: 15px;
+
+        h3 {
+          font-size: 1.25rem;
+          margin-bottom: 10px;
         }
+
+        p {
+          font-size: 1rem;
+          margin-bottom: 5px;
         }
-    
-        .help{
-            .help-section {
-                background-color: black;
-                color: white;
-                padding: 190px;
-                display: flex;
-                justify-content: center; // Căn giữa theo chiều ngang
-                align-items: center; // Căn giữa theo chiều dọc
-height: 83.1%;
-    
-                .both {
-                  h1 {
-                    font-size: 2rem;
-                    margin-bottom: 20px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                  }
-                  
-                  .search-bar {
-                    width: 100%;
-                    padding: 10px;
-                    margin-bottom: 20px;
-                    border-radius: 5px;
-                    border: none;
-                  }
-                  
-                  .help-questions {
-                    list-style: none;
-                    padding-left: 0;
-              
-                    li {
-                      font-size: 1rem;
-                      margin-bottom: 10px;
-                      cursor: pointer;
-              
-                      &:hover {
-                        text-decoration: underline;
-                      }
-                    }
-                  }
-              
-                  .contact {
-                    margin-top: 20px;
-              
-                    p {
-                      font-size: 0.9rem;
-                      margin-bottom: 5px;
-                    }
-              
-                    h3 {
-                      font-size: 1.5rem;
-                      margin-bottom: 10px;
-                    }
-              
-                    button.contact-button {
-                      background-color: #151616;
-                      color: white;
-                      padding: 10px 90px;
-                      border: none;
-                      border-radius: 50px;
-                      cursor: pointer;
-                      margin-top: 15px;
-                      font-weight: bold;
-                      font-size: larger;
-                      width: 38.8px;
-                      width: 328.95px;
-                    }
-                  }
-                }
-              }
-              
+
+        .publish-date {
+          font-size: 0.8rem;
+          color: gray;
         }
+      }
     }
   }
+
+  .show-more {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left: 45%;
+  }
+}
+
+/* Cập nhật phần help */
+.help-section {
+  background-color: black;
+  color: white;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%; /* Đảm bảo chiều cao tối thiểu bằng với phần news */
+}
+
+.help .both {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .search-bar {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: none;
+  }
+
+  .help-questions {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 20px;
+
+    li {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .contact {
+    text-align: center;
+
+    p {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    button.contact-button {
+      background-color: #151616;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: larger;
+    }
+  }
+}

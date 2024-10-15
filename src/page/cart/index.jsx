@@ -1,66 +1,125 @@
-import { useSelector, useDispatch } from "react-redux"; // Use both useSelector and useDispatch
-
-// Import actions for removing and updating items
-import { remove, changeQuantity } from "../../redux/features/cartSlice";
-
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux"; // Corrected import
 import "./index.scss";
-import {
-  Image,
-  Table,
-  InputNumber,
-  Button,
-  Space,
-  Input,
-  Popconfirm,
-} from "antd";
+import { Image, Table, InputNumber, Button, Space, Input, Popconfirm } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Naviagtion from "../../components/navigation";
+import api from "../../config/api";
+import { reset } from "../../redux/features/cartSlice";
+
 
 function Cart() {
-  // Redux: Getting cart data from the store
-  const cart = useSelector((state) => state.cart.products);
-  const dispatch = useDispatch();
-
-  // Local state to manage table data
+  const [cart, setCart] = useState([]); // Local state for cart
   const [dataSource, setDataSource] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0); // State to store total price
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [voucherCode, setVoucherCode] = useState(""); // State for voucher code
+  const [cartId, setCartId] = useState(null);
 
-  // Function to handle removing a product from the cart
-  const handleRemove = (id) => {
-    dispatch(remove({ id }));
+  const [subTotal, setSubTotal] = useState(0);
+  const [shippingPee,  setShippingPee] = useState(0);    
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  const fetchCard = async () => {
+    try {
+      const response = await api.get('Cart');
+      setCartId(response.data.id); // Assuming the account ID is in the response
+    } catch (error) {
+      console.error("Failed to fetch account ID:", error.response);
+    }
   };
 
-  // Function to handle changing the quantity of a product
-  const handleChangeQuantity = (id, quantity) => {
-    dispatch(changeQuantity({ id, quantity }));
+  const fetchCart = async () => {
+    try {
+      const response = await api.get('Cart');
+      const cartData = response.data.cartDetails; // Extract cartDetails array
+      setCart(cartData);
+    } catch (error) {
+      console.error("Failed to fetch cart:", error.response);
+    }
   };
 
-  // Mapping cart data to be used in the table
   useEffect(() => {
-    if (cart) {
+    fetchCart();
+    fetchCard(); 
+  }, []);
+
+  const handleRemove = async (id) => {
+    try {
+      await api.delete(`Cart/${id}`);
+      const updatedCart = cart.filter(item => item.id !== id);
+      setCart(updatedCart);
+
+      // Dispatch reset if the cart is empty
+      if (updatedCart.length === 0) {
+        dispatch(reset());
+      }
+    } catch (error) {
+      console.error("Failed to remove item:", error.response ? error.data : error);
+    }
+  };
+
+  const handleIncreaseQuantity = async (id) => {
+    try {
+      await api.put(`Cart/increase/${id}`);
+      setCart(cart.map(item => item.id === id ? { ...item, quantity: item.quantity + 1 } : item));
+    } catch (error) {
+      console.error("Failed to increase quantity:", error.response ? error.data : error);
+    }
+  };
+
+  const handleDecreaseQuantity = async (id) => {
+    try {
+      await api.put(`Cart/decrease/${id}`);
+      setCart(cart.map(item => item.id === id ? { ...item, quantity: item.quantity - 1 } : item));
+    } catch (error) {
+      console.error("Failed to decrease quantity:", error.response ? error.data : error);
+    }
+  };
+
+  const addCartTotal = async () => {
+    if (!cartId) {
+      console.error("Account ID is not available");
+      return;
+    }
+    try {
+      const response = await api.get(`Cart/total`, {
+        params: {
+          accountId: cartId,
+          voucherCode: voucherCode 
+        }
+      });
+      console.log(response.data);
+      const { subTotal, shippingPee, totalAmount } = response.data; // Assuming these fields are in the response
+      setSubTotal(subTotal);
+      setShippingPee(shippingPee);
+      setTotalAmount(totalAmount);
+      console.log(subTotal, shippingPee, totalAmount);
+    } catch (error) {
+      console.error("Failed to fetch cart total:", error.response ? error.response.data : error);
+    }
+  };
+
+
+
+  useEffect(() => {
+    if (Array.isArray(cart)) { // Ensure cart is an array
       const tableData = cart.map((item) => ({
         key: item.id,
         name: item.name,
-        price: item.price * item.quantity,
+        price: "$" + new Intl.NumberFormat('en-US').format(item.price * item.quantity),
         image: item.image,
         quantity: item.quantity,
         totalPrice: item.price * item.quantity,
         id: item.id,
       }));
       setDataSource(tableData);
-      // Calculate total price
-      const total = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-      );
-      setTotalPrice(total);
+    } else {
+      console.error("Cart is not an array:", cart);
     }
   }, [cart]);
 
-  // Table configuration
   const columns = [
     {
       title: "Picture",
@@ -78,7 +137,6 @@ function Cart() {
       dataIndex: "price",
       key: "price",
     },
-
     {
       title: "Quantity",
       dataIndex: "quantity",
@@ -87,7 +145,13 @@ function Cart() {
         <InputNumber
           min={1}
           value={quantity}
-          onChange={(value) => handleChangeQuantity(record.id, value)}
+          onChange={(value) => {
+            if (value > quantity) {
+              handleIncreaseQuantity(record.id);
+            } else if (value < quantity) {
+              handleDecreaseQuantity(record.id);
+            }
+          }}
         />
       ),
     },
@@ -95,7 +159,7 @@ function Cart() {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Popconfirm
+        <Popconfirm 
           title={`Are you sure you want to delete ${record.name}?`}
           onConfirm={() => handleRemove(record.id)}
         >
@@ -104,53 +168,57 @@ function Cart() {
       ),
     },
   ];
-  //checkout
 
   return (
-    <div className="outlet-Cart">
-      <Naviagtion name="Cart" link="/cart" />
-      <div className="cart">
-        <span className="title-Cart">Cart</span>
-        <ShoppingCartOutlined className="icon-Cart" />
-
-        {cart.length === 0 ? (
-          <p className="emty-p">Your cart is empty</p>
-        ) : (
-          <Table columns={columns} dataSource={dataSource} />
-        )}
-      </div>
-      <div className="return-update-cart">
-        <Link to="/FishShop">
-          <Button>Return To Shop</Button>
-        </Link>
-        <Button>Update Cart</Button>
-      </div>
-      <div className="coupon-Checkout">
-        <Space.Compact className="coupon-Input">
-          <Input placeholder="Enter your voucher"></Input>
-          <Button type="primary">Submit</Button>
-        </Space.Compact>
-        <section className="checkOut-Box">
-          <h1>Cart Total</h1>
-          <div className="modify-Checkout">
-            <p>Subtotal: </p>
-            <p>{totalPrice}</p>
-          </div>
-          <div className="modify-Checkout">
-            <p>Shipping: </p> <p></p>
-          </div>
-          <div className="modify-Checkout">
-            <p>Total amount: </p> <p></p>
-          </div>
-          <br></br>
-          {cart.length > 0 && (
-            <button onClick={() => navigate("/checkout")}>
-              Proceed to checkout
-            </button>
+    <>
+      <div className="outlet-Cart">
+        <Naviagtion name="Cart" link="/cart"/>
+        <div className="cart">
+          <span className="title-Cart">Cart</span>
+          <ShoppingCartOutlined className="icon-Cart" />
+          {Array.isArray(cart) && cart.length === 0 ? ( // Ensure cart is an array
+            <p className="empty-p">Your cart is empty</p>
+          ) : (
+            <Table columns={columns} dataSource={dataSource} />
           )}
-        </section>
+        </div>
+        <div className="return-update-cart">
+          <Link to="/">
+            <Button>Return To Shop</Button>
+          </Link>
+          <Button onClick={addCartTotal}>Update Cart Total</Button>
+        </div>
+        <div className="coupon-Checkout">
+          <Space.Compact className="coupon-Input">
+            <Input 
+              placeholder="Enter your voucher"
+              value={voucherCode}
+              onChange={(e) => setVoucherCode(e.target.value)} // Update voucherCode state
+            />
+            <Button type="primary" onClick={addCartTotal}>Submit</Button> 
+          </Space.Compact>
+          <section className="checkOut-Box">
+            <h1>Cart Total</h1>
+            <div className="modify-Checkout">
+              <p>Subtotal: </p>
+              <p>${subTotal.toFixed(2)}</p>
+            </div>
+            <div className="modify-Checkout">
+              <p>Shipping: </p>
+              <p>${shippingPee.toFixed(2)}</p>
+            </div>
+            <div className="modify-Checkout">
+              <p>Total amount: </p>
+              <p>${totalAmount.toFixed(2)}</p>
+            </div>
+            <br />
+            {Array.isArray(cart) && cart.length > 0 && (
+              <button onClick={() => navigate('/checkout')}>Proceed to checkout</button>
+            )}
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

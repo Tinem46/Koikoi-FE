@@ -48,7 +48,7 @@ function MenuForShop({ setSelectedMenu, resetFish }) {
     { label: "Tancho", key: "tancho" },
     { label: "Utsurimono", key: "utsurimono" },
     { label: "Asagi", key: "asagi" },
-    { label: "String", key: "string" },
+    { label: "ca bu hoàng anh ngu", key: "ca bu hoàng anh ngu" },
   ];
 
   // Hàm xử lý sự kiện khi click vào menu
@@ -59,7 +59,7 @@ function MenuForShop({ setSelectedMenu, resetFish }) {
       setSelectedMenu("");
     } else {
       const filtered = fish.filter(
-        (item) => item.name.toLowerCase() === clickedKey.toLowerCase()
+        (item) => item.category.toLowerCase() === clickedKey.toLowerCase()
       );
       setFilteredFish(filtered);
       setSelectedMenu(clickedKey);

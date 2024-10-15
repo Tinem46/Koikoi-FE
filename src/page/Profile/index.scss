@@ -1,9 +1,12 @@
 .profile-container {
-   
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center;     /* Center the content vertically */
+    flex-direction: column;  /* Ensure elements stack vertically */
+    min-height: 100vh;       /* Take full height of the viewport */
 }
 
 .profile-table {
- 
     background-color: white;
     border-collapse: separate;
     border-spacing: 0;
@@ -11,25 +14,22 @@
     overflow: hidden;
     width: 100%;
     max-width: 1200px;
-    margin-top: 50px; 
-    margin-left: 350px;
-    position: relative; 
-    z-index: 1; 
-
+    margin: 50px auto; /* This centers the table horizontally */
+    position: relative;
+    z-index: 1;
 
     th, td {
-        padding: 20px; // Increased padding for better spacing
+        padding: 20px;
         text-align: center;
-        font-size: 1em; // Adjusted font size for better readability
+        font-size: 1em;
     }
 
     th {
         background-color: #333;
         color: white;
-        font-size: 1.2em; // Increased font size for headers
+        font-size: 1.2em;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        width: 100%;
     }
 
     tr:last-child td {
@@ -51,30 +51,29 @@
     }
 }
 
-// New styles for the edit form
+/* New styles for the edit form */
 .edit-form {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 30px; // Increased padding for better spacing
+    padding: 30px;
     width: 100%;
     max-width: 1000px;
-    margin-top: 30px;
-    margin-left: 480px;
-
+    margin: 30px auto; /* Centers the form horizontally */
+    
     .form-group {
-        margin-bottom: 20px; // Increased margin for better spacing
+        margin-bottom: 20px;
 
         label {
             display: block;
-            margin-bottom: 10px; // Increased margin for better spacing
+            margin-bottom: 10px;
             font-weight: bold;
             color: #555;
         }
 
         input {
             width: 100%;
-            padding: 12px; // Increased padding for better spacing
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
@@ -90,10 +89,10 @@
     .button-group {
         display: flex;
         justify-content: space-between;
-        margin-top: 30px; // Increased margin for better spacing
+        margin-top: 30px;
 
         button {
-            padding: 12px 24px; // Increased padding for better spacing
+            padding: 12px 24px;
             border: none;
             border-radius: 4px;
             font-size: 16px;
@@ -101,36 +100,35 @@
             transition: background-color 0.3s ease;
 
             &[type="button"] {
-                background-color: #777; // Lighter shade for cancel button
+                background-color: #777;
                 color: white;
                 order: 1;
 
                 &:hover {
-                    background-color: #555; // Darker shade for hover
+                    background-color: #555;
                 }
             }
 
             &[type="submit"] {
-                background-color: #333; // Darker shade for save changes button
+                background-color: #333;
                 color: white;
                 order: 2;
 
                 &:hover {
-                    background-color: #111; // Even darker shade for hover
+                    background-color: #111;
                 }
             }
         }
     }
 
     h2 {
-        text-align: center; // Add this line
-        margin-bottom: 30px; // Increased margin for better spacing
+        text-align: center;
+        margin-bottom: 30px;
     }
 }
 
-// Style for the "Edit Profile" button
+/* Style for the "Edit Profile" button */
 .edit-button {
-    margin-top: 0px;
     padding: 10px 20px;
     background-color:  #555;
     color: white;
@@ -139,24 +137,21 @@
     font-size: 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width:54%;
-    margin-left: 42px;
+    width: 54%;
+    margin: 0 auto 0; /* Center the button horizontally */
+    display: block;
 
     &:hover {
         background-color: #334965;
     }
 }
 
-// Style for the new heading
+/* Style for the new heading */
 .profile-heading {
-    width: 100%; // Thay đổi từ 1000000px thành 100%
+    width: 100%;
     text-align: center;
     margin-bottom: 20px;
     margin-top: 100px;
     background-color: #333;
     color: white;
-    
 }
-
-// Add CSS for the profile-image class
-

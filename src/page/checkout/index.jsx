@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react';
 import './index.scss';
 import { toast } from 'react-toastify';
 import { reset } from '../../redux/features/cartSlice';
-import cartNo from '../../assets/image/profile.jpeg';
 import api from '../../config/api';
+import Naviagtion from '../../components/navigation';
 
 function Checkout() {
     const cart = useSelector((state) => state.cart.products);
@@ -42,7 +42,7 @@ function Checkout() {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                toast.error("No token found. Please log in.");
+                toast.error("Please login to proceed to checkout");
                 navigate('/login');
                 return; 
             }
@@ -72,7 +72,7 @@ function Checkout() {
 
     return (
         <div className="checkout-container">
-            <img src={cartNo} alt="" className='img'/>
+           <Naviagtion name="Checkout" link="/checkout"/>
             <div className="checkout">
                 <div className="billing-details">
                     <h2>Billing Details</h2>
@@ -104,12 +104,12 @@ function Checkout() {
                                 <span>{item.name}</span>
                                 <div>
                                     <span>Quantity: {item.quantity}</span><br />
-                                    <span>Price: ${item.price.toFixed(2)}</span>
+                                    <span>Price: ${new Intl.NumberFormat('en-US').format(item.price)}</span>
                                 </div>
                             </li>
                         ))}
                     </ul>
-                    <h3>Total: ${totalAmount.toFixed(2)}</h3>
+                    <h3>Total: ${new Intl.NumberFormat('en-US').format(totalAmount)}</h3>
                     
                     {/* Payment Methods */}
                     <div className="payment-methods">

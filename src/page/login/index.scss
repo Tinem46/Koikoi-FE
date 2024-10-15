@@ -1,6 +1,6 @@
 .login-form {
+  margin-top: 60px;
   max-width: 400px;
-  margin: 0 auto;
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 8px;
@@ -62,8 +62,14 @@
     img {
       margin-right: 10px;
     }
-  }
 
+  }
+  input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: light-dark(rgb(27, 87, 192), rgba(247, 247, 247, 0.4)) !important;
+    color: fieldtext !important;
+}
   .signup-link {
     margin-top: 10px;
     text-align: center;
@@ -93,4 +99,25 @@
     color: white; // Changed color to white for better visibility
     font-size: 14px; // Added font size
   }
+  .ant-input-suffix{
+    font-size: 16px;
+    .anticon svg{
+      color: white;
+    }
+  }
+
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-input-outlined.ant-input-status-error:not(.ant-input-disabled):focus, :where(.css-dev-only-do-not-override-qnu6hi).ant-input-outlined.ant-input-status-error:not(.ant-input-disabled):focus-within {
+    background: transparent;
+  }
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-input-outlined.ant-input-status-error:not(.ant-input-disabled){
+    background: transparent;
+  }
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-input-outlined.ant-input-status-error:not(.ant-input-disabled):hover{
+    background: transparent;
+  }
+  .ant-input:focus, .ant-input:invalid, .ant-input:valid, .ant-input:hover{
+    background: transparent ;
+  }
+
+
 }

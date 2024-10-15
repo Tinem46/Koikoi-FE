@@ -1,10 +1,29 @@
 import { Form, Input, InputNumber,  Select,  Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons';
 import DashboardTemplate from '../../../dashboard-template';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import api from '../../../config/api'; 
 
 function ManagementFish() {
-    const [fileList, setFileList] = useState([]); // Ensure fileList is initialized as an array
+    const [fileList, setFileList] = useState([]); 
+    const [categories, setCategories] = useState([]); 
+    const [selectedCategoryId, setSelectedCategoryId] = useState(null); // New state for selected category ID
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await api.get('KoiTypes'); 
+                setCategories(response.data);
+                if (response.data.length > 0) {
+                    setSelectedCategoryId(response.data[0].id); // Set default category ID
+                }
+            } catch (err) {
+                console.error("Error fetching categories:", err);
+            }
+        };
+
+        fetchCategories();
+    }, []); 
 
     const columns = [
         {
@@ -42,6 +61,16 @@ function ManagementFish() {
           title: 'Origin',
           dataIndex: 'origin',
           key: 'origin',
+        },
+        {
+          title: 'Quantity',
+          dataIndex: 'quantity',
+          key: 'quantity',
+        },
+        {
+          title: 'Category',
+          dataIndex: 'category',
+          key: 'category',
         },
 
         {
@@ -90,6 +119,22 @@ function ManagementFish() {
             <Form.Item name="origin" label="Origin">
                 <Input/>
             </Form.Item>
+            <Form.Item name="quantity" label="Quantity">
+                <InputNumber/>
+            </Form.Item>
+            <Form.Item 
+              label="Category" 
+              name="category"
+              rules={[{ required: true, message: 'Please select a category!' }]}
+            >
+              <Select onChange={(value) => setSelectedCategoryId(value)}> {/* Update state on change */}
+                {categories.map(category => (
+                  <Select.Option key={category.id} value={category.id}> {/* Use category ID */}
+                    {category.category}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
             <Form.Item name="gender" label="Gender">
                 <Select>
                     <Select.Option value="male">Male</Select.Option>
@@ -113,8 +158,17 @@ function ManagementFish() {
         </>
     );
 
+    
+    const apiURI = selectedCategoryId ? `Koi/${selectedCategoryId}` : 'Koi';
+
     return (
-        <DashboardTemplate columns={columns} apiURI="Koi" formItems={formItems} title="Fish"  resetImage={() => setFileList([])}  />
+        <DashboardTemplate 
+            columns={columns} 
+            apiURI={apiURI} // Use the validated apiURI
+            formItems={formItems} 
+            title="Fish" 
+            resetImage={() => setFileList([])} 
+        />
     )
 }
 

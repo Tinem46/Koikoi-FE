@@ -76,7 +76,7 @@ const Profile = () => {
                         <input
                             type="text"
                             name="fullname"
-                            value={editedUser.fullname}
+                            value={editedUser?.fullname}
                             onChange={handleChange}
                         />
                     </div>
@@ -85,7 +85,7 @@ const Profile = () => {
                         <input
                             type="text"
                             name="phone_number"
-                            value={editedUser.phone_number}
+                            value={editedUser?.phone_number}
                             onChange={handleChange}
                         />
                     </div>
@@ -94,7 +94,7 @@ const Profile = () => {
                         <input
                             type="text"
                             name="city"
-                            value={editedUser.city}
+                            value={editedUser?.city}
                             onChange={handleChange}
                         />
                     </div>
@@ -103,7 +103,7 @@ const Profile = () => {
                         <input
                             type="text"
                             name="state"
-                            value={editedUser.state}
+                            value={editedUser?.state}
                             onChange={handleChange}
                         />
                     </div>
@@ -112,7 +112,7 @@ const Profile = () => {
                         <input
                             type="text"
                             name="country"
-                            value={editedUser.country}
+                            value={editedUser?.country}
                             onChange={handleChange}
                         />
                     </div>
@@ -121,7 +121,7 @@ const Profile = () => {
                         <input
                             type="text"
                             name="specific_Address"
-                            value={editedUser.specific_Address}
+                            value={editedUser?.specific_Address}
                             onChange={handleChange}
                         />
                     </div>

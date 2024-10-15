@@ -5,6 +5,7 @@ import "./index.scss";
 
 function FishList() {
   const [fish, setFish] = useState([]);
+  
 
   const fetchFish = async () => {
     try {
@@ -21,7 +22,7 @@ function FishList() {
 
   return (
     <div className="fish-list">
-      {fish.map((item) => (
+      {fish.slice(0, 4).map((item) => (
         <Card key={item.id} fish={item} />
       ))}
     </div>
