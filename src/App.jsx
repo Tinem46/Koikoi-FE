@@ -14,6 +14,9 @@ import ResetPassword from "./page/resetPassword"
 import Checkout from "./page/checkout"; // Import the Checkout component
 import AboutUs from "./page/aboutUs"
 import FishShop from "./page/shopFish"
+import ConsignmentScreen from "./page/consignmentScreen"
+import ConsignmentPage from "./page/consigment"
+import ConsignmentForm from "./components/cosingmentForm"
 
 function App() {
   const router = createBrowserRouter([
@@ -59,8 +62,20 @@ function App() {
           element: <FishShop />,
         },
         {
+          path: "/ConsignmentScreen",
+          element: <ConsignmentScreen />
+        },
+        {
           path:"/about-us",
           element: <AboutUs />
+        },
+        {
+          path: "/ConsignmentPage",
+          element: <ConsignmentPage />
+        },
+        {
+          path: "/ConsignmentForm",
+          element: <ConsignmentForm />
         }
       ],
     },

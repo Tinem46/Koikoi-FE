@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif; /* Áp dụng font Poppins cho toàn bộ trang */
+}
+
+.ConsignmentPageContainer {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    height: 100vh;
+    width: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: 1;
+  }
+
+  &__Steps {
+    width: 900px;
+  }
+
+  &__content {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 600px;
+    width: 80%;
+    z-index: 10;
+    position: relative;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.5); /* Nền mờ */
+    border-radius: 20px;
+    h1 {
+      font-size: 56px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: black; /* Thay đổi thành màu đen */
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); /* Làm mờ nhẹ */
+    }
+
+    &__options {
+      display: flex;
+      justify-content: space-around; /* Chia đều hai bên màn hình */
+      margin-top: 20px;
+      padding: 20px;
+
+      &__offline,
+      &__online {
+        width: 48%; /* Chiếm 45% mỗi bên */
+        background-color: rgba(173, 216, 230, 0.6); /* Nền mờ */
+        padding: 20px;
+        border-radius: 10px;
+
+        h3 {
+          color: black; /* Thay đổi thành màu đen */
+          margin-bottom: 20px;
+          font-size: 26px;
+        }
+
+        p {
+          color: black; /* Thay đổi thành màu đen */
+          line-height: 1.6;
+          height: 200px;
+          font-size: 16px;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}
+
+.twoButton {
+  margin-top: 30px;
+  border-width: 0;
+  font-size: 26px;
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+  width: 300px;
+  height: 50px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  font-family: "Poppins", sans-serif; /* Áp dụng font Poppins cho nút */
+
+  > span {
+    position: relative;
+    z-index: 1;
+  }
+
+  &::before {
+    content: "";
+    background: linear-gradient(135deg, rgb(184, 149, 149), #00008b);
+    position: absolute;
+    inset: 0;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    border-radius: inherit;
+    z-index: 0;
+  }
+
+  &:hover::before {
+    opacity: 0;
+  }
+
+  &:hover {
+    background-color: #000 !important;
+    color: #fff;
+    transform: scale(1.05);
+  }
+
+  &:not(.dangerous):not([disabled]) {
+    border-width: 0;
+  }
+}
+:where(.css-dev-only-do-not-override-qnu6hi).ant-steps .ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title,:where(.css-dev-only-do-not-override-qnu6hi).ant-steps .ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title{
+    font-weight: bold;
+    font-size: 26px;
+}

@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import "./index.scss"; // Add this import
 import { Col, Row, Divider } from "antd"; // Add Divider to imports
-import logo from "../../src/assets/image/logo.png";
 
 function AuthLayout({ children }) {
   return (

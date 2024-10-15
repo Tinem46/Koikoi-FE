@@ -39,7 +39,7 @@ function MenuForShop({ setSelectedMenu, resetFish }) {
   // Cấu hình các items của Menu
   const items = [
     {
-      label: <Input.Search placeholder="Search Your Koi" />,
+      label: <Input.Search className="Input-Menu" placeholder="Search Your Koi" />,
       key: "search",
     },
     { label: "Kohaku", key: "kohaku" },

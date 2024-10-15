@@ -4,7 +4,15 @@ import { useSelector, useDispatch } from "react-redux"; // Use both useSelector 
 import { remove, changeQuantity } from "../../redux/features/cartSlice";
 
 import "./index.scss";
-import { Image, Table, InputNumber, Button, Space, Input, Popconfirm } from "antd";
+import {
+  Image,
+  Table,
+  InputNumber,
+  Button,
+  Space,
+  Input,
+  Popconfirm,
+} from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -32,7 +40,6 @@ function Cart() {
 
   // Mapping cart data to be used in the table
   useEffect(() => {
-    
     if (cart) {
       const tableData = cart.map((item) => ({
         key: item.id,
@@ -88,13 +95,11 @@ function Cart() {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Popconfirm 
+        <Popconfirm
           title={`Are you sure you want to delete ${record.name}?`}
           onConfirm={() => handleRemove(record.id)}
         >
-          <Button danger>
-            Remove
-          </Button>
+          <Button danger>Remove</Button>
         </Popconfirm>
       ),
     },
@@ -103,9 +108,8 @@ function Cart() {
 
   return (
     <div className="outlet-Cart">
-      <Naviagtion name="Cart" link="/cart"/>
+      <Naviagtion name="Cart" link="/cart" />
       <div className="cart">
-        
         <span className="title-Cart">Cart</span>
         <ShoppingCartOutlined className="icon-Cart" />
 
@@ -116,7 +120,7 @@ function Cart() {
         )}
       </div>
       <div className="return-update-cart">
-        <Link to="/">
+        <Link to="/FishShop">
           <Button>Return To Shop</Button>
         </Link>
         <Button>Update Cart</Button>
@@ -140,9 +144,10 @@ function Cart() {
           </div>
           <br></br>
           {cart.length > 0 && (
-            <button  onClick={() => navigate('/checkout')}>Proceed to checkout</button>
+            <button onClick={() => navigate("/checkout")}>
+              Proceed to checkout
+            </button>
           )}
-          
         </section>
       </div>
     </div>

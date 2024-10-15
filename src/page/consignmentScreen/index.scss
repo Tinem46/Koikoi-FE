@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+.consignment-container {
+  height: 100vh;
+  width: 100%;
+  font-family: "Poppins", sans-serif; /* Applying Poppins font */
+
+  img {
+    height: 100vh;
+    width: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: 1;
+  }
+
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    z-index: 10;
+    position: relative;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ màu đen */
+
+    p {
+      width: 60%;
+      line-height: 1.6;
+      color: white;
+    }
+
+    h1 {
+      font-size: 56px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: white;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    &__btn {
+      margin-top: 20px;
+      position: relative;
+      padding: 15px 30px;
+      font-size: 26px;
+      font-weight: bold;
+      height: 46px;
+      border: none;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #6253e1, #04befe);
+      color: white;
+      cursor: pointer;
+      z-index: 1; /* Đảm bảo chữ luôn ở trên cùng */
+      transition: background 0.3s ease;
+
+      &::before {
+        content: "";
+        background: linear-gradient(135deg, #6253e1, #04befe);
+        position: absolute;
+        inset: 0;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        border-radius: inherit;
+        z-index: -1; /* Đặt lớp phủ ở phía dưới nội dung */
+      }
+
+      &:hover::before {
+        opacity: 0;
+      }
+
+      &:hover {
+        background: white;
+        color: #333;
+      }
+    }
+
+    &__modal {
+      margin-top: 200px;
+      z-index: 1000; /* Đảm bảo modal nằm trên tất cả các thành phần khác */
+    }
+  }
+}
