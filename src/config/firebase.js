@@ -8,20 +8,21 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDWEqpSw8UOhfwq5gDHnwKedndjG9qdV-Y",
-  authDomain: "koi-store-e4863.firebaseapp.com",
-  projectId: "koi-store-e4863",
-  storageBucket: "koi-store-e4863.appspot.com",
-  messagingSenderId: "145999206158",
-  appId: "1:145999206158:web:4a5c3536cbe6a04bf0e95f",
-  measurementId: "G-FQ8ZSN9KTW"
+  apiKey: "AIzaSyD5pVfUrJ6wnfq-rBQzNxI4sO4iEM2q7ig",
+  authDomain: "koifish-42e91.firebaseapp.com",
+  projectId: "koifish-42e91",
+  storageBucket: "koifish-42e91.appspot.com",
+  messagingSenderId: "24778655442",
+  appId: "1:24778655442:web:13500a168db5dbd2b9cf0b",
+  measurementId: "G-8QD98H86HC"
 };
 
 // Initialize Firebase
 
 const app = initializeApp(firebaseConfig);
-const googleProvider = new GoogleAuthProvider();
-const storage = getStorage(app);
+export const googleProvider = new GoogleAuthProvider();
+
+export const storage = getStorage(app);
 
 const auth = getAuth();
-export {storage, googleProvider, auth };
+// export {storage, googleProvider, auth };

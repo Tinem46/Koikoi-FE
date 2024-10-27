@@ -18,6 +18,13 @@ import ConsignmentScreen from "./page/consignmentScreen"
 import ProductDetails from "./page/ProductDetails"
 import ConsignmentPage from "./page/consigment"
 import ConsignmentForm from "./components/cosingmentForm"
+import CreateStaffAccount from "./page/admin/createStaffAccount"
+import OrderHistory from "./page/orderHistory"
+import OrderManagement from "./page/admin/orderManagement"
+import OrderSuccess from "./page/orderSuccess"
+import RevenueManagement from "./page/admin/revenueManagement"
+
+
 
 function App() {
   const router = createBrowserRouter([
@@ -76,13 +83,23 @@ function App() {
         },
         
         {
-          path:"/product-details",
+          path:"/product-details/:id",
           element: <ProductDetails />
         },
         {
           path:"/consignmentForm",
           element: <ConsignmentForm />
-        }
+        },
+        {
+          path: "/order-history",
+          element: <OrderHistory />
+        },
+        {
+          path: "orderSuccess",
+          element: <OrderSuccess />
+        },
+  
+     
       ],
     },
     {
@@ -100,6 +117,19 @@ function App() {
           path: "fish",
           element: <ManagementFish />,
         },
+        {
+          path: "staff",
+          element: <CreateStaffAccount />,
+        },
+        {
+          path: "orderManagement", // Remove the leading slash
+          element: <OrderManagement />
+        },
+        {
+          path: "revenueManagement",
+          element: <RevenueManagement />
+        },
+       
 
       ],
     },

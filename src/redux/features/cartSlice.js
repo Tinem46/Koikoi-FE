@@ -34,23 +34,22 @@ const cartSlice = createSlice({
             if (index === -1) {
                 state.products.push({
                     ...action.payload,
-                    quantity: 1,
+                    quantity: action.payload.quantity || 1,
                 });
             } else {
-                state.products[index].quantity++;
+                state.products[index].quantity += action.payload.quantity || 1;
             }
             try {
                 toast.success("Product added to cart");
             } catch (err) {
                 console.error("Toast notification failed", err);
             }
-            saveState(state); // Save state after adding to cart
+            saveState(state); 
         },
         reset: (state) => {
             state.products = [];
-            saveState(state); // Save the reset state
+            saveState(state); 
         },
-        // ... other reducers ...
     },
 });
 export const { addToCart, reset, remove, changeQuantity, increaseQuantity, decreaseQuantity } = cartSlice.actions;

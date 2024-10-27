@@ -1,72 +1,74 @@
 .aboutUs {
-  font-size: 1.4rem;
-  background-color: #f4f7f6; /* Màu nền nhẹ nhàng */
-  color: #333; /* Màu chữ đậm hơn một chút để dễ đọc */
+  font-size: 1.6rem;
+  background-color: #f0f4f8;
+  color: #2c3e50;
+  line-height: 1.6;
 
-  /* Các phần nội dung */
-  &__content, &__history, &__content1, &__gallery, &__content2, &__locations {
-    padding: 40px 0;
-    margin-bottom: 40px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
-    transition: all 0.3s ease;
+  &__hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../assets/image/hero-background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 
-    /* Hiệu ứng hover cho phần nội dung */
-    &:hover {
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15); /* Đổ bóng khi hover */
-      transform: translateY(-10px); /* Dịch chuyển nhẹ lên trên */
-    }
-    
-    p {
-      font-weight: 400;
-      line-height: 1.8;
-      color: #555; /* Màu chữ nhẹ nhàng hơn */
-      text-indent: 20px;
-      margin-right: 20px;
+    &Content {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 8px;
     }
 
     h1 {
-      font-size: 2.4rem;
-      font-weight: bold;
-      margin-bottom: 20px;
-      position: relative;
-      color: #222;
+      font-size: 4.5rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 2.2rem;
+    }
+  }
+
+  &__mission,
+  &__history,
+  &__whyChooseUs,
+  &__gallery,
+  &__team,
+  &__locations,
+  &__storeHistory {
+    padding: 3rem 2rem;
+    max-width: 1700px;
+    margin: 2rem auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      font-size: 2.6rem;
+      color: #3498db;
+      margin-bottom: 1.5rem;
       text-align: center;
-      
-      /* Hiệu ứng khi hover tiêu đề */
-      &:hover {
-        color: #e67e22; /* Đổi màu tiêu đề khi hover */
-        transform: scale(1.05); /* Phóng to nhẹ khi hover */
-      }
     }
 
-    img {
-      border-radius: 10px;
-      transition: transform 0.3s ease, filter 0.3s ease;
-      width: 35%; /* Tăng kích thước ảnh */
-      
-      &:hover {
-        transform: scale(1.1); /* Hiệu ứng zoom khi hover */
-        filter: brightness(1.15); /* Tăng độ sáng khi hover */
-      }
+    p {
+      font-size: 1.6rem;
+      color: #34495e;
+      line-height: 1.7;
     }
   }
 
-  &__content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 0;
-    margin-top: 20px;
-    text-align: center;
-    gap: 40px; /* Tạo khoảng cách giữa các phần */
-    font-size: 1.8rem;
-
-    .WELCOME {
-      font-size: 3rem;
-    }
-  }
-
-  &__historyContent {
+  &__historyContent,
+  &__galleryContent {
     display: flex;
     gap: 30px;
     align-items: center;
@@ -148,6 +150,35 @@
       font-size: 2.4rem;
       font-weight: bold;
       color: #333;
+    }
+  }
+
+  &__reasons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    .aboutUs__reason {
+      flex: 1;
+      background-color: #ecf0f1;
+      padding: 1.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: #e0e6e9;
+        transform: translateY(-3px);
+      }
+
+      h3 {
+        font-size: 1.8rem;
+        color: #2980b9;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1.4rem;
+      }
     }
   }
 }

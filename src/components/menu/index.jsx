@@ -48,7 +48,6 @@ function MenuForShop({ setSelectedMenu, resetFish }) {
     { label: "Tancho", key: "tancho" },
     { label: "Utsurimono", key: "utsurimono" },
     { label: "Asagi", key: "asagi" },
-    { label: "ca bu hoàng anh ngu", key: "ca bu hoàng anh ngu" },
   ];
 
   // Hàm xử lý sự kiện khi click vào menu

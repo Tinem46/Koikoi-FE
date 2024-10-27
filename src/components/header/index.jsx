@@ -13,12 +13,14 @@ function Header() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const isLoggedIn = user ? user.isLoggedIn : false;
-  const cart = useSelector((store) => store.cart.products); // Ensure you are selecting the correct part of the state
+  const cart = useSelector((store) => store.cart.products) || [];
+  const cartItemCount = cart.length;
   console.log(cart)
 
   const userMenu = (
     <ul className="header__dropdown-menu">
-      {isLoggedIn && <li onClick={handleProfile}>Profile</li>} 
+      {isLoggedIn && <li onClick={handleProfile}>Profile</li>}
+      {isLoggedIn && <li onClick={() => navigate("/order-history")}>Order History</li>}
       {isLoggedIn ? (
         <>
           <li onClick={handleLogout}>Logout</li>
@@ -63,7 +65,7 @@ function Header() {
   return (
     <header className="header" >
       <div className="header__logo" onClick={() => navigate("/")}>
-        <img src={logo} alt="logo" width={120} />
+        <img src={logo} alt="logo" />
       </div>
       <nav className="header__nav">
         <div className="header__nav-center">
@@ -90,7 +92,7 @@ function Header() {
             </li>
             <li>
               <ShoppingCartOutlined style={{ cursor: 'pointer' }} onClick={() => navigate("/cart")} />
-              <span className="cart-count">{cart.length}</span>
+              <span className="cart-count">{cartItemCount}</span>
             </li>
           </ul>
         </div>

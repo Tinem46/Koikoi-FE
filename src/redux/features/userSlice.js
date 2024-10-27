@@ -28,7 +28,6 @@ export const userSlice = createSlice({
         isLoggedIn: true,
         id: action.payload.id,
         username: action.payload.username,
-       
       }));
     },
     logout: (state) => {
@@ -38,7 +37,6 @@ export const userSlice = createSlice({
       
       localStorage.removeItem('user');
     },
-   
   },
 });
 

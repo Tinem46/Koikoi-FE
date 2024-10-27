@@ -26,8 +26,9 @@
     object-position: center; 
     // Tăng độ sáng và độ tương phản một chút
     filter: brightness(1.05) contrast(1.1) saturate(1.1);
-    will-change: transform; // Tối ưu hóa hiệu suất
-    backface-visibility: hidden; // Add this line to prevent delay after seeking
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
     pointer-events: none; // Add this line to prevent delay after seeking
     transform: scale(1.01); // Giảm scale để tránh làm mờ video
     image-rendering: high-quality; // Thêm dòng này để cải thiện chất lượng rendering

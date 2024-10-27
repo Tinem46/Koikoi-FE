@@ -1,21 +1,38 @@
-import { Outlet } from "react-router-dom"
-import Footer from "../footer"
-import Header from "../header"
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Footer from "../footer";
+import Header from "../header";
+import CompareModal from "../CompareModal";
+import "./index.scss";
 
 function Layout() {
+  const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
+  const compareItems = useSelector((state) => state.compare.items);
+
   return (
-    <div>
+    <div className="layout">
       <Header />
-      <div
-        style={{
-          minHeight:"100vh",
-        }}
-      >
-         <Outlet  />
-      </div >
+      <div className="layout__container">
+        <Outlet />
+        {compareItems.length > 0 && (
+          <div className="layout__compare-button-container">
+            <button
+              onClick={() => setIsCompareModalOpen(true)}
+              className="layout__compare-button"
+            >
+              Compare ({compareItems.length})
+            </button>
+          </div>
+        )}
+      </div>
       <Footer />
+      <CompareModal
+        isOpen={isCompareModalOpen}
+        onClose={() => setIsCompareModalOpen(false)}
+      />
     </div>
-  )
+  );
 }
 
-export default Layout
+export default Layout;

@@ -80,6 +80,8 @@
         font-size: 1.1em;
         line-height: 1.6;
         margin-bottom: 30px;
+        word-wrap: break-word;
+        white-space: pre-wrap; // Ensure line breaks are preserved
       }
 
       .product-details__actions {

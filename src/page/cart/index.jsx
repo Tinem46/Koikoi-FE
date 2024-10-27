@@ -7,42 +7,49 @@ import { Link, useNavigate } from "react-router-dom";
 import Naviagtion from "../../components/navigation";
 import api from "../../config/api";
 import { reset } from "../../redux/features/cartSlice";
-
+import { toast } from 'react-toastify';
 
 function Cart() {
-  const [cart, setCart] = useState([]); // Local state for cart
+  const [cart, setCart] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [voucherCode, setVoucherCode] = useState(""); // State for voucher code
+  const [voucherCode, setVoucherCode] = useState(""); 
   const [cartId, setCartId] = useState(null);
 
   const [subTotal, setSubTotal] = useState(0);
-  const [shippingPee,  setShippingPee] = useState(0);    
+  const [shippingPee, setShippingPee] = useState(0);    
   const [totalAmount, setTotalAmount] = useState(0);
 
-  const fetchCard = async () => {
+  const [userProfile, setUserProfile] = useState(null);
+
+  // Thêm hàm để lấy thông tin profile của người dùng
+  const fetchUserProfile = async () => {
     try {
-      const response = await api.get('Cart');
-      setCartId(response.data.id); // Assuming the account ID is in the response
+      const response = await api.get(`account/Profile`);
+      setUserProfile(response.data);
     } catch (error) {
-      console.error("Failed to fetch account ID:", error.response);
+      console.error("Error fetching user profile:", error);
+      toast.error("Failed to load user profile. Please try again.");
     }
   };
 
   const fetchCart = async () => {
     try {
       const response = await api.get('Cart');
-      const cartData = response.data.cartDetails; // Extract cartDetails array
+      const cartData = response.data.activeCartDetails || []; 
       setCart(cartData);
+      setCartId(response.data.id);
+      await updateCartTotal(response.data.id); // Update cart total after fetching cart
     } catch (error) {
       console.error("Failed to fetch cart:", error.response);
+      setCart([]); 
     }
   };
 
   useEffect(() => {
     fetchCart();
-    fetchCard(); 
+    fetchUserProfile(); 
   }, []);
 
   const handleRemove = async (id) => {
@@ -50,11 +57,10 @@ function Cart() {
       await api.delete(`Cart/${id}`);
       const updatedCart = cart.filter(item => item.id !== id);
       setCart(updatedCart);
-
-      // Dispatch reset if the cart is empty
       if (updatedCart.length === 0) {
         dispatch(reset());
       }
+      await updateCartTotal(cartId); // Update cart total after removing item
     } catch (error) {
       console.error("Failed to remove item:", error.response ? error.data : error);
     }
@@ -64,6 +70,7 @@ function Cart() {
     try {
       await api.put(`Cart/increase/${id}`);
       setCart(cart.map(item => item.id === id ? { ...item, quantity: item.quantity + 1 } : item));
+      await updateCartTotal(cartId); // Update cart total after increasing quantity
     } catch (error) {
       console.error("Failed to increase quantity:", error.response ? error.data : error);
     }
@@ -73,38 +80,37 @@ function Cart() {
     try {
       await api.put(`Cart/decrease/${id}`);
       setCart(cart.map(item => item.id === id ? { ...item, quantity: item.quantity - 1 } : item));
+      await updateCartTotal(cartId); // Update cart total after decreasing quantity
     } catch (error) {
       console.error("Failed to decrease quantity:", error.response ? error.data : error);
     }
   };
 
-  const addCartTotal = async () => {
+  const updateCartTotal = async (cartId, voucherCode) => {
     if (!cartId) {
-      console.error("Account ID is not available");
+      console.error("Cart ID is not available");
       return;
     }
     try {
       const response = await api.get(`Cart/total`, {
-        params: {
-          accountId: cartId,
-          voucherCode: voucherCode 
-        }
+        params: { cartId: cartId,
+          voucherCode: voucherCode }
+        
       });
-      console.log(response.data);
-      const { subTotal, shippingPee, totalAmount } = response.data; // Assuming these fields are in the response
+      const { subTotal = 0, shippingPee = 0, totalAmount = 0 } = response.data;
       setSubTotal(subTotal);
       setShippingPee(shippingPee);
       setTotalAmount(totalAmount);
-      console.log(subTotal, shippingPee, totalAmount);
     } catch (error) {
       console.error("Failed to fetch cart total:", error.response ? error.response.data : error);
+      setSubTotal(0);
+      setShippingPee(0);
+      setTotalAmount(0);
     }
   };
 
-
-
   useEffect(() => {
-    if (Array.isArray(cart)) { // Ensure cart is an array
+    if (Array.isArray(cart)) {
       const tableData = cart.map((item) => ({
         key: item.id,
         name: item.name,
@@ -117,6 +123,7 @@ function Cart() {
       setDataSource(tableData);
     } else {
       console.error("Cart is not an array:", cart);
+      setDataSource([]); // Set dataSource to an empty array if cart is not an array
     }
   }, [cart]);
 
@@ -169,6 +176,47 @@ function Cart() {
     },
   ];
 
+  const handleProceedToCheckout = async () => {
+    if (!userProfile) {
+      toast.error("User profile information is not available. Please try again.");
+      return;
+    }
+
+    try {
+      // Create the order here
+      const orderData = {
+        phone: userProfile?.phone_number || "",
+        fullName: `${userProfile?.firstName || ""} ${userProfile?.lastName || ""}`.trim(),
+        orderDate: new Date().toISOString(),
+        note: "",
+        address: userProfile?.streetAddress || "",
+        voucherCode: voucherCode,
+        orderStatus: "PENDING",
+        subTotal,
+        shippingPee,
+        totalAmount
+      };
+
+      const orderResponse = await api.post('order', orderData);
+      const orderId = orderResponse.data.id;
+
+      // Navigate to checkout page with order information
+      navigate('/checkout', { 
+        state: { 
+          orderId,
+          subTotal, 
+          shippingPee, 
+          totalAmount,
+          cart,
+          userProfile
+        }
+      });
+    } catch (error) {
+      console.error("Failed to create order:", error);
+      toast.error("An error occurred while creating the order. Please try again.");
+    }
+  };
+
   return (
     <>
       <div className="outlet-Cart">
@@ -186,16 +234,15 @@ function Cart() {
           <Link to="/">
             <Button>Return To Shop</Button>
           </Link>
-          <Button onClick={addCartTotal}>Update Cart Total</Button>
         </div>
         <div className="coupon-Checkout">
           <Space.Compact className="coupon-Input">
             <Input 
               placeholder="Enter your voucher"
               value={voucherCode}
-              onChange={(e) => setVoucherCode(e.target.value)} // Update voucherCode state
+              onChange={(e) => setVoucherCode(e.target.value)}
             />
-            <Button type="primary" onClick={addCartTotal}>Submit</Button> 
+            <Button type="primary" onClick={() => updateCartTotal(cartId)}>Apply Voucher</Button> 
           </Space.Compact>
           <section className="checkOut-Box">
             <h1>Cart Total</h1>
@@ -213,7 +260,11 @@ function Cart() {
             </div>
             <br />
             {Array.isArray(cart) && cart.length > 0 && (
-              <button onClick={() => navigate('/checkout')}>Proceed to checkout</button>
+              <button 
+                onClick={handleProceedToCheckout}
+              >
+                Proceed to checkout
+              </button>
             )}
           </section>
         </div>

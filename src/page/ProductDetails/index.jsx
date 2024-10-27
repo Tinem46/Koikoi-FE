@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import "./index.scss";
 import { addToCart } from '../../redux/features/cartSlice';
+import { addToCompare } from '../../redux/features/compareSlice';
 import api from '../../config/api';
 import Naviagtion from '../../components/navigation';
 
@@ -21,7 +22,11 @@ function ProductDetails() {
     dispatch(addToCart(selectedFish));
   };
 
-  const { id, name, image, price, width, age, origin, description, category, tags } = selectedFish;
+  const handleCompareClick = () => {
+    dispatch(addToCompare(selectedFish));
+  };
+
+  const { id, name, image, price, size, age, origin, description, category, tags } = selectedFish;
 
   return (
     <div className="product-details">
@@ -36,14 +41,14 @@ function ProductDetails() {
             ${price} <span className="product-details__old-price"></span>
           </p>
           <ul className="product-details__specs">
-            <li>Width: {width} cm</li>
+            <li>Size: {size} cm</li>
             <li>Age: {age} years</li>
             <li>Origin: {origin}</li>
           </ul>
           <p className="product-details__description">{description}</p>
           <div className="product-details__actions">
             <button className="button" onClick={handleAddToCart}>Add To Cart</button>
-            <button className="button">Compare</button>
+            <button className="button" onClick={handleCompareClick}>Compare</button>
           </div>
           <div className="product-details__divider2"></div>
           <div className="product-details__meta">
