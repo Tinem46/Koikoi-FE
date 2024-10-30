@@ -1,13 +1,71 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import DashboardTemplate from '../../../dashboard-template';
 import api from '../../../config/api';
 import { toast } from 'react-toastify';
-import OrderDetails from '../../../components/orderDetails'; // Import the OrderDetails component
+import OrderDetails from '../../../components/orderDetails';
+import OrderInformation from '../../../components/OrderInformation';
 import { Button } from 'antd';
 
 function OrderManagement() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [orderInfo, setOrderInfo] = useState(null);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+
+  const fetchOrderDetails = async (orderId) => {
+    try {
+      const response = await api.get(`order/details`, { params: { orderId } });
+      console.log('Fetched order details:', response.data);
+      setSelectedOrder(response.data);
+    } catch (error) {
+      console.error('Error fetching order details:', error.response ? error.response.data : error.message);
+      toast.error('Failed to fetch order details');
+    }
+  };
+
+  const handleViewDetails = (order) => {
+    fetchOrderDetails(order.id); // Fetch order details before opening
+    setIsDetailsOpen(true);
+  };
+
+  const handleCloseDetails = () => {
+    setSelectedOrder(null);
+    setIsDetailsOpen(false);
+  };
+
+  const fetchOrderUserInfo = async (orderId) => {
+    try {
+      const response = await api.get(`order/${orderId}`);
+      const orderData = response.data;
+      
+      return {
+        fullName: orderData.fullName,
+        email: orderData.email,
+        phone: orderData.phone,
+        address: orderData.address,
+        city: orderData.city,
+        country: orderData.country
+      };
+    } catch (error) {
+      console.error('Error fetching order information:', error);
+      return null;
+    }
+  };
+
+  const handleViewOrderInfo = async (orderId) => {
+    try {
+      const userInfo = await fetchOrderUserInfo(orderId);
+      if (userInfo) {
+        setOrderInfo(userInfo);
+        setIsInfoModalOpen(true);
+      } else {
+        toast.warning('No order information found');
+      }
+    } catch (error) {
+      console.error('Error fetching order details:', error);
+      toast.error('Failed to fetch order information');
+    }
+  };
 
   const columns = [
     {
@@ -35,7 +93,14 @@ function OrderManagement() {
       title: 'Details',
       key: 'actions',
       render: (text, record) => (
-        <Button onClick={() => handleViewDetails(record)}>View Details</Button>
+        <>
+          <Button onClick={() => handleViewDetails(record)} style={{ marginRight: '8px' }}>
+            View Details
+          </Button>
+          <Button onClick={() => handleViewOrderInfo(record.id)}>
+            Information
+          </Button>
+        </>
       ),
     },
   ];
@@ -60,27 +125,6 @@ function OrderManagement() {
     }
   };
 
-  const fetchOrderDetails = async (orderId) => {
-    try {
-      const response = await api.get(`order/details`, { params: { orderId } });
-      console.log('Fetched order details:', response.data);
-      setSelectedOrder(response.data);
-    } catch (error) {
-      console.error('Error fetching order details:', error.response ? error.response.data : error.message);
-      toast.error('Failed to fetch order details');
-    }
-  };
-
-  const handleViewDetails = (order) => {
-    fetchOrderDetails(order.id); // Fetch order details before opening
-    setIsDetailsOpen(true);
-  };
-
-  const handleCloseDetails = () => {
-    setSelectedOrder(null);
-    setIsDetailsOpen(false);
-  };
-
   return (
     <div>
       <DashboardTemplate 
@@ -90,7 +134,7 @@ function OrderManagement() {
         customActions={[
           {
             label: 'Confirm Payment',
-            condition: (record) => record.orderStatus === '	CONFIRMED',
+            condition: (record) => record.orderStatus === 'PAID',
             action: handleConfirmPayment,
             successMessage: 'Payment confirmed successfully',
             errorMessage: 'Failed to confirm payment',
@@ -112,6 +156,13 @@ function OrderManagement() {
           selectedOrder={selectedOrder} 
           onClose={handleCloseDetails} 
           onPreview={(image) => console.log('Preview image:', image)} 
+        />
+      )}
+      
+      {isInfoModalOpen && orderInfo && (
+        <OrderInformation 
+          orderInfo={orderInfo}
+          onClose={() => setIsInfoModalOpen(false)}
         />
       )}
     </div>

@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import api from '../../config/api';
 import './index.scss';
 import { alertSuccess } from '../../assets/image/hook';
+import { Table, Image } from 'antd';
 
 function OrderSuccess() {
   const location = useLocation();
@@ -14,30 +15,41 @@ function OrderSuccess() {
 
     const fetchOrderDetails = async () => {
       try {
-        const { orderId, userProfile, cart, subTotal, shippingPee, totalAmount, paymentMethod } = location.state || {};
-
-        if (orderId) {
+        if (location.state?.cart && location.state?.userProfile) {
           setOrderDetails({
-            id: orderId,
-            items: cart,
-            subTotal,
-            shippingPee,
-            totalAmount,
-            paymentMethod
+            id: location.state.orderId,
+            items: location.state.cart,
+            subTotal: location.state.subTotal,
+            shippingFee: location.state.shippinPee,
+            totalAmount: location.state.totalAmount,
+            paymentMethod: location.state.paymentMethod,
           });
-          setUserProfile(userProfile);
+          setUserProfile(location.state.userProfile);
         } else {
-          const searchParams = new URLSearchParams(location.search);
-          const urlOrderId = searchParams.get('orderId');
-          console.log(urlOrderId);
+          const lastOrderResponse = await api.get('payment/lastPaidOrder');
+          const orderData = lastOrderResponse.data;
+          
+          const detailsResponse = await api.get(`order/details`, {
+            params: { orderId: orderData.id }
+          });
 
-          if (urlOrderId) {
-            const response = await api.get(`order/${urlOrderId}`);
-            setOrderDetails(response.data);
-            setUserProfile(response.data.userProfile);
-          } else {
-            console.error('Order ID not found in state or URL parameters');
-          }
+          setOrderDetails({
+            id: orderData.id,
+            items: detailsResponse.data.items || detailsResponse.data,
+            subTotal: orderData.totalAmount - (orderData.shippingFee || 0),
+            shippingFee: orderData.shippingPee || '0.00',
+            totalAmount: orderData.totalAmount || '0.00',
+            paymentMethod: orderData.status === 'PAID' ? 'Bank Transfer' : 'Cash',
+          });
+
+          setUserProfile({
+            fullname: orderData.fullName,
+            email: orderData.email,
+            phone_number: orderData.phone,
+            specific_Address: orderData.address,
+            city: orderData.city,
+            country: orderData.country
+          });
         }
       } catch (error) {
         console.error('Error fetching order details:', error);
@@ -47,13 +59,49 @@ function OrderSuccess() {
     fetchOrderDetails();
   }, [location]);
 
+  const detailColumns = [
+    {
+      title: 'Product Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      render: (text) => `$${parseFloat(text).toFixed(2)}`,
+    },
+    {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+    },
+    {
+      title: 'Image',
+      dataIndex: 'image',
+      key: 'image',
+      width: 120,
+      render: (text) => (
+        <Image
+          src={text}
+          alt="Product"
+          width={80}
+          height={80}
+          preview={{
+            maskClassName: 'customize-mask',
+            mask: <div>View</div>,
+          }}
+        />
+      ),
+    },
+  ];
+
   return (
     <div className="order-success-container">
-      <h1>Order Success!</h1>
       {userProfile && (
         <div className="user-info">
           <h2>User Information</h2>
-          <p>Name: {userProfile.firstName} {userProfile.lastName}</p>
+          <p>Name: {userProfile.fullname}</p>
           <p>Email: {userProfile.email}</p>
           <p>Phone: {userProfile.phone_number}</p>
           <p>Address: {userProfile.specific_Address}, {userProfile.city}, {userProfile.country}</p>
@@ -61,23 +109,21 @@ function OrderSuccess() {
       )}
       {orderDetails && (
         <div className="order-info">
-          <h2>Order Details</h2>
+          <h2>Order Summary</h2>
           <p>Order ID: {orderDetails.id}</p>
-          <p>Subtotal: ${orderDetails.subTotal}</p>
-          <p>Shipping Fee: ${orderDetails.shippingPee}</p>
-          <p>Total Amount: ${orderDetails.totalAmount}</p>
+          <p>Shipping Fee: ${parseFloat(orderDetails.shippingFee).toFixed(2)}</p>
+          <p>Total Amount: ${parseFloat(orderDetails.totalAmount).toFixed(2)}</p>
           <p>Payment Method: {orderDetails.paymentMethod}</p>
-          {orderDetails.items && orderDetails.items.length > 0 ? (
-            <ul>
-              {orderDetails.items.map(item => (
-                <li key={item.id}>
-                  {item.name} - Quantity: {item.quantity} - Price: ${item.price * item.quantity}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No items found in this order.</p>
-          )}
+          
+          <h2>Order Details</h2>
+          <Table
+            dataSource={orderDetails.items}
+            columns={detailColumns}
+            rowKey="id"
+            pagination={false}
+            size="small"
+            style={{ width: '100%' }}
+          />
         </div>
       )}
     </div>

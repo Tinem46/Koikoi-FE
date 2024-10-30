@@ -26,7 +26,7 @@ function Layout() {
           </div>
         )}
       </div>
-      <Footer />
+      <Footer style = {{height: "100dvh"}}/>
       <CompareModal
         isOpen={isCompareModalOpen}
         onClose={() => setIsCompareModalOpen(false)}

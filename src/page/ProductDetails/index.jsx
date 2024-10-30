@@ -4,6 +4,7 @@ import { addToCart } from '../../redux/features/cartSlice';
 import { addToCompare } from '../../redux/features/compareSlice';
 import api from '../../config/api';
 import Naviagtion from '../../components/navigation';
+import Feedback from '../../components/feedbacks';
 
 function ProductDetails() {
   const selectedFish = useSelector((state) => state.fish.selectedFish); // Get the fish object
@@ -66,6 +67,7 @@ function ProductDetails() {
           <h2>Description</h2>
           <p>{description}</p>
         </div>
+        <Feedback productId={id} />
       </div>
     </div>
   );

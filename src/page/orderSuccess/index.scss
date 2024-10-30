@@ -1,37 +1,110 @@
 .order-success-container {
-  padding-top: 150px; // Adjust this value based on the header height
-  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(to bottom, #fff, #f8f8f8);
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding-top: 150px;
 
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.5)),
+    url('https://th.bing.com/th/id/OIP.CyRYf04YMd152Awuoh1Y2QHaJ4?rs=1&pid=ImgDetMain');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+
+  h2 {
+    color: #D4202C; // Màu đỏ truyền thống Nhật Bản
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #D4202C;
+    padding-bottom: 0.5rem;
+    font-family: "Noto Sans JP", sans-serif;
   }
 
   .user-info, .order-info {
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ddd;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #e8e8e8;
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #333;
+      display: flex;
+      align-items: center;
+
+      &:before {
+        content: "•";
+        color: #D4202C;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  // Tùy chỉnh bảng antd
+  .ant-table {
+    border-radius: 10px;
+    overflow: hidden;
+
+    .ant-table-thead > tr > th {
+      background: #2B4162; // Màu xanh đậm truyền thống
+      color: white;
+      font-weight: 600;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background: #f0f7ff;
+    }
+
+    .ant-table-cell {
+      padding: 16px;
+    }
+  }
+
+  // Tùy chỉnh hình ảnh
+  .ant-image {
     border-radius: 8px;
-    max-width: 600px;
-    background-color: #f9f9f9;
+    overflow: hidden;
+    border: 2px solid #e8e8e8;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  // Style cho giá và tổng tiền
+  .order-info {
+    p:nth-last-child(-n+3) {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2B4162;
+      
+      &:before {
+        content: none;
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    padding: 1rem;
+    margin: 1rem;
+
+    .user-info, .order-info {
+      padding: 1rem;
+    }
 
     h2 {
-      margin-bottom: 10px;
+      font-size: 1.5rem;
     }
 
     p {
-      margin: 5px 0;
-    }
-
-    ul {
-      list-style-type: none;
-      padding: 0;
-
-      li {
-        margin: 10px 0;
-        padding: 10px;
-        border-bottom: 1px solid #eee;
-      }
+      font-size: 1rem;
     }
   }
 }

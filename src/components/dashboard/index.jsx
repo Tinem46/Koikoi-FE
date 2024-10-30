@@ -46,6 +46,7 @@ const Dashboard = () => {
         getItem('Voucher', 'voucher', <PieChartOutlined />),
         getItem('Fish', 'fish', <PieChartOutlined />),
         getItem('Staff', 'staff', <PieChartOutlined />),
+        getItem('Feedback', 'feedback', <PieChartOutlined />), // Add this line
         getItem('Order Management', 'orderManagement', <PieChartOutlined />),
         getItem('Revenue Management', 'revenueManagement', <PieChartOutlined />),
     ];

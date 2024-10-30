@@ -57,10 +57,21 @@ function CompareModal({ isOpen, onClose }) {
         }
         const value = record[fish.id];
         return (
-          <span >
-            {record.attribute === 'price'
-              ? `$${new Intl.NumberFormat('en-US').format(value)}`
-              : value}
+          <span>
+            {(() => {
+              switch (record.attribute.toLowerCase()) {
+                case 'price':
+                  return `$${new Intl.NumberFormat('en-US').format(value)}`;
+                case 'age':
+                  return `${value} months`;
+                case 'size':
+                  return `${value} cm`;
+                case 'origin':
+                  return value ? value.charAt(0).toUpperCase() + value.slice(1) : '';
+                default:
+                  return value;
+              }
+            })()}
           </span>
         );
       },

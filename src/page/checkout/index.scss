@@ -2,21 +2,17 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 100vh;
     margin: 0 auto;
-    padding: 40px; 
-    background-color: white;
+    padding: 40px;
+    gap: 40px; // Added gap between sections
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
-
 }
 
 .billing-details, .order-summary {
-    width: 48%;
+    width: 48%; // Slightly reduced width to accommodate the gap
     background-color: white;
-    padding: 30px; 
- 
+    padding: 15px; 
 }
 
 .billing-details h2, .order-summary h2 {
@@ -29,12 +25,12 @@
 
 .billing-details input, .billing-details select, .billing-details textarea {
     width: 100%;
-    padding: 12px; // Slightly increased padding for better usability
-    margin-bottom: 20px; // Adjusted spacing between inputs
+    padding: 17px; 
+    margin-bottom: 50px;
     border: 1px solid #ddd;
     border-radius: 6px;
-    font-size: 16px; // Adjusted for consistency
-    transition: border-color 0.3s; // Added transition for focus effect
+    font-size: 20px;
+    transition: border-color 0.3s;
 
     &:focus {
         border-color: #1890ff; // Highlight border on focus
@@ -109,12 +105,13 @@
 }
 
 .order-summary .ant-btn-primary {
-    width: 100%;
-    margin-top: 20px;
+    width: 200px;  // Giữ nguyên width từ inline style
+    margin: 20px auto 0;  // Thêm auto cho margin left/right
     background-color: #1890ff;
     border-color: #1890ff;
-    font-size: 18px; // Increased font size for better visibility
-    padding: 12px; // Increased padding for a more substantial button
+    font-size: 18px;
+    padding: 12px;
+    display: block;  // Để margin auto hoạt động
     &:hover {
         background-color: #40a9ff;
         border-color: #40a9ff;

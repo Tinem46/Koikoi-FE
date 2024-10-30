@@ -1,23 +1,40 @@
 // src/page/admin/revenueManagement/index.jsx
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRevenueData } from '../../../redux/features/revenueSlice';
-import { Table, Button, Card, Row, Col, DatePicker, Select } from 'antd';
+import { Table, Button, Card, Row, Col, DatePicker, Select, Statistic } from 'antd';
 import { Line, Column, Pie, Radar } from '@ant-design/charts';
+import api from '../../../config/api';
+
 
 const RevenueManagement = () => {
   const dispatch = useDispatch();
   const revenueData = useSelector((state) => state.revenue.revenueData);
+  const [statistics, setStatistics] = useState({
+    totalProducts: 0,
+    customerCount: 0,
+    staffCount: 0,
+    riskCount: 0
+  });
 
   useEffect(() => {
-    const fetchData = () => {
-      const data = [
-        { month: 'Jan', revenue: 1000 },
-        { month: 'Feb', revenue: 1200 },
-        { month: 'Mar', revenue: 1500 },
-        // Add more data points...
-      ];
-      dispatch(setRevenueData(data));
+    const fetchData = async () => {
+      try {
+        // Fetch statistics
+        const statsResponse = await api.get('dashboard/stats');
+        setStatistics(statsResponse.data);
+
+        // Fetch monthly revenue data
+        const revenueResponse = await api.get('dashboard/monthly-revenue');
+        const monthlyData = revenueResponse.data.results.map(item => ({
+          month: `${item.month}/${item.year}`,
+          revenue: item.totalRevenue
+        }));
+        
+        dispatch(setRevenueData(monthlyData));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
 
     fetchData();
@@ -74,7 +91,32 @@ const RevenueManagement = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Revenue Management</h1>
+      <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Dashboard Statistics</h1>
+      
+      {/* Add statistics cards */}
+      <Row gutter={[16, 16]}>
+        <Col span={6}>
+          <Card>
+            <Statistic title="Total Products" value={statistics.totalProducts} />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card>
+            <Statistic title="Total Customers" value={statistics.customerCount} />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card>
+            <Statistic title="Staff Members" value={statistics.staffCount} />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card>
+            <Statistic title="Fish Count" value={statistics.fishCount} />
+          </Card>
+        </Col>
+      </Row>
+
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <Card>

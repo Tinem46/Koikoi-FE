@@ -20,7 +20,6 @@ function OrderHistory() {
 
   useEffect(() => {
     fetchOrders();
-    fetchUserProfile();
   }, []);
 
   const fetchOrders = async () => {
@@ -33,14 +32,7 @@ function OrderHistory() {
     }
   };
 
-  const fetchUserProfile = async () => {
-    try {
-      const response = await api.get('account/Profile');
-      setUserProfile(response.data);
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
-    }
-  };
+
 
   const fetchOrderDetails = async (orderId) => {
     try {
@@ -87,10 +79,7 @@ function OrderHistory() {
       const { shippingPee, totalAmount } = cartTotalResponse.data;
 
       // Ensure userProfile is available
-      if (!userProfile) {
-        await fetchUserProfile();
-      }
-
+     
       // Prepare cart data in the format expected by the checkout page
       const cartData = orderDetails.map(item => ({
         id: item.id,

@@ -14,6 +14,15 @@ function Checkout() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [paymentMethod, setPaymentMethod] = useState('bank');
+    const [userDetails, setUserDetails] = useState(userProfile || {});
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUserDetails(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
     const handlePayment = async () => {
         try {
@@ -31,31 +40,36 @@ function Checkout() {
             }
 
             if (paymentMethod === 'bank') {
-                // Prepare the data to send to the backend
                 const paymentData = {
-                    orderId,
-                    userProfile,
-                    cart,
-                    subTotal,
-                    shippingPee,
-                    totalAmount,
-                    paymentMethod
+                    phone: userDetails.phone_number,
+                    fullName: userDetails.fullname,
+                    orderDate: new Date().toISOString().split('T')[0],
+                    note: userDetails.additionalInfo || '',
+                    city: userDetails.city,
+                    country: userDetails.country,
+                    gmail: userDetails.email,
+                    address: userDetails.specific_Address
                 };
 
-                const paymentResponse = await api.post(`payment/VNPay`, paymentData, {
+                const paymentResponse = await api.post('payment/VNPay', paymentData, {
                     params: {
                         koiOrderId: orderId
-                    }
+                    },
                 });
-                const paymentUrl = paymentResponse.data; 
-
+                
+                const paymentUrl = paymentResponse.data;
                 window.location.href = paymentUrl;
             } else {
                 dispatch(reset());
                 navigate('/order-success', { 
                     state: { 
                         orderId,
-                        userProfile
+                        userDetails,
+                        cart,
+                        subTotal,
+                        shippingPee, 
+                        totalAmount,
+                        paymentMethod
                     }
                 });
             }
@@ -72,18 +86,57 @@ function Checkout() {
                 <div className="billing-details">
                     <h2>Billing Details</h2>
                     <div className="name-fields">
-                        <input type="text" placeholder="Full Name" defaultValue={userProfile?.fullname || ''} readOnly />
+                        <input 
+                            type="text" 
+                            name="fullname"
+                            placeholder="Full Name" 
+                            value={userDetails.fullname || ''} 
+                            onChange={handleInputChange}
+                        />
                     </div>
-                    <select defaultValue={userProfile?.country || 'Country / Region'} disabled>
+                    <select 
+                        name="country"
+                        value={userDetails.country || 'Country / Region'} 
+                        onChange={handleInputChange}
+                    >
                         <option>Country / Region</option>
                         <option>Sri Lanka</option>
                     </select>
-                    <input type="text" placeholder="Street Address" defaultValue={userProfile?.specific_Address|| ''} readOnly />
-                    <input type="text" placeholder="Town / City" defaultValue={userProfile?.city || ''} readOnly />
+                    <input 
+                        type="text" 
+                        name="specific_Address"
+                        placeholder="Street Address" 
+                        value={userDetails.specific_Address || ''} 
+                        onChange={handleInputChange}
+                    />
+                    <input 
+                        type="text" 
+                        name="city"
+                        placeholder="Town / City" 
+                        value={userDetails.city || ''} 
+                        onChange={handleInputChange}
+                    />
                    
-                    <input type="text" placeholder="Phone" defaultValue={userProfile?.phone_number || ''} readOnly />
-                    <input type="email" placeholder="Email Address" defaultValue={userProfile?.email || ''} readOnly />
-                    <textarea placeholder="Additional Information" defaultValue={userProfile?.additionalInfo || ''} readOnly></textarea>
+                    <input 
+                        type="text" 
+                        name="phone_number"
+                        placeholder="Phone" 
+                        value={userDetails.phone_number || ''} 
+                        onChange={handleInputChange}
+                    />
+                    <input 
+                        type="email" 
+                        name="email"
+                        placeholder="Email Address" 
+                        value={userDetails.email || ''} 
+                        readOnly 
+                    />
+                    <textarea 
+                        name="additionalInfo"
+                        placeholder="Additional Information" 
+                        value={userDetails.additionalInfo || ''} 
+                        onChange={handleInputChange}
+                    ></textarea>
                 </div>
                 <div className="order-summary">
                     <h2>Order Summary</h2>
@@ -133,7 +186,13 @@ function Checkout() {
                     </div>
 
                     <Button 
-                        style={{width: '30%', justifyContent: 'center', marginLeft: '35%', marginTop: '60px', backgroundColor: 'black', height: '50px', fontSize: '18px'}} 
+                        style={{
+                            width: '200px',
+                            backgroundColor: 'black',
+                            height: '50px',
+                            fontSize: '18px',
+                            marginTop: '20px'
+                        }} 
                         type="primary" 
                         onClick={handlePayment}
                     >

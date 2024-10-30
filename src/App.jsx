@@ -23,6 +23,7 @@ import OrderHistory from "./page/orderHistory"
 import OrderManagement from "./page/admin/orderManagement"
 import OrderSuccess from "./page/orderSuccess"
 import RevenueManagement from "./page/admin/revenueManagement"
+import ManagementFeedback from "./page/admin/feedback"
 
 
 
@@ -129,7 +130,10 @@ function App() {
           path: "revenueManagement",
           element: <RevenueManagement />
         },
-       
+        {
+          path: "feedback",
+          element: <ManagementFeedback />
+        },
 
       ],
     },
