@@ -6,7 +6,7 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import Naviagtion from "../../components/navigation";
 import api from "../../config/api";
-import { reset } from "../../redux/features/cartSlice";
+import { reset, syncWithApi } from "../../redux/features/cartSlice";
 import { toast } from 'react-toastify';
 
 function Cart() {
@@ -39,11 +39,13 @@ function Cart() {
       const response = await api.get('Cart');
       const cartData = response.data.activeCartDetails || []; 
       setCart(cartData);
+      dispatch(syncWithApi(cartData)); // Sync với Redux store
       setCartId(response.data.id);
-      await updateCartTotal(response.data.id); // Update cart total after fetching cart
+      await updateCartTotal(response.data.id);
     } catch (error) {
       console.error("Failed to fetch cart:", error.response);
       setCart([]); 
+      dispatch(syncWithApi([])); // Sync với Redux store khi có lỗi
     }
   };
 

@@ -79,7 +79,7 @@ function App() {
           element: <ConsignmentPage />
         },
         {
-          path:"/about-us",
+          path:"/aboutUs",
           element: <AboutUs />
         },
         

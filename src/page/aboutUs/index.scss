@@ -1,8 +1,10 @@
 .aboutUs {
   font-size: 1.6rem;
-  background-color: #f0f4f8;
+  background-color: #fff;
   color: #2c3e50;
   line-height: 1.6;
+
+
 
   &__hero {
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../assets/image/hero-background.jpg');
@@ -39,31 +41,50 @@
   &__team,
   &__locations,
   &__storeHistory {
-    padding: 3rem 2rem;
-    max-width: 1700px;
-    margin: 2rem auto;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 3rem;
-    transition: all 0.3s ease;
+    padding: 5rem 2rem;
+    margin: 0;
+    background-color: #f8f9fa;
+    position: relative;
+    overflow: hidden;
 
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      background-color: #f1f3f5;
+      transition: background-color 0.3s ease;
     }
 
     h2 {
-      font-size: 2.6rem;
-      color: #3498db;
-      margin-bottom: 1.5rem;
+      font-size: 3rem;
+      color: #2c3e50;
+      margin-bottom: 2rem;
       text-align: center;
+      position: relative;
+      padding-bottom: 1.5rem;
+
+      &:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(to right, #3498db, #2ecc71);
+        border-radius: 2px;
+      }
+
+      svg {
+        margin-right: 1rem;
+        color: #3498db;
+      }
     }
 
     p {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       color: #34495e;
-      line-height: 1.7;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
     }
   }
 
@@ -155,30 +176,50 @@
 
   &__reasons {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
 
     .aboutUs__reason {
       flex: 1;
-      background-color: #ecf0f1;
-      padding: 1.5rem;
-      border-radius: 8px;
-      transition: all 0.3s ease;
+      min-width: 300px;
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
 
       &:hover {
-        background-color: #e0e6e9;
-        transform: translateY(-3px);
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
       }
 
       h3 {
-        font-size: 1.8rem;
+        font-size: 2rem;
         color: #2980b9;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
       }
 
       p {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
+        text-align: center;
       }
     }
   }
+
+  &__mission,
+  &__whyChooseUs,
+  &__team {
+    background-color: #fff;
+  }
+
+  &__storeHistory,
+  &__history,
+  &__gallery,
+  &__locations {
+    background-color: #f8f9fa;
+  }
 }
+

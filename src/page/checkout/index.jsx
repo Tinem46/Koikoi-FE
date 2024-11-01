@@ -1,5 +1,5 @@
 import {useDispatch } from 'react-redux';
-import { Button } from 'antd';
+import { Button, Input, Select, Radio} from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import './index.scss';
@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import { reset } from '../../redux/features/cartSlice';
 import api from '../../config/api';
 import Naviagtion from '../../components/navigation';
+const { TextArea } = Input;
+const { Option } = Select;
 
 function Checkout() {
     const location = useLocation();
@@ -85,58 +87,69 @@ function Checkout() {
             <div className="checkout">
                 <div className="billing-details">
                     <h2>Billing Details</h2>
-                    <div className="name-fields">
-                        <input 
-                            type="text" 
-                            name="fullname"
-                            placeholder="Full Name" 
-                            value={userDetails.fullname || ''} 
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <select 
+                    <Input 
+                        name="fullname"
+                        placeholder="Full Name" 
+                        value={userDetails.fullname || ''} 
+                        onChange={handleInputChange}
+                    />
+                    
+                    <Select 
                         name="country"
                         value={userDetails.country || 'Country / Region'} 
-                        onChange={handleInputChange}
+                        onChange={(value) => handleInputChange({ target: { name: 'country', value }})}
+                        style={{ width: '100%' }}
                     >
-                        <option>Country / Region</option>
-                        <option>Sri Lanka</option>
-                    </select>
-                    <input 
-                        type="text" 
+                        <Option value="Country / Region">Country / Region</Option>
+                        <Option value="Sri Lanka">Sri Lanka</Option>
+                        <Option value="Vietnam">Vietnam</Option>
+                        <Option value="Laos">Laos</Option>
+                        <Option value="Cambodia">Cambodia</Option>
+                        <Option value="Thailand">Thailand</Option>
+                        <Option value="Myanmar">Myanmar</Option>
+                        <Option value="Malaysia">Malaysia</Option>
+                        <Option value="Singapore">Singapore</Option>
+                        <Option value="Indonesia">Indonesia</Option>
+                        <Option value="Philippines">Philippines</Option>
+                        <Option value="Brunei">Brunei</Option>
+                        <Option value="Timor-Leste">Timor-Leste</Option>
+                    </Select>
+
+                    <Input 
                         name="specific_Address"
                         placeholder="Street Address" 
                         value={userDetails.specific_Address || ''} 
                         onChange={handleInputChange}
                     />
-                    <input 
-                        type="text" 
+                    
+                    <Input 
                         name="city"
                         placeholder="Town / City" 
                         value={userDetails.city || ''} 
                         onChange={handleInputChange}
                     />
-                   
-                    <input 
-                        type="text" 
+                    
+                    <Input 
                         name="phone_number"
                         placeholder="Phone" 
                         value={userDetails.phone_number || ''} 
                         onChange={handleInputChange}
                     />
-                    <input 
-                        type="email" 
+                    
+                    <Input 
                         name="email"
                         placeholder="Email Address" 
                         value={userDetails.email || ''} 
                         readOnly 
                     />
-                    <textarea 
+                    
+                    <TextArea 
                         name="additionalInfo"
                         placeholder="Additional Information" 
                         value={userDetails.additionalInfo || ''} 
                         onChange={handleInputChange}
-                    ></textarea>
+                        rows={4}
+                    />
                 </div>
                 <div className="order-summary">
                     <h2>Order Summary</h2>
@@ -163,29 +176,18 @@ function Checkout() {
                     {/* Payment Methods */}
                     <div className="payment-methods">
                         <h3>Payment Methods</h3>
-                        <label>
-                            <input 
-                                type="radio" 
-                                name="payment" 
-                                value="bank" 
-                                checked={paymentMethod === 'bank'}
-                                onChange={() => setPaymentMethod('bank')}
-                            />
-                            Direct Bank Transfer
-                        </label>
-                        <label>
-                            <input 
-                                type="radio" 
-                                name="payment" 
-                                value="cash"
-                                checked={paymentMethod === 'cash'}
-                                onChange={() => setPaymentMethod('cash')}
-                            />
-                            Cash on Delivery
-                        </label>
+                        <Radio.Group 
+                            value={paymentMethod} 
+                            onChange={(e) => setPaymentMethod(e.target.value)}
+                        >
+                            <Radio value="bank">Direct Bank Transfer</Radio>
+                            <Radio value="cash">Cash on Delivery</Radio>
+                        </Radio.Group>
                     </div>
 
                     <Button 
+                        type="primary" 
+                        onClick={handlePayment}
                         style={{
                             width: '200px',
                             backgroundColor: 'black',
@@ -193,8 +195,6 @@ function Checkout() {
                             fontSize: '18px',
                             marginTop: '20px'
                         }} 
-                        type="primary" 
-                        onClick={handlePayment}
                     >
                         Place Order
                     </Button>

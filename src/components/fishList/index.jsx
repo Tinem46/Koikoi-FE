@@ -22,7 +22,7 @@ function FishList() {
 
   return (
     <div className="fish-list">
-      {fish.slice(0, 4).map((item) => (
+      {fish.slice(0, 3).map((item) => (
         <Card key={item.id} fish={item} />
       ))}
     </div>

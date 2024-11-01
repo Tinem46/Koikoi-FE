@@ -50,7 +50,11 @@ const cartSlice = createSlice({
             state.products = [];
             saveState(state); 
         },
+        syncWithApi: (state, action) => {
+            state.products = action.payload;
+            saveState(state);
+        },
     },
 });
-export const { addToCart, reset, remove, changeQuantity, increaseQuantity, decreaseQuantity } = cartSlice.actions;
+export const { addToCart, reset, remove, changeQuantity, increaseQuantity, decreaseQuantity, syncWithApi } = cartSlice.actions;
 export default cartSlice.reducer;

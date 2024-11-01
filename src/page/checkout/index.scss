@@ -147,3 +147,35 @@
     display: flex;
     gap: 10px; // Adjust the gap as needed
 }
+
+.billing-details {
+    .ant-select {
+        width: 100%;
+        margin-bottom: 80px;  // Match other inputs' margin
+
+        .ant-select-selector {
+            padding: 8px 17px !important;  // Adjusted padding to better align content
+            height: 60px !important;  // Match input height
+            font-size: 20px;
+            border: 1px solid #ddd !important;
+            border-radius: 6px !important;
+
+            .ant-select-selection-item {
+                line-height: 44px !important;  // Center the text vertically
+                padding: 0;
+                font-size: 20px;
+                color: rgba(0, 0, 0, 0.88);
+            }
+
+            .ant-select-selection-placeholder {
+                line-height: 44px !important;  // Center placeholder text
+                font-size: 20px;
+            }
+        }
+
+        &.ant-select-focused .ant-select-selector {
+            border-color: #1890ff !important;
+            box-shadow: none !important;
+        }
+    }
+}

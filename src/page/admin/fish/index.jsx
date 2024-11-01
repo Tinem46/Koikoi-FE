@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber,  Select,  Upload } from 'antd'
+import { Form, Input, InputNumber, Select, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import DashboardTemplate from '../../../dashboard-template';
 import { useState, useEffect } from 'react';
@@ -114,10 +114,25 @@ function ManagementFish() {
                 <InputNumber/>
             </Form.Item>
             <Form.Item name="status" label="Status">
-                <Input/>
+                <Select>
+                    <Select.Option value="IN STOCK">IN STOCK</Select.Option>
+                    <Select.Option value="SOLD OUT">SOLD OUT</Select.Option>
+                </Select>
             </Form.Item>
             <Form.Item name="origin" label="Origin">
-                <Input/>
+                <Select>
+                    <Select.Option value="Vietnam">Vietnam</Select.Option>
+                    <Select.Option value="Laos">Laos</Select.Option>
+                    <Select.Option value="Cambodia">Cambodia</Select.Option>
+                    <Select.Option value="Thailand">Thailand</Select.Option>
+                    <Select.Option value="Myanmar">Myanmar</Select.Option>
+                    <Select.Option value="Malaysia">Malaysia</Select.Option>
+                    <Select.Option value="Singapore">Singapore</Select.Option>
+                    <Select.Option value="Indonesia">Indonesia</Select.Option>
+                    <Select.Option value="Philippines">Philippines</Select.Option>
+                    <Select.Option value="Brunei">Brunei</Select.Option>
+                    <Select.Option value="Timor-Leste">Timor-Leste</Select.Option>
+                </Select>
             </Form.Item>
             <Form.Item name="quantity" label="Quantity">
                 <InputNumber/>

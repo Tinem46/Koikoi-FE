@@ -125,6 +125,19 @@ function OrderManagement() {
     }
   };
 
+  const handleRefund = async (orderId) => {
+    try {
+      await api.post(`transactions/refund`, null, {
+        params: { koiOrderId: Number(orderId) }
+      });
+      toast.success('Order refunded successfully');
+    } catch (error) {
+      console.error('Error refunding order:', error);
+      toast.error('Failed to refund order');
+      throw error;
+    }
+  };
+
   return (
     <div>
       <DashboardTemplate 
@@ -141,10 +154,17 @@ function OrderManagement() {
           },
           {
             label: 'Cancel Order',
-            condition: (record) => record.orderStatus !== 'CANCELED',
+            condition: (record) => !['CANCELED', 'REFUND'].includes(record.orderStatus),
             action: handleCancelOrder,
             successMessage: 'Order cancelled successfully',
             errorMessage: 'Failed to cancel order',
+          },
+          {
+            label: 'Refund Order',
+            condition: (record) => record.orderStatus === 'CANCELED',
+            action: handleRefund,
+            successMessage: 'Order refunded successfully',
+            errorMessage: 'Failed to refund order',
           },
         ]}
         disableCreate={true}
