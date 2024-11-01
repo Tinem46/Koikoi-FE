@@ -1,16 +1,18 @@
 /* eslint-disable react/prop-types */
-import { Input, Menu, Button } from "antd";
+import { Input, Select, Button } from "antd";
 import "./index.scss";
 import { useEffect, useState } from "react";
 import api from "../../config/api";
 import Card from "../../card";
 
 // MenuForShop component: hiển thị menu và danh sách cá Koi được lọc
-function MenuForShop({ setSelectedMenu, resetFish }) {
+function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
   // State quản lý danh sách cá Koi và kết quả lọc
   const [fish, setFish] = useState([]);
   const [filteredFish, setFilteredFish] = useState([]);
   const [visibleCount, setVisibleCount] = useState(4);
+  const [sortOrder, setSortOrder] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Hàm fetch dữ liệu cá từ API
   const fetchFish = async () => {
@@ -33,38 +35,78 @@ function MenuForShop({ setSelectedMenu, resetFish }) {
     if (resetFish) {
       setFilteredFish(fish);
       setSelectedMenu("");
+      setSortOrder(null);
     }
   }, [resetFish, fish, setSelectedMenu]);
 
-  // Cấu hình các items của Menu
-  const items = [
-    {
-      label: <Input.Search className="Input-Menu" placeholder="Search Your Koi" />,
-      key: "search",
-    },
-    { label: "Kohaku", key: "kohaku" },
-    { label: "Sanke", key: "sanke" },
-    { label: "Showa", key: "showa" },
-    { label: "Tancho", key: "tancho" },
-    { label: "Utsurimono", key: "utsurimono" },
-    { label: "Asagi", key: "asagi" },
-    { label: "ca bu hoàng anh ngu", key: "ca bu hoàng anh ngu" },
+  // Thêm useEffect để xử lý tìm kiếm khi searchTerm thay đổi
+  useEffect(() => {
+    let results = [...fish];
+    
+    // Lọc theo danh mục nếu có
+    if (selectedMenu && selectedMenu !== "all") {
+      results = results.filter(
+        (item) => item.category.toLowerCase() === selectedMenu.toLowerCase()
+      );
+    }
+    
+    // Lọc theo từ khóa tìm kiếm
+    if (searchTerm) {
+      results = results.filter((item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    setFilteredFish(results);
+    setVisibleCount(4);
+  }, [searchTerm, selectedMenu, fish]);
+
+  const sortOptions = [
+    { value: "", label: "Default" },
+    { value: "price_asc", label: "Price: Low to High" },
+    { value: "price_desc", label: "Price: High to Low" },
   ];
 
-  // Hàm xử lý sự kiện khi click vào menu
-  const onClickMenu = (e) => {
-    const clickedKey = e.key;
-    if (clickedKey === "search") {
-      setFilteredFish(fish);
-      setSelectedMenu("");
-    } else {
-      const filtered = fish.filter(
-        (item) => item.category.toLowerCase() === clickedKey.toLowerCase()
+  const categories = [
+    { value: "all", label: "All Koi" },
+    { value: "kohaku", label: "Kohaku" },
+    { value: "sanke", label: "Sanke" },
+    { value: "showa", label: "Showa" },
+    { value: "tancho", label: "Tancho" },
+    { value: "utsurimono", label: "Utsurimono" },
+    { value: "asagi", label: "Asagi" },
+  ];
+
+  
+
+  // Thay đổi hàm xử lý sự kiện
+  const handleCategoryChange = (value) => {
+    let newFilteredFish = [...fish];
+    
+    if (value && value !== "all") {
+      newFilteredFish = fish.filter(
+        (item) => item.category.toLowerCase() === value.toLowerCase()
       );
-      setFilteredFish(filtered);
-      setSelectedMenu(clickedKey);
-      setVisibleCount(4);
     }
+    
+    setSelectedMenu(value);
+    setFilteredFish(newFilteredFish);
+    setVisibleCount(4);
+  };
+
+  const handleSortChange = (value) => {
+    setSortOrder(value);
+    let newFilteredFish = [...filteredFish];
+    
+    if (value) {
+      newFilteredFish.sort((a, b) => {
+        return value === "price_asc" 
+          ? a.price - b.price 
+          : b.price - a.price;
+      });
+    }
+    
+    setFilteredFish(newFilteredFish);
   };
 
   // Hàm xử lý khi bấm "Show More"
@@ -75,8 +117,32 @@ function MenuForShop({ setSelectedMenu, resetFish }) {
   return (
     <>
       <div className="containerMenuAndFishList">
-        {/* Menu hiển thị danh sách các loại cá */}
-        <Menu className="menuBar" onClick={onClickMenu} items={items} />
+        <div className="filterSection">
+          <Input.Search 
+            className="Input-Menu" 
+            placeholder="Search Your Koi"
+            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
+          />
+          <div className="category-buttons">
+            {categories.map((category) => (
+              <Button
+                key={category.value}
+                className={`category-button ${selectedMenu === category.value ? 'active' : ''}`}
+                onClick={() => handleCategoryChange(category.value)}
+              >
+                {category.label}
+              </Button>
+            ))}
+          </div>
+          <Select
+            className="sort-select"
+            placeholder="Sort by"
+            onChange={handleSortChange}
+            value={sortOrder}
+            options={sortOptions}
+          />
+        </div>
         <div className="menuFish-Config">
           <div className="menuFish">
             {filteredFish.slice(0, visibleCount).map((item) => (

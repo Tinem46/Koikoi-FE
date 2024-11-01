@@ -6,11 +6,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import AuthLayout from '../../auth-layout';
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/features/userSlice';
-import {signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../../config/firebase";
 import './index.scss'; // Add this import
 import { alertSuccess } from '../../assets/image/hook';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useState } from 'react';
+import { googleProvider } from '../../config/firebase';
 
 function Login() {
   const dispatch = useDispatch();
@@ -20,58 +20,72 @@ function Login() {
   // Check for token in localStorage on component mount
 
   const handleLogin = async (values) => {
-    setLoading(true); // Start loading
+    setLoading(true); 
     try {
+      console.log('Login values:', values); // Log values for debugging
+
       const response = await api.post("account/login", values);
-      const {token, role} = response.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", role);
 
-      if(role === "MANAGER"){
-        
-        navigate("/dashboard");
-        // toast.success("Login success!");
+      console.log('Login response:', response); // Log response for debugging
+
+      if (response.data && response.data.token) {
+        const { token, role } = response.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", role);
+
+        // Navigate and show success message based on role
+        if (role === "MANAGER" || role === "STAFF") {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
+        }
+
         alertSuccess("Login success!");
-
-
-
+        dispatch(login(response.data));
+      } else {
+        throw new Error('Invalid response from server');
       }
-      else if(role === "STAFF"){
-        navigate("/dashboard");
-        alertSuccess("Login success!");
-      }
-      else{
-        navigate("/");
-        // toast.success("Login success!");
-        alertSuccess("Login success!");
-      }
-     
-
-      // Dispatch login action with user data
-      dispatch(login(response.data));
     } catch (err) {
       setLoading(false);
-      toast.error(err.response?.data || "Login failed");
-    }   
-  };
-
-  const handleLoginGoogle = async () => {
-    setLoading(true); // Start loading
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log("Đăng nhập thành công:", result.user);
-      // Lưu thông tin người dùng vào state hoặc context nếu cần
-      // Chuyển hướng người dùng sau khi đăng nhập thành công
-      navigate("/");
-    } catch (error) {
-      console.error("Lỗi đăng nhập:", error);
-      // Hiển thị thông báo lỗi cho người dùng
-      alert("Đăng nhập thất bại. Vui lòng thử lại.");
+      console.error('Login error:', err); // Log error for debugging
+      toast.error(err.response?.data || "Login failed. Please check your credentials and try again.");
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
+const handleLoginGoogle = () =>{
+  setLoading(true);
+  const auth = getAuth();
+  signInWithPopup(auth, googleProvider)
+    .then(async (result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      console.log(token);
+      const user = result.user;
+      console.log(user);
+      console.log(user.accessToken);
 
+      const response = await api.post("account/loginGoogle", {
+        token: user.accessToken
+      });
+      localStorage.setItem("token", token);
+      console.log(response.data);
+
+      // Dispatch login action with user data
+      dispatch(login({
+        id: user.uid,
+        username: user.displayName,
+        token: user.accessToken
+      }));
+      
+      navigate("/");
+      alertSuccess("Login success!");
+    }).catch((error) => {
+      console.log(error);
+      setLoading(false);
+    });
+}
+  
 
   return (
     <AuthLayout>
@@ -90,7 +104,9 @@ function Login() {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" block disabled={loading}>{loading ? <Spin size="small" /> : "Login"}</Button>
+          <Button type="primary" htmlType="submit" block disabled={loading}>
+            {loading ? <Spin size="small" /> : "Login"}
+          </Button>
         </Form.Item>
 
         <div className="or-divider">or</div>
@@ -107,15 +123,15 @@ function Login() {
         </Form.Item>
 
         <Form.Item className="signup-link">
-          You don't have account? <Link to="/register">Sign up</Link>
+          You don't have an account? <Link to="/register">Sign up</Link>
         </Form.Item>
-              <Form.Item className="forgot-link">
-        Forgot your password? <Link to="/forgot-password">Reset password</Link>
-      </Form.Item>
-      </Form>
 
+        <Form.Item className="forgot-link">
+          Forgot your password? <Link to="/forgot-password">Reset password</Link>
+        </Form.Item>
+      </Form>
     </AuthLayout>
-  )
+  );
 }
 
-export default Login
+export default Login;

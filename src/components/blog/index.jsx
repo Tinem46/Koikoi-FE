@@ -1,7 +1,24 @@
 import "./index.scss";
 import pos1 from "../../assets/image/picBlog1.jpg";
 import pos2 from "../../assets/image/picBlog2.jpg";
+import { useNavigate } from 'react-router-dom';
+
 const BlogPost = () => {
+  const navigate = useNavigate();
+
+  const handleSeeMore = (section) => {
+    switch(section) {
+      case 'history':
+        navigate('/aboutUs#aboutUs__history');
+        break;
+      case 'guide':
+        navigate('/aboutUs#aboutUs__whyChooseUs');
+        break;
+      default:
+        navigate('/aboutUs');
+    }
+  };
+
   return (
     <div className="blog-post-container">
       <h1 className="blog-title">Blog Post</h1>
@@ -16,7 +33,9 @@ const BlogPost = () => {
               in Japan and China. Discuss their cultural significance,
               representing perseverance, strength, and good fortune.
             </p>
-            <button className="see-more-btn">See More</button>
+            <button className="see-more-btn" onClick={() => handleSeeMore('history')}>
+              See More
+            </button>
           </div>
         </div>
 
@@ -35,7 +54,9 @@ const BlogPost = () => {
               Offer essential tips for new KOI owners on how to properly care
               for their fish to ensure a long, healthy life.
             </p>
-            <button className="see-more-btn">See More</button>
+            <button className="see-more-btn" onClick={() => handleSeeMore('guide')}>
+              See More
+            </button>
           </div>
         </div>
       </div>

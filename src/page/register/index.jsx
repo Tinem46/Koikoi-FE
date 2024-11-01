@@ -12,12 +12,22 @@ function Register() {
     const handleRegister = async (values) => {
         setLoading(true);
         try {
-            const response = await api.post("account/register", values);
-            console.log("Response:", response);
+
+            const apiData = {
+                username: values.username,
+                fullName: values.fullname, // Note the change from fullname to fullName
+                password: values.password,
+                email: values.email,
+                phone_number: values.phone_number
+            };
+            const apiResponse = await api.post("account/register", apiData);
+
+            console.log("Response:", apiResponse);
             toast.success("Register successful");
             navigate("/login");
         } catch (err) {
             console.error("Error details:", err);
+
             if (err.response) {
                 console.error("Response data:", err.response.data);
                 console.error("Response status:", err.response.status);
@@ -30,6 +40,9 @@ function Register() {
                 console.error("Error message:", err.message);
                 toast.error("An unexpected error occurred");
             }
+
+            toast.error("Registration failed. Please try again.");
+
         } finally {
             setLoading(false);
         }
@@ -43,21 +56,9 @@ function Register() {
                 onFinish={handleRegister}
                 className="register-form"
             >
-                <Row gutter={[64, 16]}> {/* Increased gutter for more space between columns */}
+                <Row gutter={[64, 16]}> 
                     <Col xs={24} md={12}>
-                        {/* Left column form items */}
-                        <Form.Item
-                            name="fullname"
-                            label="Full Name"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your Full Name!',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Enter your Full Name" />
-                        </Form.Item>
+                       
 
                         <Form.Item
                             name="username"
@@ -70,6 +71,23 @@ function Register() {
                             ]}
                         >
                             <Input placeholder="Enter your Username" />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="fullname"
+                            label="Full Name"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your Full Name!',
+                                },
+                                {
+                                    transform: (value) => value.trim(),
+                                    message: 'Full Name cannot be empty!',
+                                },
+                            ]}
+                        >
+                            <Input placeholder="Enter your Full Name" />
                         </Form.Item>
 
                         <Form.Item
@@ -90,7 +108,6 @@ function Register() {
                         </Form.Item>
                     </Col>
                     <Col xs={24} md={12}>
-                        {/* Right column form items */}
                         <Form.Item
                             name="phone_number"
                             label="Phone Number"

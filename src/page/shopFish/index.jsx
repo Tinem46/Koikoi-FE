@@ -14,7 +14,11 @@ function FishShop() {
   return (
     <>
       <Naviagtion selectedMenu={selectedMenu} triggerReset={triggerReset} name="Shop" />
-      <MenuForShop setSelectedMenu={setSelectedMenu} resetFish={resetFish} />
+      <MenuForShop 
+        selectedMenu={selectedMenu}
+        setSelectedMenu={setSelectedMenu}
+        resetFish={resetFish}
+      />
     </>
   );
 }

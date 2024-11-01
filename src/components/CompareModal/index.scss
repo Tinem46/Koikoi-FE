@@ -1,0 +1,56 @@
+.ant-modal {
+  .ant-modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .ant-table-wrapper {
+    margin-top: 20px;
+
+    .ant-table {
+      border: 1px solid #f0f0f0;
+    }
+
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+      border: 1px solid #f0f0f0;
+    }
+
+    .ant-table-cell:first-child {
+      border-right: 2px solid #f0f0f0;
+      font-weight: bold;
+      text-align: left;
+      padding-left: 16px;
+      width: 200px;
+    }
+  }
+
+  .ant-table-cell {
+    vertical-align: middle;
+    text-align: center;
+  }
+
+
+
+  h3 {
+    margin: 10px 0 0;
+    font-size: 1.1em;
+    color: #333;
+    text-align: center;
+  }
+
+  .ant-btn {
+    margin-right: 5px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}

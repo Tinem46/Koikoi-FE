@@ -10,7 +10,7 @@ import React from 'react';
 import uploadFile from '../utils/upload'; // Import the uploadFile utility
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'; // Import the EditOutlined icon
 
-function DashboardTemplate({ columns, apiURI, formItems, title, resetImage  }) {
+function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, customActions, disableCreate, combineActions, showEditDelete }) {
     const [dashboard, setDashboard] = useState([]);
     const [open, setOpen] = useState(false);
     const [form] = useForm();
@@ -91,46 +91,63 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage  }) {
 
     return (
         <div>
-            <Button onClick={() => { form.resetFields(); setOpen(true); setEditingRecord(null); }}>
-                Create new {title.toLowerCase()}
-            </Button>
+            {!disableCreate && (
+                <Button onClick={() => { form.resetFields(); setOpen(true); setEditingRecord(null); }}>
+                    Create new {title.toLowerCase()}
+                </Button>
+            )}
             <Table 
                 columns={[
                     ...columns,
                     {
-                        title: "Action",
-                        key: "action",
+                        title: "Actions",
+                        key: "actions",
                         render: (_, record) => (
-                            <React.Fragment key={record.id}>
-                                <Button 
-                                    type="primary" 
-                                    onClick={() => handleEdit(record)} 
-                                    // Inline styles for Edit button
-                                >
-                                    <EditOutlined /> {/* Use the EditOutlined icon */}
-                                </Button>
-                                <Popconfirm 
-                                    title={`Are you sure you want to delete ${record.name}?`}
-                                    onConfirm={() => handleDelete(record.id)}
-                                >
-                                    <Button 
-                                        type="primary" 
-                                        danger 
-                                        style={{ backgroundColor: '#f44336', borderColor: '#f44336',marginLeft:'10px' }} // Inline styles for Delete button
-                                    >
-                                        <DeleteOutlined />
-                                    </Button>
-                                </Popconfirm>
+                            <React.Fragment>
+                                {customActions && customActions.map((action, index) => (
+                                    action.condition(record) && (
+                                        <Button
+                                            key={index}
+                                            onClick={() => action.action(record.id)}
+                                            style={{ marginRight: '8px' }}
+                                        >
+                                            {action.label}
+                                        </Button>
+                                    )
+                                ))}
+                                {showEditDelete && (
+                                    <>
+                                        <Button 
+                                            type="primary" 
+                                            onClick={() => handleEdit(record)} 
+                                            style={{ marginRight: '8px' }}
+                                        >
+                                            <EditOutlined />
+                                        </Button>
+                                        <Popconfirm 
+                                            title={`Are you sure you want to delete ${record.name}?`}
+                                            onConfirm={() => handleDelete(record.id)}
+                                        >
+                                            <Button 
+                                                type="primary" 
+                                                danger 
+                                                style={{ backgroundColor: '#f44336', borderColor: '#f44336' }}
+                                            >
+                                                <DeleteOutlined />
+                                            </Button>
+                                        </Popconfirm>
+                                    </>
+                                )}
                             </React.Fragment>
                         )
                     }
                 ]} 
                 dataSource={dashboard} 
                 loading={loading} 
-                rowKey={(record) => record.id || Math.random()} // Add a unique key for each row
+                rowKey={(record) => record.id || Math.random()}
             />
             <Modal 
-                title={`${editingRecord ? 'Edit' : 'Create'} ${title}`} // Change title based on mode
+                title={`${editingRecord ? 'Edit' : 'Create'} ${title}`}
                 open={open}
                 onCancel={handleCancel}
                 footer={[
@@ -163,6 +180,18 @@ DashboardTemplate.propTypes = {
     apiURI: PropTypes.string.isRequired,
     formItems: PropTypes.node.isRequired,
     title: PropTypes.string.isRequired,
+    customActions: PropTypes.arrayOf(PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        condition: PropTypes.func.isRequired,
+        action: PropTypes.func.isRequired,
+    })),
+    disableCreate: PropTypes.bool,
+    combineActions: PropTypes.bool,
+    showEditDelete: PropTypes.bool,
+};
+
+DashboardTemplate.defaultProps = {
+    showEditDelete: true, // Default to true to show buttons unless specified otherwise
 };
 
 export default DashboardTemplate;

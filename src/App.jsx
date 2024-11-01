@@ -20,7 +20,12 @@ import ConsignmentPage from "./page/consigment"
 import ConsignmentForm from "./components/cosingmentForm"
 import CreateStaffAccount from "./page/admin/createStaffAccount"
 import OrderHistory from "./page/orderHistory"
-import ConsignmentPayment from "./page/consignmentPayment"
+import OrderManagement from "./page/admin/orderManagement"
+import OrderSuccess from "./page/orderSuccess"
+import RevenueManagement from "./page/admin/revenueManagement"
+import ManagementFeedback from "./page/admin/feedback"
+
+
 
 function App() {
   const router = createBrowserRouter([
@@ -74,7 +79,7 @@ function App() {
           element: <ConsignmentPage />
         },
         {
-          path:"/about-us",
+          path:"/aboutUs",
           element: <AboutUs />
         },
         
@@ -91,10 +96,15 @@ function App() {
           element: <OrderHistory />
         },
         {
-          path:"/ConsignmentPayment",
-          element: <ConsignmentPayment />
+          path: "orderSuccess",
+          element: <OrderSuccess />
+        },
+        {
+          path: "consignment",
+          element: <ConsignmentPage />
         }
-        
+  
+     
       ],
     },
     {
@@ -115,6 +125,18 @@ function App() {
         {
           path: "staff",
           element: <CreateStaffAccount />,
+        },
+        {
+          path: "orderManagement", // Remove the leading slash
+          element: <OrderManagement />
+        },
+        {
+          path: "revenueManagement",
+          element: <RevenueManagement />
+        },
+        {
+          path: "feedback",
+          element: <ManagementFeedback />
         },
 
       ],

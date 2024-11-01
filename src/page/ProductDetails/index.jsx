@@ -3,6 +3,7 @@ import "./index.scss";
 import { addToCart } from "../../redux/features/cartSlice";
 import api from "../../config/api";
 import Navigation from "../../components/navigation";
+import Feedback from "../../components/feedbacks"
 
 function ProductDetails() {
   const selectedFish = useSelector((state) => state.fish.selectedFish);
@@ -79,6 +80,7 @@ function ProductDetails() {
           <h2>Description</h2>
           <p>{description}</p>
         </div>
+        <Feedback productId={id} />
       </div>
     </div>
   );

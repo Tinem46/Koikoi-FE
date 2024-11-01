@@ -1,41 +1,29 @@
 import {useDispatch } from 'react-redux';
-import { Button } from 'antd';
+import { Button, Input, Select, Radio} from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './index.scss';
 import { toast } from 'react-toastify';
 import { reset } from '../../redux/features/cartSlice';
 import api from '../../config/api';
 import Naviagtion from '../../components/navigation';
+const { TextArea } = Input;
+const { Option } = Select;
 
 function Checkout() {
     const location = useLocation();
-    const { subTotal, shippingPee, totalAmount, cart } = location.state || {};
+    const { subTotal, shippingPee, totalAmount, cart, orderId, userProfile } = location.state || {};
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState('bank');
+    const [userDetails, setUserDetails] = useState(userProfile || {});
 
-    useEffect(() => {
-        fetchUserCheckout();
-    }, []);
-
-    const fetchUserCheckout = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                toast.error("No token found. Please log in.");
-                navigate('/login');
-                return; 
-            }
-            const response = await api.get(`account/Profile`);
-            
-            setUser(response.data);
-        } catch (error) {
-            console.error("Error fetching user profile:", error);
-            toast.error("Failed to load user profile. Please try again.");
-            setUser(null);
-        }
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUserDetails(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     const handlePayment = async () => {
@@ -47,32 +35,45 @@ function Checkout() {
                 return; 
             }
 
-            const orderData = {
-                id: user?.id, 
-                customer_Name: user?.username,
-                customer_Email: user?.email,
-                product_Name: cart.map(item => item.name).join(', '),
-                quantity: cart.reduce((total, item) => total + item.quantity, 0),
-                price: totalAmount
-            };
-
-            const orderResponse = await api.post('order', orderData);
-            const orderId = orderResponse.data.id; 
+            if (!orderId) {
+                toast.error("Order information is missing. Please try again.");
+                navigate('/cart');
+                return;
+            }
 
             if (paymentMethod === 'bank') {
-                const paymentResponse = await api.post(`payment/VNPay/${orderId}`);
-                const paymentUrl = paymentResponse.data; 
-
-                const transactionData = {
-                    koiOrderId: orderId
+                const paymentData = {
+                    phone: userDetails.phone_number,
+                    fullName: userDetails.fullname,
+                    orderDate: new Date().toISOString().split('T')[0],
+                    note: userDetails.additionalInfo || '',
+                    city: userDetails.city,
+                    country: userDetails.country,
+                    gmail: userDetails.email,
+                    address: userDetails.specific_Address
                 };
-                await api.post('transactions/transactions', transactionData);
 
+                const paymentResponse = await api.post('payment/VNPay', paymentData, {
+                    params: {
+                        koiOrderId: orderId
+                    },
+                });
+                
+                const paymentUrl = paymentResponse.data;
                 window.location.href = paymentUrl;
             } else {
-                toast.success('Order placed successfully!');
                 dispatch(reset());
-                navigate('/');
+                navigate('/order-success', { 
+                    state: { 
+                        orderId,
+                        userDetails,
+                        cart,
+                        subTotal,
+                        shippingPee, 
+                        totalAmount,
+                        paymentMethod
+                    }
+                });
             }
         } catch (error) {
             console.error('Error processing payment:', error);
@@ -86,25 +87,69 @@ function Checkout() {
             <div className="checkout">
                 <div className="billing-details">
                     <h2>Billing Details</h2>
-                    <div className="name-fields">
-                        <input type="text" placeholder="First Name" defaultValue={user?.firstName || ''} />
-                        <input type="text" placeholder="Last Name" defaultValue={user?.lastName || ''} />
-                    </div>
-                    <input type="text" placeholder="Company Name (Optional)" defaultValue={user?.companyName || ''} />
-                    <select defaultValue={user?.country || 'Country / Region'}>
-                        <option>Country / Region</option>
-                        <option>Sri Lanka</option>
-                    </select>
-                    <input type="text" placeholder="Street Address" defaultValue={user?.streetAddress || ''} />
-                    <input type="text" placeholder="Town / City" defaultValue={user?.city || ''} />
-                    <select defaultValue={user?.province || 'Province'}>
-                        <option>Province</option>
-                        <option>Western Province</option>
-                    </select>
-                    <input type="text" placeholder="ZIP Code" defaultValue={user?.zipCode || ''} />
-                    <input type="text" placeholder="Phone" defaultValue={user?.phone_number || ''} />
-                    <input type="email" placeholder="Email Address" defaultValue={user?.email || ''} />
-                    <textarea placeholder="Additional Information" defaultValue={user?.additionalInfo || ''}></textarea>
+                    <Input 
+                        name="fullname"
+                        placeholder="Full Name" 
+                        value={userDetails.fullname || ''} 
+                        onChange={handleInputChange}
+                    />
+                    
+                    <Select 
+                        name="country"
+                        value={userDetails.country || 'Country / Region'} 
+                        onChange={(value) => handleInputChange({ target: { name: 'country', value }})}
+                        style={{ width: '100%' }}
+                    >
+                        <Option value="Country / Region">Country / Region</Option>
+                        <Option value="Sri Lanka">Sri Lanka</Option>
+                        <Option value="Vietnam">Vietnam</Option>
+                        <Option value="Laos">Laos</Option>
+                        <Option value="Cambodia">Cambodia</Option>
+                        <Option value="Thailand">Thailand</Option>
+                        <Option value="Myanmar">Myanmar</Option>
+                        <Option value="Malaysia">Malaysia</Option>
+                        <Option value="Singapore">Singapore</Option>
+                        <Option value="Indonesia">Indonesia</Option>
+                        <Option value="Philippines">Philippines</Option>
+                        <Option value="Brunei">Brunei</Option>
+                        <Option value="Timor-Leste">Timor-Leste</Option>
+                    </Select>
+
+                    <Input 
+                        name="specific_Address"
+                        placeholder="Street Address" 
+                        value={userDetails.specific_Address || ''} 
+                        onChange={handleInputChange}
+                    />
+                    
+                    <Input 
+                        name="city"
+                        placeholder="Town / City" 
+                        value={userDetails.city || ''} 
+                        onChange={handleInputChange}
+                    />
+                    
+                    <Input 
+                        name="phone_number"
+                        placeholder="Phone" 
+                        value={userDetails.phone_number || ''} 
+                        onChange={handleInputChange}
+                    />
+                    
+                    <Input 
+                        name="email"
+                        placeholder="Email Address" 
+                        value={userDetails.email || ''} 
+                        readOnly 
+                    />
+                    
+                    <TextArea 
+                        name="additionalInfo"
+                        placeholder="Additional Information" 
+                        value={userDetails.additionalInfo || ''} 
+                        onChange={handleInputChange}
+                        rows={4}
+                    />
                 </div>
                 <div className="order-summary">
                     <h2>Order Summary</h2>
@@ -131,32 +176,25 @@ function Checkout() {
                     {/* Payment Methods */}
                     <div className="payment-methods">
                         <h3>Payment Methods</h3>
-                        <label>
-                            <input 
-                                type="radio" 
-                                name="payment" 
-                                value="bank" 
-                                checked={paymentMethod === 'bank'}
-                                onChange={() => setPaymentMethod('bank')}
-                            />
-                            Direct Bank Transfer
-                        </label>
-                        <label>
-                            <input 
-                                type="radio" 
-                                name="payment" 
-                                value="cash"
-                                checked={paymentMethod === 'cash'}
-                                onChange={() => setPaymentMethod('cash')}
-                            />
-                            Cash on Delivery
-                        </label>
+                        <Radio.Group 
+                            value={paymentMethod} 
+                            onChange={(e) => setPaymentMethod(e.target.value)}
+                        >
+                            <Radio value="bank">Direct Bank Transfer</Radio>
+                            <Radio value="cash">Cash on Delivery</Radio>
+                        </Radio.Group>
                     </div>
 
                     <Button 
-                        style={{width: '30%', justifyContent: 'center', marginLeft: '35%', marginTop: '60px', backgroundColor: 'black', height: '50px', fontSize: '18px'}} 
                         type="primary" 
                         onClick={handlePayment}
+                        style={{
+                            width: '200px',
+                            backgroundColor: 'black',
+                            height: '50px',
+                            fontSize: '18px',
+                            marginTop: '20px'
+                        }} 
                     >
                         Place Order
                     </Button>

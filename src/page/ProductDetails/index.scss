@@ -109,15 +109,11 @@ body {
   font-weight: 400;
 }
 
-/* Mô tả sản phẩm */
-.product-details__description {
-  font-size: 13px;
-  line-height: 1.6;
-  margin-bottom: 30px;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  font-weight: normal;
-}
+      .product-details__description {
+        font-size: 1.1em;
+        line-height: 1.6;
+        margin-bottom: 30px;
+      }
 
 /* Các nút hành động */
 .product-details__actions {

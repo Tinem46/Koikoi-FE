@@ -8,6 +8,7 @@
     overflow: hidden;
     box-shadow: 0 0 17px 6px rgba(0,0,0,0.1);
     transition: all 0.3s;
+    position: relative; // Add this to make it a positioning context for absolute elements
     
     img{
         width: 100%;
@@ -16,6 +17,7 @@
         position: relative; // Ensure the image container is positioned relatively
         transition: filter 0.3s; // Add transition for smooth effect
         cursor: pointer;
+        z-index: 1; // Ensure the image is above the card background
     }
 
     .eye-icon {
@@ -50,7 +52,7 @@
     }
 
     &__content{
-        padding: 20px;
+        padding: 0 20px 20px;
     }
 
     &__description{
@@ -84,6 +86,38 @@
             color: #1e1b1c;
         }
 
+    }
+
+    &__actions {
+        position: static;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        background-color: #000000;
+        display: flex;
+        justify-content: center; 
+        z-index: 1;
+        margin-bottom: 10px;
+        width: 100%; 
+    }
+
+    .action-button {
+        background: none;
+        border: none;
+        color: #ffffff; // Changed to white for better visibility on black background
+        font-size: 15px; // Increased from 12px
+        cursor: pointer;
+        transition: color 0.3s;
+        padding: 3px 8px; // Reduced from 5px 10px
+
+        &:hover {
+            color: #db0707;
+        }
+
+        .icon {
+            font-size: 12px; // Added to make the icon smaller
+            margin-right: 3px; // Reduced from 5px
+        }
     }
 }
 

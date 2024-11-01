@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import api from "../config/api";
 import { setSelectedFish } from "../redux/features/fishSlice";
 import { useNavigate } from "react-router-dom";
+import { addToCompare } from '../redux/features/compareSlice';
+
 function Card({ fish }) {
   const dispatch = useDispatch();
-  // const user = useSelector((state) => state.user.user);
    const navigate = useNavigate();
-  // ... existing code ...
 
   const handleAddToCart = async () => {
     try {
@@ -23,14 +23,23 @@ function Card({ fish }) {
 
 
   const handleCardClick = () => {
-    dispatch(setSelectedFish(fish)); // Dispatch the entire fish object
+    dispatch(setSelectedFish(fish)); 
     navigate(`/product-details/${fish.id}`);
   };
-// ... existing code ...
+  
+  const handleCompareClick = (e) => {
+    e.stopPropagation();
+    dispatch(addToCompare(fish));
+  };
+
   return (
-    <div className="fish-card" >
+    <div className="fish-card">
       <img src={fish.image} alt={fish.name} onClick={handleCardClick}/>
-      <div className="eye-icon">👁️</div>
+      <div className="fish-card__actions">
+        <button className="action-button" onClick={handleCompareClick}>
+          <span className="icon">⇄</span> Compare
+        </button>
+      </div>
       <div className="fish-card__content">
         <div className="fish-card__info">
           <div className="name">Name: {fish.name}</div>

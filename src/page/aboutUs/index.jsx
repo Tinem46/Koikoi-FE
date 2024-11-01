@@ -33,38 +33,49 @@ function AboutUs() {
       >
         <h2>Our Mission</h2>
         <p>
-          Our mission is to provide Koi enthusiasts with a wide selection of healthy, 
-          high-quality Koi sourced from the finest breeders in Japan. We believe that 
-          every Koi fish we offer is not just a pet but a living piece of art that brings 
-          serenity, harmony, and beauty to your home.
+          At Koi Shop, our mission extends beyond simply selling Koi fish. We are dedicated 
+          to preserving and sharing the rich cultural heritage of Japanese Koi breeding. 
+          Through careful selection and partnerships with renowned breeders across Japan, 
+          we ensure that each Koi in our collection represents the pinnacle of quality and beauty. 
+          We strive to educate our customers about proper Koi care, pond maintenance, and 
+          the artistic appreciation of these living jewels. Our commitment to excellence drives 
+          us to maintain the highest standards in fish health, genetic diversity, and customer service.
         </p>
       </motion.div>
 
       {/* Store's Founding History */}
       <motion.div 
         className="aboutUs__storeHistory"
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.4, duration: 0.8 }}
       >
         <h2><FaBuilding /> Our Store's History</h2>
         <p>
-          Founded in 1985 by Koi enthusiast Hiroshi Tanaka, our store began as a small 
-          family-owned business in Tokyo. With a passion for Koi and a commitment to 
-          quality, we quickly gained a reputation for offering the finest Koi fish in 
-          Japan. Over the years, we've expanded to multiple locations, always maintaining 
-          our dedication to excellence and customer satisfaction. Today, we're proud to 
-          be one of the leading Koi suppliers, sharing our love for these living works 
-          of art with customers around the world.
+          The story of Koi Shop began in 1985 when Hiroshi Tanaka, a third-generation 
+          Koi breeder, opened our first modest shop in Tokyo's historic Asakusa district. 
+          Starting with just a small collection of hand-picked Koi from local breeders, 
+          Hiroshi's unwavering dedication to quality and authenticity quickly earned the 
+          trust of both collectors and enthusiasts.
+        </p>
+        <p>
+          Through the 1990s, we expanded our connections with premier Koi farms in Niigata 
+          Prefecture, the birthplace of modern Koi breeding. This partnership allowed us to 
+          offer some of Japan's most prestigious bloodlines to our growing customer base. 
+          In 2000, we opened our second location in Osaka, featuring innovative pond systems 
+          and viewing facilities that set new standards in the industry.
+        </p>
+        <p>
+          Today, under the leadership of Hiroshi's daughter Sakura Tanaka, we operate three 
+          state-of-the-art facilities across Japan. Our team includes certified Koi health 
+          specialists, water quality experts, and passionate enthusiasts who share our 
+          founder's vision of excellence. We've successfully shipped premium Koi to collectors 
+          in over 30 countries, while maintaining our commitment to personalized service and 
+          expert guidance.
         </p>
       </motion.div>
 
       {/* History of Koi Fish */}
       <motion.div 
         className="aboutUs__history"
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.6, duration: 0.8 }}
+        id="aboutUs__history"
       >
         <h2><FaHistory /> The History of Koi Fish</h2>
         <div className="aboutUs__historyContent">
@@ -73,20 +84,37 @@ function AboutUs() {
             alt="Koi History"
             className="aboutUs__historyImage"
           />
-          <p>
-            Koi fish, originally bred in Japan, have a rich history that dates back to 
-            the 19th century. Koi were initially bred from common carp and were selected 
-            for their vibrant colors and patterns. Over the centuries, Koi became a 
-            symbol of good fortune, strength, and perseverance in Japanese culture. 
-            Today, Koi fish are admired worldwide not only for their beauty but also for 
-            their cultural significance.
-          </p>
+          <div>
+            <p>
+              The fascinating journey of Koi fish (Cyprinus rubrofuscus) begins in ancient 
+              China, where they were initially farmed as a food source. When these carp 
+              were introduced to Japan in the 1820s, rice farmers in the Niigata region 
+              noticed unusual color variations among their stock. This discovery marked 
+              the beginning of ornamental Koi breeding, a practice that would evolve into 
+              a sophisticated art form.
+            </p>
+            <p>
+              During the Meiji period (1868-1912), Koi breeding techniques advanced 
+              significantly. The first recorded Kohaku (red and white) Koi emerged in 1888, 
+              and by the early 1900s, many of the varieties we know today were established. 
+              The post-war period saw Koi appreciation spread globally, with Japanese 
+              breeders developing increasingly refined bloodlines and striking color patterns.
+            </p>
+            <p>
+              In Japanese culture, Koi symbolize perseverance, strength, and success. The 
+              famous legend of the Koi climbing the Yellow River's waterfall at Dragon 
+              Gate, transforming into a dragon upon reaching the top, has inspired 
+              generations. This tale reflects the Koi's reputation for determination and 
+              the potential for personal growth through overcoming challenges.
+            </p>
+          </div>
         </div>
       </motion.div>
 
       {/* Why Choose Us Section */}
       <motion.div 
         className="aboutUs__whyChooseUs"
+        id="aboutUs__whyChooseUs"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.8 }}

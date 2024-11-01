@@ -46,12 +46,23 @@ function CreateStaffAccount() {
     );
 
     // Thêm phương thức mới để lấy và hiển thị profile
-
+    const getApiURI = (action) => {
+        switch (action) {
+            case 'post':
+                return 'Staff/StaffAccount';
+            case 'get':
+                return 'Staff/Profile';
+            case 'put':
+                return 'Staff';
+            default:
+                return 'Staff/StaffAccount';
+        }
+    };
 
     return (
         <DashboardTemplate
             columns={columns}
-            apiURI="Staff/StaffAccount"
+            apiURI={getApiURI}
             formItems={formItems}
             title="Staff Account"
             resetImage={() => setFileList([])}

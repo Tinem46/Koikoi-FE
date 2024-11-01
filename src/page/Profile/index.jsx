@@ -20,7 +20,11 @@ const Profile = () => {
                 navigate('/login');
                 return; 
             }
-            const response = await api.get(`account/Profile`);
+            const response = await api.get(`account/Profile`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include token in headers
+                }
+            });
             
             setUser(response.data);
         } catch (error) {
@@ -61,6 +65,18 @@ const Profile = () => {
         setEditedUser(null);
     };
 
+    const formatDate = (dateString) => {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
     if (!user) {
         return <div>Loading...</div>;
     }
@@ -98,15 +114,7 @@ const Profile = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="form-group">
-                        <label>State:</label>
-                        <input
-                            type="text"
-                            name="state"
-                            value={editedUser?.state}
-                            onChange={handleChange}
-                        />
-                    </div>
+                  
                     <div className="form-group">
                         <label>Country:</label>
                         <input
@@ -157,16 +165,13 @@ const Profile = () => {
                             </tr>
                             <tr>
                                 <td>Create Date:</td>
-                                <td>{user.create_date || 'N/A'}</td>
+                                <td>{formatDate(user.create_date)}</td>
                             </tr>
                             <tr>
                                 <td>City:</td>
                                 <td>{user.city || 'N/A'}</td>
                             </tr>
-                            <tr>
-                                <td>State:</td>
-                                <td>{user.state || 'N/A'}</td>
-                            </tr>
+                           
                             <tr>
                                 <td>Country:</td>
                                 <td>{user.country || 'N/A'}</td>

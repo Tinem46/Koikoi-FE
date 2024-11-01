@@ -8,6 +8,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/features/userSlice';
 
+
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(
@@ -45,6 +46,9 @@ const Dashboard = () => {
         getItem('Voucher', 'voucher', <PieChartOutlined />),
         getItem('Fish', 'fish', <PieChartOutlined />),
         getItem('Staff', 'staff', <PieChartOutlined />),
+        getItem('Feedback', 'feedback', <PieChartOutlined />), // Add this line
+        getItem('Order Management', 'orderManagement', <PieChartOutlined />),
+        getItem('Revenue Management', 'revenueManagement', <PieChartOutlined />),
     ];
 
     function handleLogout() {
