@@ -21,11 +21,13 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage  }) {
     const fetchDashboard = async () => {
         try {
             setLoading(true);
-            const response = await api.get(apiURI);
-            setDashboard(response.data);
+            const uri = typeof apiURI === 'function' ? apiURI('get') : apiURI;
+            const response = await api.get(uri);
+            setDashboard(Array.isArray(response.data) ? response.data : []);
         } catch (err) {
             console.error("Error fetching dashboard:", err);
             toast.error(err.response?.data?.message || "An error occurred while fetching dashboard");
+            setDashboard([]);
         } finally {
             setLoading(false);
         }
@@ -40,15 +42,17 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage  }) {
                 console.log(img);
                 values.image = img;
             }
+            const uri = typeof apiURI === 'function' ? apiURI(editingRecord ? 'put' : 'post') : apiURI;
             if (editingRecord) {
-                await api.put(`${apiURI}/${values.id}`, values);
+                await api.put(`${uri}/${values.id}`, values);
             } else {
-                const response = await api.post(`${apiURI}`, values);
+                const response = await api.post(`${uri}`, values);
                 setDashboard((prevDashboard) => [...prevDashboard, response.data]); 
             }
             toast.success("Operation successful!");
             setOpen(false);
             setEditingRecord(null);
+            fetchDashboard(); // Refresh the data after successful operation
         } catch (err) {
             toast.error(err.response?.data || "An error occurred");
         } finally {
@@ -59,9 +63,10 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage  }) {
 
     const handleDelete = async (id) => {
         try {
-            await api.delete(`${apiURI}/${id}`);
+            const uri = typeof apiURI === 'function' ? apiURI('delete') : apiURI;
+            await api.delete(`${uri}/${id}`);
             toast.success("Delete successful");
-                fetchDashboard();
+            fetchDashboard();
         } catch (err) {
             toast.error(err.response?.data || "An error occurred");
         }
@@ -122,6 +127,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage  }) {
                 ]} 
                 dataSource={dashboard} 
                 loading={loading} 
+                rowKey={(record) => record.id || Math.random()} // Add a unique key for each row
             />
             <Modal 
                 title={`${editingRecord ? 'Edit' : 'Create'} ${title}`} // Change title based on mode

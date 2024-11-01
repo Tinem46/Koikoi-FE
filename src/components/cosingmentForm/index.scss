@@ -13,7 +13,7 @@
     z-index: 1;
   }
   &__Content {
-    margin-top: 50px;
+    margin-top: 90px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,39 +23,88 @@
     z-index: 10;
     position: relative;
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.5); /* Nền mờ */
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     padding: 20px;
     h1 {
       color: white;
-      font-size: 36px;
+      font-size: 46px;
       padding-bottom: 26px;
     }
-    &__firstElement {
-      background-color: white;
+    &__btn {
+      position: relative;
+      padding: 15px 30px;
+      font-size: 26px;
+      font-weight: bold;
+      height: 46px;
+      border: none;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #6253e1, #04befe);
+      color: white;
+      cursor: pointer;
+      z-index: 1;
+      transition: background 0.3s ease;
+
+      &::before {
+        content: "";
+        background: linear-gradient(135deg, #6253e1, #04befe);
+        position: absolute;
+        inset: 0;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        border-radius: inherit;
+        z-index: -1;
+      }
+
+      &:hover::before {
+        opacity: 0;
+      }
+
+      &:hover {
+        background: white;
+        color: #333;
+      }
+    }
+    &__form {
       z-index: 20;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      justify-content: space-evenly;
       padding: 20px;
       border-radius: 10px;
-      width: 45%;
-      &__form {
-        .ant-form-item {
-          font-size: 26px;
-
-          .ant-input {
-            font-size: 18px; /* Cỡ chữ */
-            height: 50px; /* Độ lớn của ô input */
-            padding: 10px; /* Khoảng cách bên trong ô input */
-            width: 300px;
-          }
-        }
+      width: 100%;
+      &__left {
+        width: 45%;
+      }
+      &__right {
+        width: 45%;
+      }
+      &__left__first,
+      &__right__first {
+        background-color: rgba(255, 255, 255, 0.6);
+        padding: 22px 60px 22px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        height: 220px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      &__left__second,
+      &__right__second {
+        margin-bottom: 0;
+        background-color: rgba(255, 255, 255, 0.6);
+        padding: 22px 60px 22px;
+        border-radius: 10px;
+        height: 350px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
     }
   }
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi).ant-form-vertical .ant-form-item:not(.ant-form-item-horizontal) .ant-form-item-label>label{
+:where(.css-dev-only-do-not-override-qnu6hi).ant-form-vertical
+  .ant-form-item:not(.ant-form-item-horizontal)
+  .ant-form-item-label
+  > label {
   font-size: 16px;
 }

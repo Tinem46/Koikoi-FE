@@ -158,13 +158,17 @@ function ManagementFish() {
         </>
     );
 
-    
-    const apiURI = selectedCategoryId ? `Koi/${selectedCategoryId}` : 'Koi';
+    const getApiURI = (action) => {
+        if (action === 'post') {
+            return selectedCategoryId ? `Koi/${selectedCategoryId}` : 'Koi';
+        }
+        return 'Koi'; 
+    };
 
     return (
         <DashboardTemplate 
             columns={columns} 
-            apiURI={apiURI} // Use the validated apiURI
+            apiURI={getApiURI} // Pass the function instead of a string
             formItems={formItems} 
             title="Fish" 
             resetImage={() => setFileList([])} 

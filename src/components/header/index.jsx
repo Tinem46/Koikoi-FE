@@ -2,7 +2,7 @@ import "./index.scss";
 import { UserOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import logo from "../../assets/image/logo.png";
+import logo from "../../assets/image/LogoHome1.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 import { Dropdown, Input} from "antd";
@@ -72,7 +72,7 @@ function Header() {
               Home
             </li>
             <li onClick={() => navigate("/FishShop")}>Fish</li>
-            <li onClick={() => navigate("/consignment")}>Consignment</li>
+            <li onClick={() => navigate("/ConsignmentScreen")}>Consignment</li>
             <li onClick={() => navigate("/about-us")}>About Us</li>
           </ul>
         </div>

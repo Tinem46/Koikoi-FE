@@ -18,6 +18,9 @@ import ConsignmentScreen from "./page/consignmentScreen"
 import ProductDetails from "./page/ProductDetails"
 import ConsignmentPage from "./page/consigment"
 import ConsignmentForm from "./components/cosingmentForm"
+import CreateStaffAccount from "./page/admin/createStaffAccount"
+import OrderHistory from "./page/orderHistory"
+import ConsignmentPayment from "./page/consignmentPayment"
 
 function App() {
   const router = createBrowserRouter([
@@ -67,7 +70,7 @@ function App() {
           element: <ConsignmentScreen />
         },
         {
-          path: "/consignment",
+          path: "/ConsignmentPage",
           element: <ConsignmentPage />
         },
         {
@@ -76,13 +79,22 @@ function App() {
         },
         
         {
-          path:"/product-details",
+          path:"/product-details/:id",
           element: <ProductDetails />
         },
         {
           path:"/consignmentForm",
           element: <ConsignmentForm />
+        },
+        {
+          path: "/order-history",
+          element: <OrderHistory />
+        },
+        {
+          path:"/ConsignmentPayment",
+          element: <ConsignmentPayment />
         }
+        
       ],
     },
     {
@@ -99,6 +111,10 @@ function App() {
         {
           path: "fish",
           element: <ManagementFish />,
+        },
+        {
+          path: "staff",
+          element: <CreateStaffAccount />,
         },
 
       ],

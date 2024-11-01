@@ -1,150 +1,184 @@
+/* Import font Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Reset mặc định và áp dụng font Poppins */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif; /* Áp dụng font Poppins cho tất cả các phần tử */
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Container chính */
 .product-details {
-    
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #333;
+  padding: 20px;
+  margin: auto;
+}
 
-    &__header {
-        margin-top: 3%;
-      display: flex;
-      width: 100%;
-      max-width: 1200px;
-      margin-bottom: 40px;
-      gap: 20px;
-    }
+/* Header */
+.product-details__header {
+  margin-top: 3%;
+  display: flex;
+  width: 80%;
+  margin-bottom: 40px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
 
-    &__image {
-      flex: 0.7;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+.product-details__image {
+  flex: 0.7;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 20px;
+}
 
-      img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-        object-fit: cover;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      }
+.product-details__image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-      .small-images {
-        display: flex;
-        justify-content: space-between;
+.product-details__image .small-images {
+  display: flex;
+  justify-content: space-between;
+}
 
-        img {
-          width: 80px;
-          height: 80px;
-          border-radius: 5px;
-          border: 2px solid #eee;
-          object-fit: cover;
-        }
-      }
-    }
+.product-details__image .small-images img {
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  border: 2px solid #eee;
+  object-fit: cover;
+}
 
-    &__info {
-      flex: 1;
-      padding: 20px;
-      margin-left: 8%;
+.product-details__info {
+  flex: 1;
+  padding: 20px;
+  margin-left: 8%;
+}
 
-      h1 {
-        font-size: 2.2em;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
+/* Tiêu đề */
+.product-details__info h1 {
+  font-size: 42px;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
 
-      .product-details__price {
-        font-size: 1.8em;
-        color: #111;
-        margin-bottom: 15px;
+/* Giá */
+.product-details__price {
+  font-size: 24px;
+  color: #111;
+  margin-bottom: 15px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
 
-        .product-details__old-price {
-          text-decoration: line-through;
-          color: #999;
-          margin-left: 10px;
-        }
-      }
+.product-details__price .product-details__old-price {
+  font-size: 16px;
+  text-decoration: line-through;
+  color: #999;
+  margin-left: 10px;
+}
 
-      .product-details__specs {
-        list-style: none;
-        padding: 0;
-        margin: 20px 0;
+/* Đặc điểm sản phẩm */
+.product-details__specs {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
 
-        li {
-          margin-bottom: 10px;
-          font-size: 1.4em;
-        }
-      }
+.product-details__specs li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 400;
+}
 
-      .product-details__description {
-        font-size: 1.1em;
-        line-height: 1.6;
-        margin-bottom: 30px;
-      }
+/* Mô tả sản phẩm */
+.product-details__description {
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  font-weight: normal;
+}
 
-      .product-details__actions {
-        display: flex;
-        align-items: center;
-        gap: 15px;
+/* Các nút hành động */
+.product-details__actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 
-        .button {
-          padding: 10px 30px;
-          background-color: #ff4747;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          font-size: 1em;
-          cursor: pointer;
-          transition: background-color 0.3s;
+.product-details__actions .button {
+  font-size: 20px;
+  padding: 10px 30px;
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-          &:hover {
-            background-color: #e04040;
-          }
-        }
+.product-details__actions .button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
 
-        input {
-          width: 50px;
-          text-align: center;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          padding: 8px;
-        }
-      }
+.product-details__actions input {
+  width: 50px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px;
+}
 
-     
-    }
+/* Divider */
+.product-details__divider {
+  width: 80%;
+  height: 2px;
+  background-color: black;
+  margin: 20px 0;
+}
 
-    &__divider {
-      width: 80%;
-      height: 1px;
-      background-color: #8d0a0a;
-      margin: 20px 0;
-    }
+.product-details__divider2 {
+  width: 100%;
+  height: 1px;
+  background-color: black;
+  margin: 40px 0;
+}
 
-    &__footer {
-        .product-details__description {
-            h2 {
-                font-size: 3em; 
-            }
-        }
-    }
+/* Meta thông tin */
+.product-details__meta {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 100px;
+}
 
-    &__divider2 {
-      width: 45%;
-      height: 1px;
-      background-color: #8d0a0a;
-      margin: 40px 0;
-    }
+.product-details__meta p {
+  font-size: 16px;
+  color: #9f9f9f;
+  line-height: 1.6;
+}
 
-     &__meta {
-        display: flex;
-        flex-direction: column;
-        padding-bottom: 100px;
-        p {
-          font-size: 1.5em; /* Increase font size */
-          line-height: 2;   /* Increase line height for more spacing */
-         
-          color: #555;    /* Optional: Darken the text color for better readability */
-        }
-      }
+/* Footer */
+.product-details__footer .product-details__description h2 {
+  font-size: 3em;
+  color: #333;
 }

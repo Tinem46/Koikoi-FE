@@ -1,12 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import "./index.scss";
-import { addToCart } from '../../redux/features/cartSlice';
-import api from '../../config/api';
-import Naviagtion from '../../components/navigation';
+import { addToCart } from "../../redux/features/cartSlice";
+import api from "../../config/api";
+import Navigation from "../../components/navigation";
 
 function ProductDetails() {
-  const selectedFish = useSelector((state) => state.fish.selectedFish); // Get the fish object
+  const selectedFish = useSelector((state) => state.fish.selectedFish);
   const dispatch = useDispatch();
+
   if (!selectedFish) {
     return <div>Loading...</div>;
   }
@@ -21,11 +22,25 @@ function ProductDetails() {
     dispatch(addToCart(selectedFish));
   };
 
-  const { id, name, image, price, width, age, origin, description, category, tags } = selectedFish;
+  const {
+    id,
+    name,
+    image,
+    price,
+    size,
+    age,
+    origin,
+    description,
+    category,
+    tags,
+  } = selectedFish;
+
+  // Hàm tính giá cũ (old price) với 500000 đắt hơn giá hiện tại
+  const oldPrice = price + 500000;
 
   return (
     <div className="product-details">
-        <Naviagtion name="Product Details" link="/"/>
+      <Navigation name="Product Details" link="/" />
       <div className="product-details__header">
         <div className="product-details__image">
           <img src={image} alt={name} />
@@ -33,23 +48,26 @@ function ProductDetails() {
         <div className="product-details__info">
           <h1>{name}</h1>
           <p className="product-details__price">
-            ${price} <span className="product-details__old-price"></span>
+            ${price}{" "}
+            <span className="product-details__old-price">${oldPrice}</span>
           </p>
           <ul className="product-details__specs">
-            <li>Width: {width} cm</li>
+            <li>Width: {size} cm</li>
             <li>Age: {age} years</li>
             <li>Origin: {origin}</li>
           </ul>
           <p className="product-details__description">{description}</p>
           <div className="product-details__actions">
-            <button className="button" onClick={handleAddToCart}>Add To Cart</button>
-            <button className="button">Compare</button>
+            <button className="button add-to-cart" onClick={handleAddToCart}>
+              Add To Cart
+            </button>
+            <button className="button compare">+ Compare</button>
           </div>
           <div className="product-details__divider2"></div>
           <div className="product-details__meta">
             <p>Number: #{id}</p>
             <p>Category: {category}</p>
-            <p>Tags: {Array.isArray(tags) ? tags.join(', ') : '#Fish'}</p>
+            <p>Tags: {Array.isArray(tags) ? tags.join(", ") : "#Fish"}</p>
           </div>
         </div>
       </div>

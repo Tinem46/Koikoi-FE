@@ -12,16 +12,22 @@ function Register() {
     const handleRegister = async (values) => {
         setLoading(true);
         try {
-            await api.post("account/register", values);
+            const response = await api.post("account/register", values);
+            console.log("Response:", response);
             toast.success("Register successful");
             navigate("/login");
         } catch (err) {
-            if (err instanceof Error) {
-                toast.error(err.message);
-            } else if (typeof err === 'object' && err !== null && 'response' in err) {
-                const axiosError = err;
-                toast.error(axiosError.response?.data || "Register failed");
+            console.error("Error details:", err);
+            if (err.response) {
+                console.error("Response data:", err.response.data);
+                console.error("Response status:", err.response.status);
+                console.error("Response headers:", err.response.headers);
+                toast.error(err.response.data?.message || "Register failed");
+            } else if (err.request) {
+                console.error("Request:", err.request);
+                toast.error("No response received from server");
             } else {
+                console.error("Error message:", err.message);
                 toast.error("An unexpected error occurred");
             }
         } finally {
@@ -36,9 +42,6 @@ function Register() {
                 name="userForm"
                 onFinish={handleRegister}
                 className="register-form"
-                initialValues={{
-                    role: "ADMIN"
-                }}
             >
                 <Row gutter={[64, 16]}> {/* Increased gutter for more space between columns */}
                     <Col xs={24} md={12}>
@@ -159,5 +162,4 @@ function Register() {
     </AuthLayout>
   )
 }
-
 export default Register

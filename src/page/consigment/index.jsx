@@ -1,7 +1,8 @@
-import { Button, Steps } from "antd";
+import { Button } from "antd";
 import "./index.scss";
 import backgroundStep2 from "../../assets/image/BackgroundStep2.webp";
 import { useNavigate } from "react-router-dom";
+import StepsComponent from "../../components/steps";
 
 function ConsignmentPage() {
   const navigate = useNavigate();
@@ -19,25 +20,7 @@ function ConsignmentPage() {
       <img src={backgroundStep2}></img>
       <div className="ConsignmentPageContainer__content">
         <h1>Consignment With Us</h1>
-        <div className="ConsignmentPageContainer__Steps">
-          <Steps
-            className="Steps"
-            direction="horizontal"
-            current={0}
-            type="navigation"
-            items={[
-              {
-                title: "Choose Your Plan",
-              },
-              {
-                title: "Fill Your Information",
-              },
-              {
-                title: "Payment",
-              },
-            ]}
-          />
-        </div>
+        <StepsComponent current={0} />
         <div className="ConsignmentPageContainer__content__options">
           <div className="ConsignmentPageContainer__content__options__offline">
             <h3>Offline Consignment (Regular Customers):</h3>

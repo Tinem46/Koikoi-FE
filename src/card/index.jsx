@@ -33,18 +33,17 @@ function Card({ fish }) {
       <div className="eye-icon">👁️</div>
       <div className="fish-card__content">
         <div className="fish-card__info">
-          <div className="id">ID: {fish.id}</div>
           <div className="name">Name: {fish.name}</div>
           <div className="price">
             Price: {new Intl.NumberFormat('en-US').format(fish.price)}$
           </div>
           <div className="category">Category: {fish.category}</div>
         </div>
-        <p className="fish-card__description">Description:
+        {/* <p className="fish-card__description">Description:
           {fish.description && fish.description.length > 100
             ? `${fish.description.substring(0, 100)}...`
             : fish.description || "No description available"}
-        </p>
+        </p> */}
         <button className="button" onClick={handleAddToCart}>Thêm vào giỏ hàng</button>
       </div>
     </div>

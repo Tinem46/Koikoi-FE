@@ -44,6 +44,7 @@ const Dashboard = () => {
         getItem('Category', 'category', <PieChartOutlined />),
         getItem('Voucher', 'voucher', <PieChartOutlined />),
         getItem('Fish', 'fish', <PieChartOutlined />),
+        getItem('Staff', 'staff', <PieChartOutlined />),
     ];
 
     function handleLogout() {

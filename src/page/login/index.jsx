@@ -8,9 +8,9 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../redux/features/userSlice';
 import {signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../config/firebase";
-import './index.scss'; // Add this impor
+import './index.scss'; // Add this import
+import { alertSuccess } from '../../assets/image/hook';
 import { useState } from 'react';
-
 
 function Login() {
   const dispatch = useDispatch();

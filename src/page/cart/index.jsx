@@ -21,28 +21,24 @@ function Cart() {
   const [shippingPee,  setShippingPee] = useState(0);    
   const [totalAmount, setTotalAmount] = useState(0);
 
-  const fetchCard = async () => {
-    try {
-      const response = await api.get('Cart');
-      setCartId(response.data.id); // Assuming the account ID is in the response
-    } catch (error) {
-      console.error("Failed to fetch account ID:", error.response);
-    }
-  };
+  const [isCartTotalUpdated, setIsCartTotalUpdated] = useState(false);
+
+ 
 
   const fetchCart = async () => {
     try {
       const response = await api.get('Cart');
-      const cartData = response.data.cartDetails; // Extract cartDetails array
+      const cartData = response.data.cartDetails || []; 
       setCart(cartData);
+      setCartId(response.data.id);
     } catch (error) {
       console.error("Failed to fetch cart:", error.response);
+      setCart([]); 
     }
   };
 
   useEffect(() => {
     fetchCart();
-    fetchCard(); 
   }, []);
 
   const handleRemove = async (id) => {
@@ -91,20 +87,23 @@ function Cart() {
         }
       });
       console.log(response.data);
-      const { subTotal, shippingPee, totalAmount } = response.data; // Assuming these fields are in the response
+      const { subTotal, shippingPee, totalAmount } = response.data;
       setSubTotal(subTotal);
       setShippingPee(shippingPee);
       setTotalAmount(totalAmount);
       console.log(subTotal, shippingPee, totalAmount);
+      setIsCartTotalUpdated(true); 
     } catch (error) {
       console.error("Failed to fetch cart total:", error.response ? error.response.data : error);
+      setIsCartTotalUpdated(false); 
+      
     }
   };
 
 
 
   useEffect(() => {
-    if (Array.isArray(cart)) { // Ensure cart is an array
+    if (Array.isArray(cart)) {
       const tableData = cart.map((item) => ({
         key: item.id,
         name: item.name,
@@ -117,6 +116,7 @@ function Cart() {
       setDataSource(tableData);
     } else {
       console.error("Cart is not an array:", cart);
+      setDataSource([]); // Set dataSource to an empty array if cart is not an array
     }
   }, [cart]);
 
@@ -213,7 +213,25 @@ function Cart() {
             </div>
             <br />
             {Array.isArray(cart) && cart.length > 0 && (
-              <button onClick={() => navigate('/checkout')}>Proceed to checkout</button>
+              <button style={{ cursor: isCartTotalUpdated ? 'pointer' : 'not-allowed' }}
+                onClick={() => {
+                  if (isCartTotalUpdated) {
+                    navigate('/checkout', { 
+                      state: { 
+                        subTotal, 
+                        shippingPee, 
+                        totalAmount,
+                        cart 
+                      }
+                    });
+                  } else {
+                    alert("Please update cart total before proceeding to checkout.");
+                  }
+                }}
+                disabled={!isCartTotalUpdated}
+              >
+                Proceed to checkout
+              </button>
             )}
           </section>
         </div>

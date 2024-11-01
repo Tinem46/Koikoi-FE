@@ -1,6 +1,6 @@
-import { useSelector, useDispatch } from 'react-redux';
+import {useDispatch } from 'react-redux';
 import { Button } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './index.scss';
 import { toast } from 'react-toastify';
@@ -9,12 +9,12 @@ import api from '../../config/api';
 import Naviagtion from '../../components/navigation';
 
 function Checkout() {
-    const cart = useSelector((state) => state.cart.products);
+    const location = useLocation();
+    const { subTotal, shippingPee, totalAmount, cart } = location.state || {};
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-    
+    const [paymentMethod, setPaymentMethod] = useState('bank');
 
     useEffect(() => {
         fetchUserCheckout();
@@ -56,14 +56,24 @@ function Checkout() {
                 price: totalAmount
             };
 
-            const response = await api.post('orders', orderData);
-               
+            const orderResponse = await api.post('order', orderData);
+            const orderId = orderResponse.data.id; 
 
+            if (paymentMethod === 'bank') {
+                const paymentResponse = await api.post(`payment/VNPay/${orderId}`);
+                const paymentUrl = paymentResponse.data; 
 
-            toast.success('Payment successful!');
-            dispatch(reset());
-            navigate('/');
-            console.log(response);
+                const transactionData = {
+                    koiOrderId: orderId
+                };
+                await api.post('transactions/transactions', transactionData);
+
+                window.location.href = paymentUrl;
+            } else {
+                toast.success('Order placed successfully!');
+                dispatch(reset());
+                navigate('/');
+            }
         } catch (error) {
             console.error('Error processing payment:', error);
             toast.error('Failed to process payment. Please try again.');
@@ -99,32 +109,57 @@ function Checkout() {
                 <div className="order-summary">
                     <h2>Order Summary</h2>
                     <ul>
-                        {cart.map((item) => (
+                        {cart && cart.map((item) => (
                             <li key={item.id}>
-                                <span>{item.name}</span>
-                                <div>
-                                    <span>Quantity: {item.quantity}</span><br />
-                                    <span>Price: ${new Intl.NumberFormat('en-US').format(item.price)}</span>
+                                <div className="item-info">
+                                    <img src={item.image} alt={item.name} />
+                                    <span className="item-name">{item.name}</span>
+                                </div>
+                                <div className="item-details">
+                                    <span>Quantity: {item.quantity}</span>
+                                    <span>Price: ${new Intl.NumberFormat('en-US').format(item.price * item.quantity)}</span>
                                 </div>
                             </li>
                         ))}
                     </ul>
-                    <h3>Total: ${new Intl.NumberFormat('en-US').format(totalAmount)}</h3>
+                    <div className="cart-totals">
+                        <p>Subtotal: ${new Intl.NumberFormat('en-US').format(subTotal)}</p>
+                        <p>Shipping: ${new Intl.NumberFormat('en-US').format(shippingPee)}</p>
+                        <h3>Total: ${new Intl.NumberFormat('en-US').format(totalAmount)}</h3>
+                    </div>
                     
                     {/* Payment Methods */}
                     <div className="payment-methods">
                         <h3>Payment Methods</h3>
                         <label>
-                            <input type="radio" name="payment" value="bank" defaultChecked />
+                            <input 
+                                type="radio" 
+                                name="payment" 
+                                value="bank" 
+                                checked={paymentMethod === 'bank'}
+                                onChange={() => setPaymentMethod('bank')}
+                            />
                             Direct Bank Transfer
                         </label>
                         <label>
-                            <input type="radio" name="payment" value="cash" />
+                            <input 
+                                type="radio" 
+                                name="payment" 
+                                value="cash"
+                                checked={paymentMethod === 'cash'}
+                                onChange={() => setPaymentMethod('cash')}
+                            />
                             Cash on Delivery
                         </label>
                     </div>
 
-                    <Button style={{width: '30%', justifyContent: 'center',marginLeft: '35%',marginTop: '60px',backgroundColor: 'black',height: '50px',fontSize: '18px'}} type="primary" onClick={handlePayment}>Place Order</Button>
+                    <Button 
+                        style={{width: '30%', justifyContent: 'center', marginLeft: '35%', marginTop: '60px', backgroundColor: 'black', height: '50px', fontSize: '18px'}} 
+                        type="primary" 
+                        onClick={handlePayment}
+                    >
+                        Place Order
+                    </Button>
                 </div>
             </div>
         </div>
