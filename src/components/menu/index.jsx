@@ -66,7 +66,7 @@ function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
     { value: "price_asc", label: "Price: Low to High" },
     { value: "price_desc", label: "Price: High to Low" },
   ];
-
+  
   const categories = [
     { value: "all", label: "All Koi" },
     { value: "kohaku", label: "Kohaku" },

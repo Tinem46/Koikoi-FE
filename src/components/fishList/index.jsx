@@ -3,16 +3,15 @@ import api from "../../config/api";
 import Card from "../../card";
 import "./index.scss";
 
-function FishList() {
+function FishList({ Type }) {
   const [fish, setFish] = useState([]);
-  
 
   const fetchFish = async () => {
     try {
       const response = await api.get("Koi");
       setFish(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -23,7 +22,7 @@ function FishList() {
   return (
     <div className="fish-list">
       {fish.slice(0, 3).map((item) => (
-        <Card key={item.id} fish={item} />
+        <Card key={Type ? item.type : item.id} fish={item} />
       ))}
     </div>
   );

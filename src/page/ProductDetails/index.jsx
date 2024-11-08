@@ -2,13 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import "./index.scss";
 import { addToCart } from "../../redux/features/cartSlice";
 import api from "../../config/api";
-import Navigation from "../../components/navigation";
-import Feedback from "../../components/feedbacks"
+import Feedback from "../../components/feedbacks";
+import FishList from "../../components/fishList";
+import NarBar from "../../components/navigation2";
 
 function ProductDetails() {
   const selectedFish = useSelector((state) => state.fish.selectedFish);
   const dispatch = useDispatch();
-
+  const FishShop = "FishShop";
   if (!selectedFish) {
     return <div>Loading...</div>;
   }
@@ -41,7 +42,7 @@ function ProductDetails() {
 
   return (
     <div className="product-details">
-      <Navigation name="Product Details" link="/" />
+      <NarBar preOn={FishShop} standOn={name} />
       <div className="product-details__header">
         <div className="product-details__image">
           <img src={image} alt={name} />
@@ -80,6 +81,7 @@ function ProductDetails() {
           <h2>Description</h2>
           <p>{description}</p>
         </div>
+        <FishList Type={category} />
         <Feedback productId={id} />
       </div>
     </div>

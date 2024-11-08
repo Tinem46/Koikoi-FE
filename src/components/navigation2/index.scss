@@ -1,0 +1,32 @@
+.navigation2
+ {
+  background-color: #000000; // Nền đen cho thanh điều hướng
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: flex-start; // Đưa nội dung về sát lề trái
+
+  .breadcrumbBar {
+    padding-left: 20px; // Khoảng cách 20px từ lề trái
+    font-size: 18px;
+
+    .ant-breadcrumb {
+      display: flex; // Đảm bảo các mục breadcrumb nằm trên cùng một hàng
+      align-items: center;
+      padding:20px;
+
+      .ant-breadcrumb-separator {
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0 15px; // Khoảng cách giữa separator và text
+      }
+
+      .ant-breadcrumb-link {
+        color: #ffffff;
+        font-size: 18px;
+        white-space: nowrap; 
+      }
+    }
+  }
+}

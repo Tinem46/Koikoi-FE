@@ -9,12 +9,13 @@
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif; /* Áp dụng font Poppins cho tất cả các phần tử */
+ 
 }
 
 body {
   font-family: 'Poppins', sans-serif;
   color: #333;
-  line-height: 1.6;
+  line-height: 1.6; 
 }
 
 /* Container chính */
@@ -23,8 +24,8 @@ body {
   flex-direction: column;
   align-items: center;
   color: #333;
-  padding: 20px;
   margin: auto;
+  margin-top: 130px;
 }
 
 /* Header */

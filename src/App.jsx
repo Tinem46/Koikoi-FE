@@ -1,70 +1,69 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Home from "./page/home"
-import Layout from "./components/layout"
-import Login from "./page/login/index"
-import Register from "./page/register"
-import Profile from "./page/Profile"
-import Dashboard from "./components/dashboard"
-import ManageCategory from "./page/admin/category"
-import ManageVoucher from "./page/admin/voucher"
-import ManagementFish from "./page/admin/fish"
-import Cart from "./page/cart"
-import ForgotPassword from "./page/forgotPassword"
-import ResetPassword from "./page/resetPassword"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./page/home";
+import Layout from "./components/layout";
+import Login from "./page/login/index";
+import Register from "./page/register";
+import Profile from "./page/Profile";
+import Dashboard from "./components/dashboard";
+import ManageCategory from "./page/admin/category";
+import ManageVoucher from "./page/admin/voucher";
+import ManagementFish from "./page/admin/fish";
+import Cart from "./page/cart";
+import ForgotPassword from "./page/forgotPassword";
+import ResetPassword from "./page/resetPassword";
 import Checkout from "./page/checkout"; // Import the Checkout component
-import AboutUs from "./page/aboutUs"
-import FishShop from "./page/shopFish"
-import ConsignmentScreen from "./page/consignmentScreen"
-import ProductDetails from "./page/ProductDetails"
-import ConsignmentPage from "./page/consigment"
-import ConsignmentForm from "./components/cosingmentForm"
-import CreateStaffAccount from "./page/admin/createStaffAccount"
-import OrderHistory from "./page/orderHistory"
-import OrderManagement from "./page/admin/orderManagement"
-import OrderSuccess from "./page/orderSuccess"
-import RevenueManagement from "./page/admin/revenueManagement"
-import ManagementFeedback from "./page/admin/feedback"
-
-
+import AboutUs from "./page/aboutUs";
+import FishShop from "./page/shopFish";
+import ConsignmentScreen from "./page/consignmentScreen";
+import ProductDetails from "./page/ProductDetails";
+import ConsignmentPage from "./page/consigment";
+import ConsignmentForm from "./components/cosingmentForm";
+import CreateStaffAccount from "./page/admin/createStaffAccount";
+import OrderHistory from "./page/orderHistory";
+import OrderManagement from "./page/admin/orderManagement";
+import OrderSuccess from "./page/orderSuccess";
+import RevenueManagement from "./page/admin/revenueManagement";
+import ManagementFeedback from "./page/admin/feedback";
+import ConginmentCareMain from "./page/ConsingmentCare";
+import ConsignmentCareDetail from "./page/ConsignmentCareDetail";
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: <Layout />,
       children: [
         {
-          path:"",
+          path: "",
           element: <Home />,
         },
         {
-          path:"/login",
+          path: "/login",
           element: <Login />,
         },
         {
-          path:"/register",
+          path: "/register",
           element: <Register />,
         },
         {
-          path:"/profile",
+          path: "/profile",
           element: <Profile />,
         },
         {
-          path:"/cart",
+          path: "/cart",
           element: <Cart />,
         },
         {
-          path:"/forgot-Password",
-          element:<ForgotPassword />
+          path: "/forgot-Password",
+          element: <ForgotPassword />,
         },
         {
-          path:"/resetPassword",
-          element:<ResetPassword />
-
+          path: "/resetPassword",
+          element: <ResetPassword />,
         },
         {
-          path:"/checkout", // Add the checkout route
-          element: <Checkout />
+          path: "/checkout", // Add the checkout route
+          element: <Checkout />,
         },
         {
           path: "/FishShop", // Add the checkout route
@@ -72,47 +71,54 @@ function App() {
         },
         {
           path: "/ConsignmentScreen",
-          element: <ConsignmentScreen />
+          element: <ConsignmentScreen />,
         },
         {
           path: "/ConsignmentPage",
-          element: <ConsignmentPage />
+          element: <ConsignmentPage />,
         },
         {
-          path:"/aboutUs",
-          element: <AboutUs />
+          path: "/aboutUs",
+          element: <AboutUs />,
         },
-        
+
         {
-          path:"/product-details/:id",
-          element: <ProductDetails />
+          path: "/product-details/:id",
+          element: <ProductDetails />,
         },
         {
-          path:"/consignmentForm",
-          element: <ConsignmentForm />
+          path: "/consignmentForm",
+          element: <ConsignmentForm />,
         },
         {
           path: "/order-history",
-          element: <OrderHistory />
+          element: <OrderHistory />,
         },
         {
           path: "orderSuccess",
-          element: <OrderSuccess />
+          element: <OrderSuccess />,
         },
         {
           path: "consignment",
-          element: <ConsignmentPage />
-        }
-  
-     
+          element: <ConsignmentPage />,
+        },
+        {
+          path: "consignmentCare",
+          element: <ConginmentCareMain />,
+        },
+        {
+          path: "ConsignmentCareDetail",
+          element: <ConsignmentCareDetail />,
+        },
       ],
     },
     {
-      path: "/dashboard", element: <Dashboard />,
+      path: "/dashboard",
+      element: <Dashboard />,
       children: [
         {
           path: "category",
-          element: <ManageCategory />
+          element: <ManageCategory />,
         },
         {
           path: "voucher",
@@ -128,23 +134,22 @@ function App() {
         },
         {
           path: "orderManagement", // Remove the leading slash
-          element: <OrderManagement />
+          element: <OrderManagement />,
         },
         {
           path: "revenueManagement",
-          element: <RevenueManagement />
+          element: <RevenueManagement />,
         },
         {
           path: "feedback",
-          element: <ManagementFeedback />
+          element: <ManagementFeedback />,
         },
+        
 
       ],
     },
-  ])
-  return (
-    <RouterProvider router={router} />
-  )
+  ]);
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
