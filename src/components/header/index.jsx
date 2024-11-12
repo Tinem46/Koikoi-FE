@@ -1,11 +1,13 @@
 import "./index.scss";
-import { UserOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { UserOutlined,  ShoppingCartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import logo from "../../assets/image/LogoHome1.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
-import { Dropdown, Input} from "antd";
+import { Dropdown} from "antd";
+import { Wallet as WalletIcon } from '@mui/icons-material';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 
 
 function Header() {
@@ -76,15 +78,19 @@ function Header() {
             <li onClick={() => navigate("/FishShop")}>Fish</li>
             <li onClick={() => navigate("/consignment")}>Consignment</li>
             <li onClick={() => navigate("/aboutUs")}>About Us</li>
+            <li onClick={() => navigate("/feedback")}>Feedback</li>
           </ul>
         </div>
         <div className="header__nav-right">
           <ul>
-            <li>
-              <div className="search-bar">
-                <Input type="text" placeholder="Tìm kiếm..." suffix={<SearchOutlined style={{ cursor: 'pointer' }} />}/>
-              </div>
-            </li>
+            {isLoggedIn && (
+              <li>
+                <WalletIcon 
+                  onClick={() => navigate('/walletUser')} 
+                  style={{ color: 'white', cursor: 'pointer', fontSize: '30px' }}
+                />
+              </li>
+            )}
             <li>
               <Dropdown overlay={userMenu} trigger={['hover']}>
                 <UserOutlined style={{ cursor: 'pointer' }} />

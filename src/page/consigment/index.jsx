@@ -7,8 +7,8 @@ import StepsComponent from "../../components/steps";
 function ConsignmentPage() {
   const navigate = useNavigate();
 
-  const handleOfflineConsignment = () => {
-    navigate("/consignmentForm", { state: { consignmentType: "Offline Consignment" } });
+  const handleConsignmentCare = () => {
+    navigate("/consignmentCare");
   };
 
   const handleOnlineConsignment = () => {
@@ -23,7 +23,7 @@ function ConsignmentPage() {
         <StepsComponent current={0} />
         <div className="ConsignmentPageContainer__content__options">
           <div className="ConsignmentPageContainer__content__options__offline">
-            <h3>Offline Consignment (Regular Customers):</h3>
+            <h3>Consignment Care</h3>
             <p>
               Customers bring their Koi fish directly to the farm for consignment. 
               Our staff will inspect the condition of the fish, evaluate its quality, 
@@ -34,14 +34,14 @@ function ConsignmentPage() {
               size="large"
               className="twoButton"
               type="primary"
-              onClick={handleOfflineConsignment}
+              onClick={handleConsignmentCare}
             >
-              Offline Consignment
+             Consignment Care
             </Button>
           </div>
 
           <div className="ConsignmentPageContainer__content__options__online">
-            <h3>Online Consignment (Business Customers):</h3>
+            <h3>Consignment Sell</h3>
             <p>
               Customers can consign their Koi fish through our online platform (website or app). 
               The system allows customers to enter details about their Koi, such as type, size, 
@@ -56,7 +56,7 @@ function ConsignmentPage() {
               type="primary"
               onClick={handleOnlineConsignment}
             >
-              Online Consignment
+              Consignment Sell
             </Button>
           </div>
         </div>

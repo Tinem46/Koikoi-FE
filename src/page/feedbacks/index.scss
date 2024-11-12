@@ -1,18 +1,16 @@
 .feedback-container {
-    width: 100%;
-    max-width: 1500px;
-    margin: 40px auto;
-    padding: 20px;
-    margin-right: 500px;
+  
+    margin-top: 150px;
 
-    h2 {
-        font-size: 2em;
-        margin-bottom: 20px;
-    }
+   
 
     .feedback-form {
-        margin-bottom: 30px;
-
+        margin: 0 auto 30px;
+        max-width: 1500px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
         textarea {
             width: 100%;
             min-height: 100px;
@@ -25,7 +23,7 @@
 
         button {
             padding: 10px 20px;
-            background-color: #ff4747;
+            background-color: #1f1c1c;
             color: white;
             border: none;
             border-radius: 5px;
@@ -39,11 +37,18 @@
     }
 
     .feedback-list {
+        max-width: 1500px;
+        margin: 0 auto;
+        align-items: center;
+        
+        
         .feedback-item {
             background-color: #f9f9f9;
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 15px;
+           
+            
 
             p {
                 margin-bottom: 10px;
@@ -57,4 +62,3 @@
         }
     }
 }
-

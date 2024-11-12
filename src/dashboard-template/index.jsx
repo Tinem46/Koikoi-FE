@@ -17,6 +17,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
     const [loading, setLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
     const [editingRecord, setEditingRecord] = useState(null); // New state for editing record
+    const [actionLoading, setActionLoading] = useState({});
 
     const fetchDashboard = async () => {
         try {
@@ -49,7 +50,6 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
                 const response = await api.post(`${uri}`, values);
                 setDashboard((prevDashboard) => [...prevDashboard, response.data]); 
             }
-            toast.success("Operation successful!");
             setOpen(false);
             setEditingRecord(null);
             fetchDashboard(); // Refresh the data after successful operation
@@ -78,6 +78,68 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
         setOpen(true); 
     };
 
+    const handleCustomAction = async (actionConfig, recordId) => {
+        setActionLoading(prev => ({ ...prev, [`${actionConfig.label}-${recordId}`]: true }));
+        try {
+            await actionConfig.action(recordId);
+            toast.success(actionConfig.successMessage || 'Operation successful');
+            const uri = typeof apiURI === 'function' ? apiURI('get') : apiURI;
+            const response = await api.get(uri);
+            setDashboard(Array.isArray(response.data) ? response.data : []);
+        } catch (err) {
+            toast.error(actionConfig.errorMessage || err.response?.data || 'An error occurred');
+        } finally {
+            setActionLoading(prev => ({ ...prev, [`${actionConfig.label}-${recordId}`]: false }));
+        }
+    };
+
+    const getColumns = () => [
+        ...columns,
+        {
+            title: "Actions",
+            key: "actions",
+            render: (_, record) => (
+                <React.Fragment>
+                    {customActions && customActions.map((action, index) => (
+                        action.condition(record) && (
+                            <Button
+                                key={index}
+                                onClick={() => handleCustomAction(action, record.id)}
+                                loading={actionLoading[`${action.label}-${record.id}`]}
+                                style={{ marginRight: '8px' }}
+                            >
+                                {action.label}
+                            </Button>
+                        )
+                    ))}
+                    {showEditDelete && (
+                        <>
+                            <Button 
+                                type="primary" 
+                                onClick={() => handleEdit(record)} 
+                                style={{ marginRight: '8px' }}
+                            >
+                                <EditOutlined />
+                            </Button>
+                            <Popconfirm 
+                                title={`Are you sure you want to delete ${record.name}?`}
+                                onConfirm={() => handleDelete(record.id)}
+                            >
+                                <Button 
+                                    type="primary" 
+                                    danger 
+                                    style={{ backgroundColor: '#f44336', borderColor: '#f44336' }}
+                                >
+                                    <DeleteOutlined />
+                                </Button>
+                            </Popconfirm>
+                        </>
+                    )}
+                </React.Fragment>
+            )
+        }
+    ];
+
     useEffect(() => {
         fetchDashboard();
     }, []);
@@ -97,51 +159,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
                 </Button>
             )}
             <Table 
-                columns={[
-                    ...columns,
-                    {
-                        title: "Actions",
-                        key: "actions",
-                        render: (_, record) => (
-                            <React.Fragment>
-                                {customActions && customActions.map((action, index) => (
-                                    action.condition(record) && (
-                                        <Button
-                                            key={index}
-                                            onClick={() => action.action(record.id)}
-                                            style={{ marginRight: '8px' }}
-                                        >
-                                            {action.label}
-                                        </Button>
-                                    )
-                                ))}
-                                {showEditDelete && (
-                                    <>
-                                        <Button 
-                                            type="primary" 
-                                            onClick={() => handleEdit(record)} 
-                                            style={{ marginRight: '8px' }}
-                                        >
-                                            <EditOutlined />
-                                        </Button>
-                                        <Popconfirm 
-                                            title={`Are you sure you want to delete ${record.name}?`}
-                                            onConfirm={() => handleDelete(record.id)}
-                                        >
-                                            <Button 
-                                                type="primary" 
-                                                danger 
-                                                style={{ backgroundColor: '#f44336', borderColor: '#f44336' }}
-                                            >
-                                                <DeleteOutlined />
-                                            </Button>
-                                        </Popconfirm>
-                                    </>
-                                )}
-                            </React.Fragment>
-                        )
-                    }
-                ]} 
+                columns={getColumns()} 
                 dataSource={dashboard} 
                 loading={loading} 
                 rowKey={(record) => record.id || Math.random()}

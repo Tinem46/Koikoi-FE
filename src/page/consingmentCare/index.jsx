@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../config/api';
 import dayjs from 'dayjs';
 import "./index.scss";
-
+import Navigation from '../../components/Navigation';
 function ConsignmentCare() {
   const [orders, setOrders] = useState([]);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState([]);
@@ -61,34 +61,52 @@ function ConsignmentCare() {
   };
 
   const handleConsignment = async () => {
-    if (!startDate || !endDate) {
-      message.error("Please select both Start Date and End Date.");
-      return;
-    }
-
-    if (dayjs(endDate).isBefore(dayjs(startDate))) {
-      message.error("End Date cannot be earlier than Start Date.");
-      return;
-    }
-
     try {
-      const response = await api.post(`Consignment/care/${selectedProduct.id}`, {
+      if (!selectedProduct) {
+        message.error("No product selected");
+        return;
+      }
+
+      const createResponse = await api.post(`Consignment/care/${selectedProduct.id}`, {
         start_date: startDate.format("YYYY-MM-DD"),
         end_date: endDate.format("YYYY-MM-DD")
       });
 
-      const secondResponse = await api.get(`Consignment/showConsignment/${response.data.id}`);
-      setTotalAmount(secondResponse.data.totalAmount); // Set totalAmount based on response
+      if (!createResponse?.data?.id) {
+        throw new Error('Invalid response from server');
+      }
 
-      setIsConsignmentModalVisible(true); // Keep the modal open to show total amount
-    } catch (err) {
-      console.error(err.response.data);
+      const detailsResponse = await api.get(`Consignment/showConsignment/${createResponse.data.id}`);
+      if (detailsResponse.data) {
+        setTotalAmount(detailsResponse.data.totalAmount);
+        setSelectedOrderId(createResponse.data.id);
+      }
+    } catch (error) {
+      console.error('Error creating consignment:', error);
+      message.error(error.response?.data?.message || 'Failed to create consignment');
     }
   };
 
-  const handleProceedToCheckout = () => {
+  const handleProceedToCheckout = async () => {
     setIsConsignmentModalVisible(false);
-    navigate('/checkout');
+    try {
+      const response = await api.post(`order/consignOrder`, {
+        id: selectedOrderId,
+        totalAmount: totalAmount
+      }, {
+        params: { id: selectedOrderId }
+      });
+      navigate('/checkout', {
+        state: {
+          totalAmount: totalAmount,
+          orderId: response.data.id,
+          paymentType: 'consignment'
+        }
+      });
+    } catch (error) {
+      console.error('Error processing consignment order:', error);
+      message.error('Failed to process consignment order');
+    }
   };
 
   const orderColumns = [
@@ -107,6 +125,12 @@ function ConsignmentCare() {
       key: 'totalAmount',
       render: (text) => `$${parseFloat(text).toFixed(2)}`,
     },
+    {
+      title: 'Status',
+      dataIndex: 'type',
+      key: 'type',
+    },
+
     {
       title: 'Actions',
       key: 'actions',
@@ -139,11 +163,10 @@ function ConsignmentCare() {
       ),
     },
   ];
-
   return (
     <div className="consignment-care-container1">
-      <h1>Consignment Care</h1>
-
+      
+      <Navigation name="Consignment Care" link="/consignmentCare"/>
       <Table
         dataSource={orders}
         columns={orderColumns}
@@ -172,7 +195,7 @@ function ConsignmentCare() {
       <Modal
         title="Select Start and End Date"
         visible={isConsignmentModalVisible}
-        onOk={totalAmount > 0 ? handleProceedToCheckout : handleConsignment}
+        onOk={totalAmount > 0 ? () => handleProceedToCheckout() : handleConsignment}
         onCancel={() => {
           setIsConsignmentModalVisible(false);
           setTotalAmount(0); // Reset total amount on close

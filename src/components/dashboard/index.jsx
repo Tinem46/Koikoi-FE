@@ -7,6 +7,7 @@ import { Breadcrumb, Button, Layout, Menu, theme } from 'antd';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/features/userSlice';
+import { Wallet as WalletIcon } from '@mui/icons-material';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -49,6 +50,7 @@ const Dashboard = () => {
         getItem('Feedback', 'feedback', <PieChartOutlined />), // Add this line
         getItem('Order Management', 'orderManagement', <PieChartOutlined />),
         getItem('Revenue Management', 'revenueManagement', <PieChartOutlined />),
+        getItem('Consignment Management', 'consignmentManagement', <PieChartOutlined />),
     ];
 
     function handleLogout() {
@@ -61,14 +63,31 @@ const Dashboard = () => {
         <Layout style={{ minHeight: '100vh' }} >
             <Header style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#000038' }}>
                 <h1 style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>Dashboard</h1>
-                <Button onClick={handleLogout} style={{ position: 'absolute', right: '20px' }}>
-                    <LogoutOutlined style={{ fontSize: '18px', color: 'blue' }} /> 
-                </Button>
+                {role === "MANAGER" && (
+                    <WalletIcon 
+                        onClick={() => navigate('/dashboard/walletManager')} 
+                        style={{ position: 'absolute', right: '35px', color: 'white', cursor: 'pointer', fontSize: '30px' }}
+                    />
+                )}
             </Header>
             <Layout>
                 <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}  >
                     <div className="demo-logo-vertical" />
                     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+                    <Button 
+                        onClick={handleLogout} 
+                        style={{ 
+                            position: 'absolute',
+                            bottom: '80px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <LogoutOutlined style={{ fontSize: '18px', color: 'blue' }} /> 
+                    </Button>
                 </Sider>
                 <Layout>
                     <Content style={{ margin: '0 16px'}}>

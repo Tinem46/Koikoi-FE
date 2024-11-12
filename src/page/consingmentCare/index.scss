@@ -1,8 +1,5 @@
 .consignment-care-container1 {
-  padding: 20px;
-  background-color: #f7f9fc;
-  margin-top :150px;
-
+ 
   h1 {
     font-size: 24px;
     font-weight: bold;
@@ -18,26 +15,13 @@
 }
 
 .ant-table {
-  .ant-table-thead > tr > th {
-    background-color: #f0f5ff;
-    color: #1a73e8;
-    font-weight: 500;
-  }
+ 
 
   .ant-table-tbody > tr > td {
     padding: 12px;
   }
 
-  .ant-btn {
-    background-color: #1a73e8;
-    color: white;
-    border: none;
-
-    &:hover {
-      background-color: #155ab6;
-      color: white;
-    }
-  }
+  
 }
 
 .ant-modal {

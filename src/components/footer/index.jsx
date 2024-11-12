@@ -1,4 +1,5 @@
 import './index.scss';
+import { IoSendSharp } from "react-icons/io5";
 
 function Footer() {
   return (
@@ -19,7 +20,7 @@ function Footer() {
           <form className="emailForm">
             <input type="email" placeholder="Enter your email" className="emailInput" />
             <button type="submit" className="submitIcon">
-              {/* Add submit icon */}
+              <IoSendSharp />
             </button>
           </form>
         </div>

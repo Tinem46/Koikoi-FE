@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import DashboardTemplate from '../../../dashboard-template';
+import api from '../../../config/api';
 import { toast } from 'react-toastify';
 import OrderDetails from '../../../components/orderDetails';
 import OrderInformation from '../../../components/OrderInformation';
 import { Button } from 'antd';
-import api from '../../../config/api';
 
-function OrderManagement() {
+function ConsignmentManager() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [orderInfo, setOrderInfo] = useState(null);
@@ -24,7 +24,7 @@ function OrderManagement() {
   };
 
   const handleViewDetails = (order) => {
-    fetchOrderDetails(order.id); 
+    fetchOrderDetails(order.id); // Fetch order details before opening
     setIsDetailsOpen(true);
   };
 
@@ -99,57 +99,60 @@ function OrderManagement() {
           </Button>
           <Button onClick={() => handleViewOrderInfo(record.id)}>
             Information
-          </Button>
+</Button>
         </>
       ),
     },
   ];
 
   const handleConfirmPayment = async (orderId) => {
-      await api.post(`transactions/transactions`, {}, { 
-        params: { 
-          koiOrderId: Number(orderId) 
-        } 
-      });
-      toast.success('Order refunded successfully');
+    try {
+      await api.post(`transactions/transactionsCosign?koiOrderId=${Number(orderId)}`);
+      toast.success('Payment confirmed successfully');
+    } catch (error) {
+      console.error('Error confirming payment:', error);
+      throw error;
+    }
   };
 
   const handleCancelOrder = async (orderId) => {
-    await api.put(`order/cancel/${orderId}`, { note: "Order cancelled" });
-    toast.success('Order cancelled successfully');
+    try {
+      await api.put(`transactions/cancelConsign?koiOrderId=${Number(orderId)}`, { note: "Order cancelled" });
+      toast.success('Order cancelled successfully');
+    } catch (error) {
+      console.error('Error cancelling order:', error);
+      toast.error('Failed to cancel order');
+    }
   };
 
-  const handleRefund = async (orderId) => {
-      await api.post(`transactions/refund`, {}, { 
-        params: { 
-          koiOrderId: Number(orderId) 
-        } 
-      });
-      toast.success('Order refunded successfully');
-  };
+  
 
   return (
     <div>
       <DashboardTemplate 
         columns={columns} 
-        apiURI="order/buy"
-        title="Order Management"
+        apiURI="order/consign"
+        title="Consignment Management"
         customActions={[
           {
             label: 'Confirm Payment',
             condition: (record) => record.orderStatus === 'PAID',
             action: handleConfirmPayment,
-            
+            successMessage: 'Payment confirmed successfully',
+            errorMessage: 'Failed to confirm payment',
           },
           {
             label: 'Cancel Order',
             condition: (record) => !['CANCELED', 'REFUND'].includes(record.orderStatus),
             action: handleCancelOrder,
+            successMessage: 'Order cancelled successfully',
+            errorMessage: 'Failed to cancel order',
           },
           {
             label: 'Refund Order',
             condition: (record) => record.orderStatus === 'CANCELED',
-            action: handleRefund,
+            successMessage: 'Order refunded successfully',
+            errorMessage: 'Failed to refund order',
           },
         ]}
         disableCreate={true}
@@ -172,6 +175,6 @@ function OrderManagement() {
       )}
     </div>
   );
-
 }
-export default OrderManagement;
+
+export default ConsignmentManager;

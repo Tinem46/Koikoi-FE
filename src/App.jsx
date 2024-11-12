@@ -11,21 +11,24 @@ import ManagementFish from "./page/admin/fish";
 import Cart from "./page/cart";
 import ForgotPassword from "./page/forgotPassword";
 import ResetPassword from "./page/resetPassword";
-import Checkout from "./page/checkout"; // Import the Checkout component
-import AboutUs from "./page/aboutUs";
-import FishShop from "./page/shopFish";
-import ConsignmentScreen from "./page/consignmentScreen";
-import ProductDetails from "./page/ProductDetails";
-import ConsignmentPage from "./page/consigment";
-import ConsignmentForm from "./components/cosingmentForm";
-import CreateStaffAccount from "./page/admin/createStaffAccount";
-import OrderHistory from "./page/orderHistory";
-import OrderManagement from "./page/admin/orderManagement";
-import OrderSuccess from "./page/orderSuccess";
-import RevenueManagement from "./page/admin/revenueManagement";
-import ManagementFeedback from "./page/admin/feedback";
-import ConginmentCareMain from "./page/ConsingmentCare";
-import ConsignmentCareDetail from "./page/ConsignmentCareDetail";
+import Checkout from "./page/checkout"; 
+import AboutUs from "./page/aboutUs"
+import FishShop from "./page/shopFish"
+import ConsignmentScreen from "./page/consignmentScreen"
+import ProductDetails from "./page/ProductDetails"
+import ConsignmentPage from "./page/consigment"
+import ConsignmentForm from "./components/cosingmentForm"
+import CreateStaffAccount from "./page/admin/createStaffAccount"
+import OrderHistory from "./page/orderHistory"
+import OrderManagement from "./page/admin/orderManagement"
+import OrderSuccess from "./page/orderSuccess"
+import RevenueManagement from "./page/admin/revenueManagement"
+import ManagementFeedback from "./page/admin/feedback"
+import Feedback from "./page/feedbacks";
+import ConginmentCare from "./page/consingmentCare";
+import ConsignmentManager from "./page/admin/consigmentManager";
+import WalletManager from "./page/admin/wallet";
+import WalletUser from "./page/walletUser";
 
 function App() {
   const router = createBrowserRouter([
@@ -100,16 +103,26 @@ function App() {
         },
         {
           path: "consignment",
+          element: <ConsignmentPage />
+        },
+        {
+          path: "feedback",
+          element: <Feedback />,
+        },
+
+        {
+          path: "consignment",
           element: <ConsignmentPage />,
         },
         {
           path: "consignmentCare",
-          element: <ConginmentCareMain />,
+          element: <ConginmentCare />,
         },
         {
-          path: "ConsignmentCareDetail",
-          element: <ConsignmentCareDetail />,
+          path:"walletUser",
+          element: <WalletUser />,
         },
+        
       ],
     },
     {
@@ -144,7 +157,14 @@ function App() {
           path: "feedback",
           element: <ManagementFeedback />,
         },
-        
+        {
+          path: "consignmentManagement",
+          element: <ConsignmentManager />,
+        },
+        {
+          path: "walletManager",
+          element: <WalletManager />,
+        },
 
       ],
     },

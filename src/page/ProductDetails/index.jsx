@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import "./index.scss";
 import { addToCart } from "../../redux/features/cartSlice";
 import api from "../../config/api";
-import Feedback from "../../components/feedbacks";
 import FishList from "../../components/fishList";
 import NarBar from "../../components/navigation2";
 
@@ -37,7 +36,6 @@ function ProductDetails() {
     tags,
   } = selectedFish;
 
-  // Hàm tính giá cũ (old price) với 500000 đắt hơn giá hiện tại
   const oldPrice = price + 500000;
 
   return (

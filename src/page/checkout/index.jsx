@@ -6,13 +6,25 @@ import './index.scss';
 import { toast } from 'react-toastify';
 import { reset } from '../../redux/features/cartSlice';
 import api from '../../config/api';
-import Naviagtion from '../../components/navigation';
+import Navigation from '../../components/Navigation'; // Corrected casing
 const { TextArea } = Input;
 const { Option } = Select;
 
 function Checkout() {
     const location = useLocation();
-    const { subTotal, shippingPee, totalAmount, cart, orderId, userProfile } = location.state || {};
+    const { 
+        subTotal, 
+        shippingPee, 
+        totalAmount: cartTotalAmount, 
+        cart, 
+        orderId,
+        userProfile,
+        paymentType 
+    } = location.state || {};
+
+    // Use consignment total amount if payment type is consignment, otherwise use cart total
+    const finalTotalAmount = paymentType === 'consignment' ? cartTotalAmount : cartTotalAmount; // Corrected undefined variable
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [paymentMethod, setPaymentMethod] = useState('bank');
@@ -70,7 +82,7 @@ function Checkout() {
                         cart,
                         subTotal,
                         shippingPee, 
-                        totalAmount,
+                        totalAmount: cartTotalAmount, // Corrected undefined variable
                         paymentMethod
                     }
                 });
@@ -83,7 +95,7 @@ function Checkout() {
 
     return (
         <div className="checkout-container">
-           <Naviagtion name="Checkout" link="/checkout"/>
+           <Navigation name="Checkout" link="/checkout"/> 
             <div className="checkout">
                 <div className="billing-details">
                     <h2>Billing Details</h2>
@@ -153,25 +165,33 @@ function Checkout() {
                 </div>
                 <div className="order-summary">
                     <h2>Order Summary</h2>
-                    <ul>
-                        {cart && cart.map((item) => (
-                            <li key={item.id}>
-                                <div className="item-info">
-                                    <img src={item.image} alt={item.name} />
-                                    <span className="item-name">{item.name}</span>
-                                </div>
-                                <div className="item-details">
-                                    <span>Quantity: {item.quantity}</span>
-                                    <span>Price: ${new Intl.NumberFormat('en-US').format(item.price * item.quantity)}</span>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                    <div className="cart-totals">
-                        <p>Subtotal: ${new Intl.NumberFormat('en-US').format(subTotal)}</p>
-                        <p>Shipping: ${new Intl.NumberFormat('en-US').format(shippingPee)}</p>
-                        <h3>Total: ${new Intl.NumberFormat('en-US').format(totalAmount)}</h3>
-                    </div>
+                    {paymentType !== 'consignment' ? (
+                        <>
+                            <ul>
+                                {cart && cart.map((item) => (
+                                    <li key={item.id}>
+                                        <div className="item-info">
+                                            <img src={item.image} alt={item.name} />
+                                            <span className="item-name">{item.name}</span>
+                                        </div>
+                                        <div className="item-details">
+                                            <span>Quantity: {item.quantity}</span>
+                                            <span>Price: ${new Intl.NumberFormat('en-US').format(item.price * item.quantity)}</span>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className="cart-totals">
+                                <p>Subtotal: ${new Intl.NumberFormat('en-US').format(subTotal)}</p>
+                                <p>Shipping: ${new Intl.NumberFormat('en-US').format(shippingPee)}</p>
+                                <h3>Total: ${new Intl.NumberFormat('en-US').format(finalTotalAmount)}</h3>
+                            </div>
+                        </>
+                    ) : (
+                        <div className="cart-totals">
+                            <h3>Consignment Total: ${new Intl.NumberFormat('en-US').format(finalTotalAmount)}</h3>
+                        </div>
+                    )}
                     
                     {/* Payment Methods */}
                     <div className="payment-methods">
