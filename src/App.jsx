@@ -17,7 +17,6 @@ import FishShop from "./page/shopFish"
 import ConsignmentScreen from "./page/consignmentScreen"
 import ProductDetails from "./page/ProductDetails"
 import ConsignmentPage from "./page/consigment"
-import ConsignmentForm from "./components/cosingmentForm"
 import CreateStaffAccount from "./page/admin/createStaffAccount"
 import OrderHistory from "./page/orderHistory"
 import OrderManagement from "./page/admin/orderManagement"
@@ -29,6 +28,7 @@ import ConginmentCare from "./page/consingmentCare";
 import ConsignmentManager from "./page/admin/consigmentManager";
 import WalletManager from "./page/admin/wallet";
 import WalletUser from "./page/walletUser";
+import ConsignmentForm from "./page/cosingmentForm";
 
 function App() {
   const router = createBrowserRouter([
