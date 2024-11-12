@@ -29,6 +29,8 @@ import ConsignmentManager from "./page/admin/consigmentManager";
 import WalletManager from "./page/admin/wallet";
 import WalletUser from "./page/walletUser";
 import ConsignmentForm from "./page/cosingmentForm";
+import ConsignmentHistory from "./page/consignmentHistory";
+import PendingPage from "./page/pending";
 
 function App() {
   const router = createBrowserRouter([
@@ -122,7 +124,15 @@ function App() {
           path:"walletUser",
           element: <WalletUser />,
         },
-        
+        {
+          path:"ConsignmentHistory",
+          element: <ConsignmentHistory />,
+        },
+
+        {
+          path:"PendingPage",
+          element: <PendingPage />,
+        },
       ],
     },
     {

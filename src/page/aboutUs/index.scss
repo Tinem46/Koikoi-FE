@@ -1,13 +1,13 @@
 .aboutUs {
   font-size: 1.6rem;
-  background-color: #fff;
+  background-color: black;
   color: #2c3e50;
   line-height: 1.6;
-
+  padding-top: 130px;
 
 
   &__hero {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../assets/image/hero-background.jpg');
+  
     background-size: cover;
     background-position: center;
     height: 60vh;
@@ -18,15 +18,12 @@
     color: #fff;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 
-    &Content {
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 2rem;
-      border-radius: 8px;
-    }
+  
 
     h1 {
       font-size: 4.5rem;
       margin-bottom: 1rem;
+      font-weight: bold;
     }
 
     p {
@@ -223,3 +220,9 @@
   }
 }
 
+.aboutUs__heroImage{
+  position: absolute;
+  width: 100%;
+  z-index: -10;
+  opacity: 0.5;
+}

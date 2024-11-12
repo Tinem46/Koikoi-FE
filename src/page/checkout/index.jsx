@@ -152,7 +152,7 @@ function Checkout() {
                         name="email"
                         placeholder="Email Address" 
                         value={userDetails.email || ''} 
-                        readOnly 
+                        onChange={handleInputChange}
                     />
                     
                     <TextArea 

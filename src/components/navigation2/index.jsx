@@ -18,14 +18,16 @@ function NarBar({ preOn, standOn }) {
               Home
             </span>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>
-            <span
-              onClick={() => navigate(`/${preOn}`)}
-              style={{ cursor: "pointer", fontWeight: "normal" }}
-            >
-              {preOn}
-            </span>
-          </Breadcrumb.Item>
+          {preOn && (
+            <Breadcrumb.Item>
+              <span
+                onClick={() => navigate(`/${preOn}`)}
+                style={{ cursor: "pointer", fontWeight: "normal" }}
+              >
+                {preOn}
+              </span>
+            </Breadcrumb.Item>
+          )}
           <Breadcrumb.Item>
             <span
               onClick={() => navigate(`/${standOn}`)}

@@ -9,11 +9,13 @@ import { PlusOutlined } from "@ant-design/icons";
 import StepsComponent from "../../components/steps";
 import api from "../../config/api"; // Import API config
 import uploadFile from "../../utils/upload";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
 function ConsignmentForm() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { consignmentType } = location.state || {
     consignmentType: "Consignment Form",
   };
@@ -65,16 +67,13 @@ function ConsignmentForm() {
     setLoading(true);
     try {
       if (fileList.length > 0) {
-        // Lấy file từ fileList và upload lên Firebase
         const img = await uploadFile(fileList[0].originFileObj);
-        console.log("Uploaded image URL:", img);
-        setFormData({ ...formData, image: img }); // Gán URL ảnh vào formData
+        setFormData({ ...formData, image: img });
       }
 
-      // Kiểm tra các trường bắt buộc
-      if ( !formData.type || !formData.size || !formData.origin || 
+      if (!formData.type || !formData.size || !formData.origin || 
           !formData.description || !formData.gender || !formData.price || 
-          !formData.age || !formData.quantity || !formData.status || !formData.name){
+          !formData.age || !formData.quantity || !formData.status || !formData.name) {
         console.error("All required fields must be filled.");
         setLoading(false);
         return;
@@ -87,6 +86,10 @@ function ConsignmentForm() {
 
       await api.post(`Consignment/sell/${typeId}`, formData);
       console.log("Form submitted successfully:", formData);
+      
+      // Navigate to PendingPage with formData
+      navigate("/PendingPage", { state: { formData } });
+      
       setLoading(false);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -105,7 +108,18 @@ function ConsignmentForm() {
           <div className="formcontainer__Content__form__left">
             <Form layout="vertical" size="large">
               <Row gutter={24}>
-               
+              <Col span={12}>
+                  <Form.Item label="Koi Name" required>
+                    <Input
+                      name="name"
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                      placeholder="Enter name"
+                    />
+                  </Form.Item>
+                </Col>
                 <Col span={12}>
                   <Form.Item label="Type" required>
                     <Select
@@ -124,6 +138,7 @@ function ConsignmentForm() {
                     </Select>
                   </Form.Item>
                 </Col>
+                
               </Row>
               <Row gutter={24}>
                 <Col span={12}>
@@ -223,18 +238,6 @@ function ConsignmentForm() {
                         setFormData({ ...formData, status: e.target.value })
                       }
                       placeholder="Enter status"
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item label="Name" required>
-                    <Input
-                      name="name"
-                      value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                      placeholder="Enter name"
                     />
                   </Form.Item>
                 </Col>

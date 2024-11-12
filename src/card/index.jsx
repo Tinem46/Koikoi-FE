@@ -53,7 +53,7 @@ function Card({ fish }) {
             ? `${fish.description.substring(0, 100)}...`
             : fish.description || "No description available"}
         </p> */}
-        <button className="button" onClick={handleAddToCart}>Thêm vào giỏ hàng</button>
+        <button className="button" onClick={handleAddToCart}>Add To Cart</button>
       </div>
     </div>
   );

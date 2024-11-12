@@ -13,6 +13,7 @@ function CreateStaffAccount() {
             dataIndex: "username",
             key: "username",
         },
+        
         {
             title: "Email",
             dataIndex: "email",
@@ -51,7 +52,7 @@ function CreateStaffAccount() {
             case 'post':
                 return 'Staff/StaffAccount';
             case 'get':
-                return 'Staff/Profile';
+                return 'Staff';
             case 'put':
                 return 'Staff';
             default:

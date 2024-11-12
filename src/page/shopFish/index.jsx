@@ -1,6 +1,6 @@
 import { useState } from "react";
 import MenuForShop from "../../components/menu";
-import Naviagtion1 from "../../components/navigation";
+import Naviagtion from "../../components/navigation";
 
 function FishShop() {
   const [selectedMenu, setSelectedMenu] = useState("");
@@ -13,7 +13,7 @@ function FishShop() {
 
   return (
     <>
-      <Naviagtion1 selectedMenu={selectedMenu} triggerReset={triggerReset} name="Shop" />
+      <Naviagtion selectedMenu={selectedMenu} triggerReset={triggerReset} name="Shop" />
       <MenuForShop 
         selectedMenu={selectedMenu}
         setSelectedMenu={setSelectedMenu}

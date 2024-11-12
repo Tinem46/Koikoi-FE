@@ -1,118 +1,152 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
-    PieChartOutlined,
-    LogoutOutlined, // Add this import
-} from '@ant-design/icons';
-import { Breadcrumb, Button, Layout, Menu, theme } from 'antd';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../redux/features/userSlice';
-import { Wallet as WalletIcon } from '@mui/icons-material';
-
+  PieChartOutlined,
+  LogoutOutlined, // Add this import
+} from "@ant-design/icons";
+import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/features/userSlice";
+import { Wallet as WalletIcon } from "@mui/icons-material";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-function getItem(
-    label,
+function getItem(label, key, icon, children) {
+  return {
     key,
     icon,
     children,
-) {
-    return {
-        key,
-        icon,
-        children,
-        label: <Link to={`/dashboard/${key}`}>{label}</Link>,
-    };
+    label: <Link to={`/dashboard/${key}`}>{label}</Link>,
+  };
 }
 
 const Dashboard = () => {
-    const [collapsed, setCollapsed] = useState(false);
-    const {
-        token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    // Retrieve role from localStorage
-    const role = localStorage.getItem("role");
+  // Retrieve role from localStorage
+  const role = localStorage.getItem("role");
 
-    // Define menu items based on role
-    const items = role === "STAFF" ? [
-        getItem('Feedback', 'feedback', <PieChartOutlined />), // New menu item
-        getItem('User Info', 'user-info', <PieChartOutlined />), // New menu item
-        getItem('Fish Info', 'fish-info', <PieChartOutlined />), // New menu item
-    ] : [
-        getItem('Category', 'category', <PieChartOutlined />),
-        getItem('Voucher', 'voucher', <PieChartOutlined />),
-        getItem('Fish', 'fish', <PieChartOutlined />),
-        getItem('Staff', 'staff', <PieChartOutlined />),
-        getItem('Feedback', 'feedback', <PieChartOutlined />), // Add this line
-        getItem('Order Management', 'orderManagement', <PieChartOutlined />),
-        getItem('Revenue Management', 'revenueManagement', <PieChartOutlined />),
-        getItem('Consignment Management', 'consignmentManagement', <PieChartOutlined />),
-    ];
+  // Define menu items based on role
+  const items =
+    role === "STAFF"
+      ? [
+          getItem("Feedback", "feedback", <PieChartOutlined />), // New menu item
+          getItem("Fish", "fish", <PieChartOutlined />),
+          getItem(
+            "Consignment Management",
+            "consignmentManagement",
+            <PieChartOutlined />
+          ),
+          getItem("Order Management", "orderManagement", <PieChartOutlined />),
+        ]
+      : [
+          getItem("Category", "category", <PieChartOutlined />),
+          getItem("Voucher", "voucher", <PieChartOutlined />),
+          getItem("Fish", "fish", <PieChartOutlined />),
+          getItem("Staff", "staff", <PieChartOutlined />),
+          getItem("Feedback", "feedback", <PieChartOutlined />), // Add this line
+          getItem("Order Management", "orderManagement", <PieChartOutlined />),
+          getItem(
+            "Revenue Management",
+            "revenueManagement",
+            <PieChartOutlined />
+          ),
+          getItem(
+            "Consignment Management",
+            "consignmentManagement",
+            <PieChartOutlined />
+          ),
+        ];
 
-    function handleLogout() {
-        localStorage.removeItem("token");
-        dispatch(logout());
-        navigate("/login");
-    }
+  function handleLogout() {
+    localStorage.removeItem("token");
+    dispatch(logout());
+    navigate("/login");
+  }
 
-    return (
-        <Layout style={{ minHeight: '100vh' }} >
-            <Header style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#000038' }}>
-                <h1 style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>Dashboard</h1>
-                {role === "MANAGER" && (
-                    <WalletIcon 
-                        onClick={() => navigate('/dashboard/walletManager')} 
-                        style={{ position: 'absolute', right: '35px', color: 'white', cursor: 'pointer', fontSize: '30px' }}
-                    />
-                )}
-            </Header>
-            <Layout>
-                <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}  >
-                    <div className="demo-logo-vertical" />
-                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
-                    <Button 
-                        onClick={handleLogout} 
-                        style={{ 
-                            position: 'absolute',
-                            bottom: '80px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        <LogoutOutlined style={{ fontSize: '18px', color: 'blue' }} /> 
-                    </Button>
-                </Sider>
-                <Layout>
-                    <Content style={{ margin: '0 16px'}}>
-                        <Breadcrumb style={{ margin: '16px 0' }}>
-                            <Breadcrumb.Item>User</Breadcrumb.Item>
-                            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                        </Breadcrumb>
-                        <div
-                            style={{
-                                padding: 24,
-                                minHeight: 360,
-                                background: colorBgContainer,
-                                borderRadius: borderRadiusLG,
-                            }}
-                        >
-                            <Outlet />
-                        </div>
-                    </Content>
-                    <Footer style={{ textAlign: 'center' }}>
-                        Ant Design ©{new Date().getFullYear()} Created by Ant UED
-                    </Footer>
-                </Layout>
-            </Layout>
+  return (
+    <Layout style={{ minHeight: "100vh" }}>
+      <Header
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "#000038",
+        }}
+      >
+        <h1 style={{ color: "white", fontSize: "20px", fontWeight: "bold" }}>
+          Dashboard
+        </h1>
+        {role === "MANAGER" && (
+          <WalletIcon
+            onClick={() => navigate("/dashboard/walletManager")}
+            style={{
+              position: "absolute",
+              right: "35px",
+              color: "white",
+              cursor: "pointer",
+              fontSize: "30px",
+            }}
+          />
+        )}
+      </Header>
+      <Layout>
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+        >
+          <div className="demo-logo-vertical" />
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={["1"]}
+            mode="inline"
+            items={items}
+          />
+          <Button
+            onClick={handleLogout}
+            style={{
+              position: "absolute",
+              bottom: "80px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <LogoutOutlined style={{ fontSize: "18px", color: "blue" }} />
+          </Button>
+        </Sider>
+        <Layout>
+          <Content style={{ margin: "0 16px" }}>
+            <Breadcrumb style={{ margin: "16px 0" }}>
+              <Breadcrumb.Item>User</Breadcrumb.Item>
+              <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            </Breadcrumb>
+            <div
+              style={{
+                padding: 24,
+                minHeight: 360,
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+              }}
+            >
+              <Outlet />
+            </div>
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+            Ant Design ©{new Date().getFullYear()} Created by Ant UED
+          </Footer>
         </Layout>
-    );
+      </Layout>
+    </Layout>
+  );
 };
 
 export default Dashboard;

@@ -1,5 +1,5 @@
 .containerMenuAndFishList {
-  margin-top: 20px;
+  margin-top: 50px;
   width: 100%;
   display: flex;
   margin-bottom: 20px;
@@ -28,7 +28,7 @@
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 20px;
   flex-grow: 1;
-  padding-left: 10px;
+  padding-left: 20px;
   width: 100%;
 }
 
@@ -99,6 +99,7 @@
   .category-select,
   .sort-select {
     width: 100%;
+    height: 50px;
     
     .ant-select-selector {
       font-size: 16px;
@@ -115,8 +116,9 @@
   .category-button {
     width: 100%;
     text-align: left;
-    font-size: 16px;
-    padding: 8px 12px;
+    font-size: 26px;
+    font-weight: bold;
+    padding: 40px;
     border: none;
     background: transparent;
     cursor: pointer;

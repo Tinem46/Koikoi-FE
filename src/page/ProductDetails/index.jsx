@@ -80,7 +80,6 @@ function ProductDetails() {
           <p>{description}</p>
         </div>
         <FishList Type={category} />
-        <Feedback productId={id} />
       </div>
     </div>
   );

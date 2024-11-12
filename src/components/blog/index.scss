@@ -1,62 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
 .blog-post-container {
     text-align: center;
     padding: 50px;
     background-color: black;
     color: white;
-  
+    font-family: 'Poppins', sans-serif;
+
     .blog-title {
-      font-size: 2.5rem;
-      font-family: "Georgia", serif;
-      margin-bottom: 30px;
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        font-family: 'Poppins', sans-serif;
+        
     }
-  
+
     .post-grid {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
     }
-  
+
     .post {
-      background-color: #fff;
-      color: black;
-      //   border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      width: 100%;
-      text-align: left;
-  
-      .post-image {
+        background-color: #fff;
+        color: black;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
         width: 100%;
-        height: 250px;
-        object-fit: cover;
-      }
-  
-      .post-content {
-        padding: 20px;
-  
-        h3 {
-          font-size: 1.5rem;
-          margin-bottom: 10px;
+        text-align: left;
+
+        .post-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
         }
-  
-        p {
-          margin-bottom: 10px;
-          color: #555;
+
+        .post-content {
+            padding: 20px;
+
+            h3 {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            p {
+                margin-bottom: 10px;
+                color: #555;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .see-more-btn {
+                background-color: black;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold;
+
+                &:hover {
+                    background-color: #333;
+                }
+            }
         }
-  
-        .see-more-btn {
-          background-color: black;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-  
-          &:hover {
-            background-color: #333;
-          }
-        }
-      }
     }
-  }
-  
+}

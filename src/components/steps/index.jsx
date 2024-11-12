@@ -15,10 +15,10 @@ function StepsComponent({ current }) {
             title: "Choose Your Plan",
           },
           {
-            title: "Fill Your Information",
+            title: "Prepare For Consign",
           },
           {
-            title: "Payment",
+            title: "Confirm",
           },
         ]}
       />
