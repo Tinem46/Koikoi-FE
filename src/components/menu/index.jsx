@@ -5,16 +5,14 @@ import { useEffect, useState } from "react";
 import api from "../../config/api";
 import Card from "../../card";
 
-// MenuForShop component: hiển thị menu và danh sách cá Koi được lọc
 function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
-  // State quản lý danh sách cá Koi và kết quả lọc
   const [fish, setFish] = useState([]);
   const [filteredFish, setFilteredFish] = useState([]);
   const [visibleCount, setVisibleCount] = useState(4);
   const [sortOrder, setSortOrder] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [consignments, setConsignments] = useState([]);
 
-  // Hàm fetch dữ liệu cá từ API
   const fetchFish = async () => {
     try {
       const response = await api.get("Koi");
@@ -25,12 +23,20 @@ function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
     }
   };
 
-  // useEffect được gọi khi component mount lần đầu tiên
+  const fetchConsignments = async () => {
+    try {
+      const response = await api.get("Consignment/approved");
+      setConsignments(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchFish();
+    fetchConsignments();
   }, []);
 
-  // useEffect được gọi khi 'resetFish' thay đổi giá trị
   useEffect(() => {
     if (resetFish) {
       setFilteredFish(fish);
@@ -39,27 +45,24 @@ function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
     }
   }, [resetFish, fish, setSelectedMenu]);
 
-  // Thêm useEffect để xử lý tìm kiếm khi searchTerm thay đổi
   useEffect(() => {
-    let results = [...fish];
+    let results = [...fish, ...consignments];
     
-    // Lọc theo danh mục nếu có
     if (selectedMenu && selectedMenu !== "all") {
       results = results.filter(
-        (item) => item.category.toLowerCase() === selectedMenu.toLowerCase()
+        (item) => item.category?.toLowerCase() === selectedMenu.toLowerCase()
       );
     }
     
-    // Lọc theo từ khóa tìm kiếm
     if (searchTerm) {
       results = results.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        item.name?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
     
     setFilteredFish(results);
     setVisibleCount(4);
-  }, [searchTerm, selectedMenu, fish]);
+  }, [searchTerm, selectedMenu, fish, consignments]);
 
   const sortOptions = [
     { value: "", label: "Default" },
@@ -79,7 +82,6 @@ function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
 
   
 
-  // Thay đổi hàm xử lý sự kiện
   const handleCategoryChange = (value) => {
     let newFilteredFish = [...fish];
     
@@ -109,7 +111,6 @@ function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
     setFilteredFish(newFilteredFish);
   };
 
-  // Hàm xử lý khi bấm "Show More"
   const showMore = () => {
     setVisibleCount((prevCount) => prevCount + 4);
   };

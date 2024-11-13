@@ -82,7 +82,6 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
         setActionLoading(prev => ({ ...prev, [`${actionConfig.label}-${recordId}`]: true }));
         try {
             await actionConfig.action(recordId);
-            toast.success(actionConfig.successMessage || 'Operation successful');
             const uri = typeof apiURI === 'function' ? apiURI('get') : apiURI;
             const response = await api.get(uri);
             setDashboard(Array.isArray(response.data) ? response.data : []);
@@ -95,7 +94,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
 
     const getColumns = () => [
         ...columns,
-        {
+        ...(showEditDelete || (customActions && customActions.length > 0) ? [{
             title: "Actions",
             key: "actions",
             render: (_, record) => (
@@ -137,7 +136,7 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
                     )}
                 </React.Fragment>
             )
-        }
+        }] : [])
     ];
 
     useEffect(() => {

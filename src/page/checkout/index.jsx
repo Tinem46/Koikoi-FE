@@ -1,12 +1,10 @@
-import {useDispatch } from 'react-redux';
 import { Button, Input, Select, Radio} from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import './index.scss';
 import { toast } from 'react-toastify';
-import { reset } from '../../redux/features/cartSlice';
 import api from '../../config/api';
-import Navigation from '../../components/Navigation'; // Corrected casing
+import Navigation from '../../components/navigation'; 
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -22,12 +20,9 @@ function Checkout() {
         paymentType 
     } = location.state || {};
 
-    // Use consignment total amount if payment type is consignment, otherwise use cart total
-    const finalTotalAmount = paymentType === 'consignment' ? cartTotalAmount : cartTotalAmount; // Corrected undefined variable
+    const finalTotalAmount = paymentType === 'consignment' ? cartTotalAmount : cartTotalAmount; 
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [paymentMethod, setPaymentMethod] = useState('bank');
     const [userDetails, setUserDetails] = useState(userProfile || {});
 
     const handleInputChange = (e) => {
@@ -53,40 +48,25 @@ function Checkout() {
                 return;
             }
 
-            if (paymentMethod === 'bank') {
-                const paymentData = {
-                    phone: userDetails.phone_number,
-                    fullName: userDetails.fullname,
-                    orderDate: new Date().toISOString().split('T')[0],
-                    note: userDetails.additionalInfo || '',
-                    city: userDetails.city,
-                    country: userDetails.country,
-                    gmail: userDetails.email,
-                    address: userDetails.specific_Address
-                };
+            const paymentData = {
+                phone: userDetails.phone_number,
+                fullName: userDetails.fullname,
+                orderDate: new Date().toISOString().split('T')[0],
+                note: userDetails.additionalInfo || '',
+                city: userDetails.city,
+                country: userDetails.country,
+                gmail: userDetails.email,
+                address: userDetails.specific_Address
+            };
 
-                const paymentResponse = await api.post('payment/VNPay', paymentData, {
-                    params: {
-                        koiOrderId: orderId
-                    },
-                });
-                
-                const paymentUrl = paymentResponse.data;
-                window.location.href = paymentUrl;
-            } else {
-                dispatch(reset());
-                navigate('/order-success', { 
-                    state: { 
-                        orderId,
-                        userDetails,
-                        cart,
-                        subTotal,
-                        shippingPee, 
-                        totalAmount: cartTotalAmount, // Corrected undefined variable
-                        paymentMethod
-                    }
-                });
-            }
+            const paymentResponse = await api.post('payment/VNPay', paymentData, {
+                params: {
+                    koiOrderId: orderId
+                },
+            });
+            
+            const paymentUrl = paymentResponse.data;
+            window.location.href = paymentUrl;
         } catch (error) {
             console.error('Error processing payment:', error);
             toast.error('Failed to process payment. Please try again.');
@@ -152,7 +132,7 @@ function Checkout() {
                         name="email"
                         placeholder="Email Address" 
                         value={userDetails.email || ''} 
-                        readOnly 
+                        onChange={handleInputChange}
                     />
                     
                     <TextArea 
@@ -196,13 +176,9 @@ function Checkout() {
                     {/* Payment Methods */}
                     <div className="payment-methods">
                         <h3>Payment Methods</h3>
-                        <Radio.Group 
-                            value={paymentMethod} 
-                            onChange={(e) => setPaymentMethod(e.target.value)}
-                        >
-                            <Radio value="bank">Direct Bank Transfer</Radio>
-                            <Radio value="cash">Cash on Delivery</Radio>
-                        </Radio.Group>
+                        <div className="payment-method-item">
+                            <span>Direct Bank Transfer</span>
+                        </div>
                     </div>
 
                     <Button 

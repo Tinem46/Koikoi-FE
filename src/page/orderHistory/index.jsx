@@ -78,9 +78,7 @@ function OrderHistory() {
 
       const { shippingPee, totalAmount } = cartTotalResponse.data;
 
-      // Ensure userProfile is available
-     
-      // Prepare cart data in the format expected by the checkout page
+      
       const cartData = orderDetails.map(item => ({
         id: item.id,
         name: item.name,
@@ -138,6 +136,19 @@ function OrderHistory() {
     }
   };
 
+  const handleCancelOrder = async (orderId) => {
+    try {
+      await api.put(`order/cancel/${orderId}`, {
+        note: "Order cancelled by customer"
+      });
+      toast.success("Đơn hàng đã được hủy thành công");
+      fetchOrders(); 
+    } catch (error) {
+      console.error('Error cancelling order:', error);
+      toast.error("Không thể hủy đơn hàng. Vui lòng thử lại.");
+    }
+  };
+
   const columns = [
     {
       title: 'Order ID',
@@ -168,7 +179,10 @@ function OrderHistory() {
         <>
           <Button onClick={() => fetchOrderDetails(record.id)}>View Details</Button>
           {record.orderStatus === 'PENDING' && (
-            <Button onClick={() => handleProceedToCheckout(record)}> Checkout</Button>
+            <Button onClick={() => handleProceedToCheckout(record)}>Checkout</Button>
+          )}
+          {record.orderStatus === 'PAID' && (
+            <Button type="danger" onClick={() => handleCancelOrder(record.id)}>Cancel Order</Button>
           )}
           {record.orderStatus === 'CANCELED' && (
             <Button onClick={() => handleReorder(record)}>Re-order</Button>

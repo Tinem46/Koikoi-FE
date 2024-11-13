@@ -23,7 +23,6 @@ function Cart() {
 
   const [userProfile, setUserProfile] = useState(null);
 
-  // Thêm hàm để lấy thông tin profile của người dùng
   const fetchUserProfile = async () => {
     try {
       const response = await api.get(`account/Profile`);
@@ -39,7 +38,7 @@ function Cart() {
       const response = await api.get('Cart');
       const cartData = response.data.activeCartDetails || []; 
       setCart(cartData);
-      dispatch(syncWithApi(cartData)); // Sync với Redux store
+      dispatch(syncWithApi(cartData)); 
       setCartId(response.data.id);
       await updateCartTotal(response.data.id);
     } catch (error) {
@@ -88,6 +87,10 @@ function Cart() {
     }
   };
 
+  const handleApplyVoucher = () => {
+    updateCartTotal(cartId, voucherCode);
+  };
+
   const updateCartTotal = async (cartId, voucherCode) => {
     if (!cartId) {
       console.error("Cart ID is not available");
@@ -95,9 +98,10 @@ function Cart() {
     }
     try {
       const response = await api.get(`Cart/total`, {
-        params: { cartId: cartId,
-          voucherCode: voucherCode }
-        
+        params: {
+          cartId,
+          voucherCode: voucherCode || undefined
+        }
       });
       const { subTotal = 0, shippingPee = 0, totalAmount = 0 } = response.data;
       setSubTotal(subTotal);
@@ -105,6 +109,7 @@ function Cart() {
       setTotalAmount(totalAmount);
     } catch (error) {
       console.error("Failed to fetch cart total:", error.response ? error.response.data : error);
+      toast.error("Failed to apply voucher. Please check your code and try again.");
       setSubTotal(0);
       setShippingPee(0);
       setTotalAmount(0);
@@ -202,7 +207,6 @@ function Cart() {
       const orderResponse = await api.post('order', orderData);
       const orderId = orderResponse.data.id;
 
-      // Navigate to checkout page with order information
       navigate('/checkout', { 
         state: { 
           orderId,
@@ -244,7 +248,7 @@ function Cart() {
               value={voucherCode}
               onChange={(e) => setVoucherCode(e.target.value)}
             />
-            <Button type="primary" onClick={() => updateCartTotal(cartId)}>Apply Voucher</Button> 
+            <Button type="primary" onClick={handleApplyVoucher}>Apply Voucher</Button> 
           </Space.Compact>
           <section className="checkOut-Box">
             <h1>Cart Total</h1>

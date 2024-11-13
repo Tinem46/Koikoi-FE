@@ -24,7 +24,6 @@ function ProductDetails() {
   };
 
   const {
-    id,
     name,
     image,
     price,
@@ -34,6 +33,7 @@ function ProductDetails() {
     description,
     category,
     tags,
+    quantity,
   } = selectedFish;
 
   const oldPrice = price + 500000;
@@ -53,7 +53,7 @@ function ProductDetails() {
           </p>
           <ul className="product-details__specs">
             <li>Width: {size} cm</li>
-            <li>Age: {age} years</li>
+            <li>Age: {age} month</li>
             <li>Origin: {origin}</li>
           </ul>
           <p className="product-details__description">{description}</p>
@@ -65,7 +65,7 @@ function ProductDetails() {
           </div>
           <div className="product-details__divider2"></div>
           <div className="product-details__meta">
-            <p>Number: #{id}</p>
+            <p>Number: {quantity}</p>
             <p>Category: {category}</p>
             <p>Tags: {Array.isArray(tags) ? tags.join(", ") : "#Fish"}</p>
           </div>
@@ -80,7 +80,6 @@ function ProductDetails() {
           <p>{description}</p>
         </div>
         <FishList Type={category} />
-        <Feedback productId={id} />
       </div>
     </div>
   );

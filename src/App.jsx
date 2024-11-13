@@ -29,6 +29,10 @@ import ConsignmentManager from "./page/admin/consigmentManager";
 import WalletManager from "./page/admin/wallet";
 import WalletUser from "./page/walletUser";
 import ConsignmentForm from "./page/cosingmentForm";
+import CancelManagement from "./page/admin/cancleManagement";
+import CustomerAccount from "./page/admin/CustomerAccount";
+import FishSellHistory from "./page/fishSellHistory";
+import FishSellManagement from "./page/admin/fishSellManagement";
 
 function App() {
   const router = createBrowserRouter([
@@ -122,6 +126,10 @@ function App() {
           path:"walletUser",
           element: <WalletUser />,
         },
+        {
+          path: "fishSellHistory",
+          element: <FishSellHistory />,
+        },
         
       ],
     },
@@ -164,6 +172,18 @@ function App() {
         {
           path: "walletManager",
           element: <WalletManager />,
+        },
+        {
+          path: "cancelManagement",
+          element: <CancelManagement />,
+        },
+        {
+          path: "customerAccount",
+          element: <CustomerAccount />,
+        },
+        {
+          path: "fishSellManagement",
+          element: <FishSellManagement />,
         },
 
       ],

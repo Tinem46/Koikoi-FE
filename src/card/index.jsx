@@ -47,6 +47,7 @@ function Card({ fish }) {
             Price: {new Intl.NumberFormat('en-US').format(fish.price)}$
           </div>
           <div className="category">Category: {fish.category}</div>
+          <div className="author">Author: {fish.author}</div>
         </div>
         {/* <p className="fish-card__description">Description:
           {fish.description && fish.description.length > 100

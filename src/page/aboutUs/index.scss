@@ -34,6 +34,12 @@
     }
   }
 
+  &__historyImage {
+    width: 100%;
+    height: 5%;
+    object-fit: cover;
+  }
+
   &__mission,
   &__history,
   &__whyChooseUs,
@@ -90,9 +96,10 @@
 
   &__historyContent,
   &__galleryContent {
-    display: flex;
-    gap: 30px;
-    align-items: center;
+    margin-top: 20px;
+      font-size: 1.4rem;
+      color: #777;
+      font-style: italic;
 
     p {
       flex: 1;

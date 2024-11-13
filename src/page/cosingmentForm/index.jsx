@@ -29,8 +29,8 @@ function ConsignmentForm() {
     age: "",
     quantity: "",
     image: "",
-    status: "", // Thêm trường status
-    name: "", // Thêm trường name
+    status: "", 
+    name: "", 
   });
 
   const [koiTypes, setKoiTypes] = useState([]);
@@ -65,13 +65,10 @@ function ConsignmentForm() {
     setLoading(true);
     try {
       if (fileList.length > 0) {
-        // Lấy file từ fileList và upload lên Firebase
         const img = await uploadFile(fileList[0].originFileObj);
-        console.log("Uploaded image URL:", img);
-        setFormData({ ...formData, image: img }); // Gán URL ảnh vào formData
+        formData.image = img;
       }
 
-      // Kiểm tra các trường bắt buộc
       if ( !formData.type || !formData.size || !formData.origin || 
           !formData.description || !formData.gender || !formData.price || 
           !formData.age || !formData.quantity || !formData.status || !formData.name){

@@ -23,11 +23,13 @@ function Header() {
     <ul className="header__dropdown-menu">
       {isLoggedIn && <li onClick={handleProfile}>Profile</li>}
       {isLoggedIn && <li onClick={() => navigate("/order-history")}>Order History</li>}
+      {isLoggedIn && <li onClick={() => navigate("/fishSellHistory")}>Fish Sell History</li>}
       {isLoggedIn ? (
         <>
           <li onClick={handleLogout}>Logout</li>
         </>
-      ) : (
+      ) 
+      : (
         <li onClick={() => navigate("/login")}>Login</li>
       )}
     </ul>

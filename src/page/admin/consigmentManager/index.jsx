@@ -24,7 +24,7 @@ function ConsignmentManager() {
   };
 
   const handleViewDetails = (order) => {
-    fetchOrderDetails(order.id); // Fetch order details before opening
+    fetchOrderDetails(order.id); 
     setIsDetailsOpen(true);
   };
 
@@ -74,9 +74,9 @@ function ConsignmentManager() {
       key: 'id',
     },
     {
-      title: 'Customer',
-      dataIndex: 'fullName',
-      key: 'fullName',
+      title: 'userName',
+      dataIndex: 'userName',
+      key: 'userName',
     },
     {
       title: 'Total Amount',
@@ -86,9 +86,19 @@ function ConsignmentManager() {
     },
     {
       title: 'Status',
-      dataIndex: 'orderStatus',
-      key: 'orderStatus',
+      dataIndex: 'status',
+      key: 'status',
     },
+    {
+      title: 'Start Date',
+      dataIndex: 'start_date',
+      key: 'start_date',
+  },
+  {
+      title: 'End Date',
+      dataIndex: 'end_date',
+      key: 'end_date',
+  },
     {
       title: 'Details',
       key: 'actions',
@@ -117,7 +127,7 @@ function ConsignmentManager() {
 
   const handleCancelOrder = async (orderId) => {
     try {
-      await api.put(`transactions/cancelConsign?koiOrderId=${Number(orderId)}`, { note: "Order cancelled" });
+      await api.post(`transactions/cancelConsign?koiOrderId=${Number(orderId)}`, { note: "Order cancelled" });
       toast.success('Order cancelled successfully');
     } catch (error) {
       console.error('Error cancelling order:', error);
@@ -131,7 +141,7 @@ function ConsignmentManager() {
     <div>
       <DashboardTemplate 
         columns={columns} 
-        apiURI="order/consign"
+        apiURI="Consignment/allOfCare"
         title="Consignment Management"
         customActions={[
           {

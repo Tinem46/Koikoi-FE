@@ -34,23 +34,29 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // Retrieve role from localStorage
     const role = localStorage.getItem("role");
 
-    // Define menu items based on role
     const items = role === "STAFF" ? [
-        getItem('Feedback', 'feedback', <PieChartOutlined />), // New menu item
-        getItem('User Info', 'user-info', <PieChartOutlined />), // New menu item
-        getItem('Fish Info', 'fish-info', <PieChartOutlined />), // New menu item
+        getItem('Feedback', 'feedback', <PieChartOutlined />), 
+        getItem('Customer Account', 'customerAccount', <PieChartOutlined />),
+        getItem('Fish', 'fish', <PieChartOutlined />),
+        getItem('Order Management', 'orderManagement', <PieChartOutlined />),
+        getItem('Consignment Management', 'consignmentManagement', <PieChartOutlined />),
+        getItem('Fish Sell Management', 'fishSellManagement', <PieChartOutlined />),
+        getItem('Cancel Management', 'cancelManagement', <PieChartOutlined />),
+
     ] : [
         getItem('Category', 'category', <PieChartOutlined />),
         getItem('Voucher', 'voucher', <PieChartOutlined />),
         getItem('Fish', 'fish', <PieChartOutlined />),
         getItem('Staff', 'staff', <PieChartOutlined />),
-        getItem('Feedback', 'feedback', <PieChartOutlined />), // Add this line
+        getItem('Feedback', 'feedback', <PieChartOutlined />), 
         getItem('Order Management', 'orderManagement', <PieChartOutlined />),
         getItem('Revenue Management', 'revenueManagement', <PieChartOutlined />),
         getItem('Consignment Management', 'consignmentManagement', <PieChartOutlined />),
+        getItem('Cancel Management', 'cancelManagement', <PieChartOutlined />),
+        getItem('Customer Account', 'customerAccount', <PieChartOutlined />),
+        getItem('Fish Sell Management', 'fishSellManagement', <PieChartOutlined />),
     ];
 
     function handleLogout() {
@@ -62,7 +68,7 @@ const Dashboard = () => {
     return (
         <Layout style={{ minHeight: '100vh' }} >
             <Header style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#000038' }}>
-                <h1 style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>Dashboard</h1>
+                <h1 style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>{role === "MANAGER" ? "Manager" : "Staff"}</h1>
                 {role === "MANAGER" && (
                     <WalletIcon 
                         onClick={() => navigate('/dashboard/walletManager')} 
@@ -107,7 +113,7 @@ const Dashboard = () => {
                         </div>
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>
-                        Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                        Koi Store ©{new Date().getFullYear()} Created by Team number 1
                     </Footer>
                 </Layout>
             </Layout>
