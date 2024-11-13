@@ -1,54 +1,59 @@
 .consignment-care-container1 {
- 
-  h1 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-  }
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding: 50px 20px;
+  font-family: 'Poppins', sans-serif;
 
   .ant-table-wrapper {
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    background: #fff;
-  }
-}
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 50px;
 
-.ant-table {
-
-
-  .ant-table-tbody > tr > td {
-    padding: 12px;
-  }
-
-  
-}
-
-.ant-modal {
-  .ant-modal-content {
-    border-radius: 8px;
-  }
-
-  .ant-modal-header {
-    background-color: #f0f5ff;
-    border-bottom: 1px solid #e8e8e8;
-    h3 {
-      font-size: 20px;
-      color: #333;
+    .ant-table {
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #fff;
     }
-  }
 
-  .ant-modal-footer {
-    display: flex;
-    justify-content: center;
+    .ant-table-thead > tr > th {
+      background-color: #1f1c1c; // Black background for header
+      color: #fff; // White text for header
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .ant-table-tbody > tr > td {
+      text-align: center;
+      padding: 16px;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background-color: #e6f7ff;
+    }
   }
 
   .ant-btn {
-    background-color: #1a73e8;
-    color: white;
+    background-color: #1f1c1c;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    padding: 8px 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: #155ab6;
+      background-color: #333;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
+  }
+
+  .ant-modal-content {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .ant-modal-body {
+    padding: 20px;
   }
 }

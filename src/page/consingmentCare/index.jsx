@@ -186,6 +186,7 @@ function ConsignmentCare() {
         columns={orderColumns}
         rowKey="id"
         loading={loadingOrders}
+        className="tableLoadingOrder"
       />
 
       <Modal
