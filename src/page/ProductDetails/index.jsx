@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import "./index.scss";
 import { addToCart } from "../../redux/features/cartSlice";
 import api from "../../config/api";
@@ -6,22 +7,12 @@ import FishList from "../../components/fishList";
 import NarBar from "../../components/navigation2";
 
 function ProductDetails() {
-  const selectedFish = useSelector((state) => state.fish.selectedFish);
   const dispatch = useDispatch();
-  const FishShop = "FishShop";
+  const selectedFish = useSelector((state) => state.fish.selectedFish);
+
   if (!selectedFish) {
     return <div>Loading...</div>;
   }
-
-  const handleAddToCart = async () => {
-    try {
-      const response = await api.post(`Cart/${selectedFish.id}`);
-      console.log(response.data);
-    } catch (err) {
-      console.error(err.response.data);
-    }
-    dispatch(addToCart(selectedFish));
-  };
 
   const {
     id,
@@ -38,9 +29,22 @@ function ProductDetails() {
 
   const oldPrice = price + 500000;
 
+  const descriptionGen = `This beautiful ${name} koi fish, originating from ${origin}, 
+                      is ${age} years old and has an impressive width of ${size} cm. 
+                      It's a perfect choice for any koi enthusiast looking to add a unique fish to their collection.`;
+
+  const handleAddToCart = async () => {
+    try {
+      await api.post(`Cart/${id}`, { quantity: 1 });
+      dispatch(addToCart(selectedFish));
+    } catch (err) {
+      console.error("Error adding to cart:", err);
+    }
+  };
+
   return (
     <div className="product-details">
-      <NarBar preOn={FishShop} standOn={name} />
+      <NarBar preOn="FishShop" standOn={name} />
       <div className="product-details__header">
         <div className="product-details__image">
           <img src={image} alt={name} />
@@ -56,7 +60,7 @@ function ProductDetails() {
             <li>Age: {age} years</li>
             <li>Origin: {origin}</li>
           </ul>
-          <p className="product-details__description">{description}</p>
+          <p className="product-details__descriptionGen">{descriptionGen}</p>
           <div className="product-details__actions">
             <button className="button add-to-cart" onClick={handleAddToCart}>
               Add To Cart
@@ -79,8 +83,8 @@ function ProductDetails() {
           <h2>Description</h2>
           <p>{description}</p>
         </div>
-        <FishList Type={category} />
       </div>
+      <FishList Type={category} />
     </div>
   );
 }
