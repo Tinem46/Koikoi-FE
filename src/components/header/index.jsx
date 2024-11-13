@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 import { Dropdown} from "antd";
 import { Wallet as WalletIcon } from '@mui/icons-material';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 
 
 function Header() {
@@ -16,13 +15,13 @@ function Header() {
   const user = useSelector((state) => state.user);
   const isLoggedIn = user ? user.isLoggedIn : false;
   const cart = useSelector((store) => store.cart.products) || [];
-  const cartItemCount = cart.length;
-  console.log(cart)
+  const cartItemCount = Array.isArray(cart) ? cart.length : 0;
 
   const userMenu = (
     <ul className="header__dropdown-menu">
       {isLoggedIn && <li onClick={handleProfile}>Profile</li>}
       {isLoggedIn && <li onClick={() => navigate("/order-history")}>Order History</li>}
+      {isLoggedIn && <li onClick={() => navigate("/ConsignmentHistory")}>Consignment History</li>}
       {isLoggedIn && <li onClick={() => navigate("/fishSellHistory")}>Fish Sell History</li>}
       {isLoggedIn ? (
         <>
@@ -89,7 +88,7 @@ function Header() {
               <li>
                 <WalletIcon 
                   onClick={() => navigate('/walletUser')} 
-                  style={{ color: 'white', cursor: 'pointer', fontSize: '30px' }}
+                  style={{ color: 'white', cursor: 'pointer', fontSize: '35px' }}
                 />
               </li>
             )}

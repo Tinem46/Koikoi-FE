@@ -2,8 +2,8 @@ import { Table } from 'antd';
 import { useEffect, useState } from 'react';
 import api from '../../config/api';
 import { toast } from 'react-toastify';
-import NarBar from '../../components/navigation2';
-
+import './index.scss';
+import Navigation from '../../components/navigation';
 function FishSellHistory() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -74,10 +74,9 @@ function FishSellHistory() {
   }, []);
 
   return (
-    <div style={{ marginTop: '6.8%' }}>
-      <NarBar  standOn="fishSellHistory" />
+    <div className="fish-sell-history-container">
+      <Navigation name="Fish Sell History" link="/fishSellHistory" />
       <div style={{ padding: '24px' }}>
-        
         <Table 
           columns={columns}
           dataSource={data}

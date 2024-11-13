@@ -1,0 +1,117 @@
+/* Overall page styling */
+.consignment-history-page {
+    padding-top: 130px;
+  
+    .consignment-history-container {
+      padding: 100px;
+  
+      /* Loading spinner */
+      .consignment-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        color: black;
+      }
+  
+      /* Table styling */
+      .consignment-table {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+  
+        .ant-table-thead > tr > th {
+          background-color: black;
+          color: #ffffff;
+          font-weight: bold;
+          text-align: center;
+        }
+  
+        .ant-table-tbody > tr > td {
+          text-align: center;
+          padding: 12px;
+        }
+  
+        /* Custom button styles within the table */
+        .renew-button {
+          background-color: black !important;
+          color: white !important;
+          border: none !important;
+  
+          &:hover {
+            background-color: #333333 !important;
+          }
+        }
+  
+        .cancel-button {
+          background-color: red !important;
+          border-color: red !important;
+          color: white !important;
+  
+          &:hover {
+            background-color: darkred !important;
+          }
+        }
+      }
+    }
+  }
+  
+  /* Modal-specific styling */
+  .renew-modal, .cancel-confirm-modal {
+    
+    /* More specific selectors for custom OK button styles */
+    .custom-ok-button,
+    .ant-btn.custom-ok-button, 
+    .ant-btn-primary.custom-ok-button {
+      background-color: black !important;
+      border-color: black !important;
+      color: white !important;
+  
+      &:hover {
+        background-color: #333333 !important;
+        border-color: #333333 !important;
+      }
+    }
+  
+    /* More specific selectors for custom Cancel button styles */
+    .custom-cancel-button
+     {
+      background-color: black !important;
+      border-color: black !important;
+      color: white !important;
+  
+      &:hover {
+        background-color: #333333 !important;
+        border-color: #333333 !important;
+      }
+    }
+  
+    /* Text and input styling inside modals */
+    p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+  
+    .date-picker {
+      width: 100%;
+    }
+  }
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-modal .ant-modal-footer >.ant-btn+.ant-btn {
+    background-color: black;
+  }
+  ant-btn css-dev-only-do-not-override-qnu6hi ant-btn-default custom-cancel-button {
+    background-color: black;
+  }
+  .ant-modal .ant-btn{
+    background-color: black;
+  }
+  .extend-button{
+    background-color: black;
+     &:hover {
+      background-color: #333333 !important;
+      border-color: #333333 !important;
+    }
+  }
+ 
+  

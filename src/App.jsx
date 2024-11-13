@@ -29,9 +29,11 @@ import ConsignmentManager from "./page/admin/consigmentManager";
 import WalletManager from "./page/admin/wallet";
 import WalletUser from "./page/walletUser";
 import ConsignmentForm from "./page/cosingmentForm";
-import CancelManagement from "./page/admin/cancleManagement";
-import CustomerAccount from "./page/admin/CustomerAccount";
+import ConsignmentHistory from "./page/consignmentHistory";
+import PendingPage from "./page/pending";
 import FishSellHistory from "./page/fishSellHistory";
+import CancelManagement from "./page/admin/cancleManagement";
+import CustomerAccount from "./page/admin/customerAccount";
 import FishSellManagement from "./page/admin/fishSellManagement";
 
 function App() {
@@ -127,10 +129,19 @@ function App() {
           element: <WalletUser />,
         },
         {
-          path: "fishSellHistory",
+          path:"ConsignmentHistory",
+          element: <ConsignmentHistory />,
+        },
+
+        {
+          path:"PendingPage",
+          element: <PendingPage />,
+        },
+        {
+          path:"fishSellHistory",
           element: <FishSellHistory />,
         },
-        
+       
       ],
     },
     {

@@ -11,26 +11,21 @@ function ConsignmentScreen() {
   const handleGetStart = () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      // Nếu chưa đăng nhập, hiển thị pop-up
       setIsModalVisible(true);
     } else {
-      // Nếu đã đăng nhập, chuyển tới trang ConsignmentPage
       navigate("/ConsignmentPage");
     }
   };
 
   const handleSignIn = () => {
-    // Chuyển tới trang đăng nhập
     navigate("/login");
   };
 
   const handleSignUp = () => {
-    // Chuyển tới trang đăng ký
     navigate("/register");
   };
 
   const handleCancel = () => {
-    // Đóng modal
     setIsModalVisible(false);
   };
 

@@ -1,38 +1,32 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
-    PieChartOutlined,
-    LogoutOutlined, // Add this import
-} from '@ant-design/icons';
-import { Breadcrumb, Button, Layout, Menu, theme } from 'antd';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../redux/features/userSlice';
-import { Wallet as WalletIcon } from '@mui/icons-material';
-
+  PieChartOutlined,
+  LogoutOutlined, // Add this import
+} from "@ant-design/icons";
+import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/features/userSlice";
+import { Wallet as WalletIcon } from "@mui/icons-material";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-function getItem(
-    label,
+function getItem(label, key, icon, children) {
+  return {
     key,
     icon,
     children,
-) {
-    return {
-        key,
-        icon,
-        children,
-        label: <Link to={`/dashboard/${key}`}>{label}</Link>,
-    };
+    label: <Link to={`/dashboard/${key}`}>{label}</Link>,
+  };
 }
 
 const Dashboard = () => {
-    const [collapsed, setCollapsed] = useState(false);
-    const {
-        token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
     const role = localStorage.getItem("role");
 
@@ -59,11 +53,11 @@ const Dashboard = () => {
         getItem('Fish Sell Management', 'fishSellManagement', <PieChartOutlined />),
     ];
 
-    function handleLogout() {
-        localStorage.removeItem("token");
-        dispatch(logout());
-        navigate("/login");
-    }
+  function handleLogout() {
+    localStorage.removeItem("token");
+    dispatch(logout());
+    navigate("/login");
+  }
 
     return (
         <Layout style={{ minHeight: '100vh' }} >

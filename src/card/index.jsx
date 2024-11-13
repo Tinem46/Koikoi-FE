@@ -44,7 +44,10 @@ function Card({ fish }) {
         <div className="fish-card__info">
           <div className="name">Name: {fish.name}</div>
           <div className="price">
-            Price: {new Intl.NumberFormat('en-US').format(fish.price)}$
+            Price: {new Intl.NumberFormat('vi-VN', { 
+              style: 'currency', 
+              currency: 'VND' 
+            }).format(fish.price)}
           </div>
           <div className="category">Category: {fish.category}</div>
           <div className="author">Author: {fish.author}</div>
@@ -54,7 +57,7 @@ function Card({ fish }) {
             ? `${fish.description.substring(0, 100)}...`
             : fish.description || "No description available"}
         </p> */}
-        <button className="button" onClick={handleAddToCart}>Thêm vào giỏ hàng</button>
+        <button className="button" onClick={handleAddToCart}>Add To Cart</button>
       </div>
     </div>
   );

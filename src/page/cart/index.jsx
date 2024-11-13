@@ -121,7 +121,10 @@ function Cart() {
       const tableData = cart.map((item) => ({
         key: item.id,
         name: item.name,
-        price: "$" + new Intl.NumberFormat('en-US').format(item.price * item.quantity),
+        price: new Intl.NumberFormat('vi-VN', { 
+          style: 'currency', 
+          currency: 'VND' 
+        }).format(item.price * item.quantity),
         image: item.image,
         quantity: item.quantity,
         totalPrice: item.price * item.quantity,
@@ -130,7 +133,7 @@ function Cart() {
       setDataSource(tableData);
     } else {
       console.error("Cart is not an array:", cart);
-      setDataSource([]); // Set dataSource to an empty array if cart is not an array
+      setDataSource([]); 
     }
   }, [cart]);
 
@@ -254,15 +257,24 @@ function Cart() {
             <h1>Cart Total</h1>
             <div className="modify-Checkout">
               <p>Subtotal: </p>
-              <p>${subTotal.toFixed(2)}</p>
+              <p>{new Intl.NumberFormat('vi-VN', { 
+                style: 'currency', 
+                currency: 'VND' 
+              }).format(subTotal)}</p>
             </div>
             <div className="modify-Checkout">
               <p>Shipping: </p>
-              <p>${shippingPee.toFixed(2)}</p>
+              <p>{new Intl.NumberFormat('vi-VN', { 
+                style: 'currency', 
+                currency: 'VND' 
+              }).format(shippingPee)}</p>
             </div>
             <div className="modify-Checkout">
               <p>Total amount: </p>
-              <p>${totalAmount.toFixed(2)}</p>
+              <p>{new Intl.NumberFormat('vi-VN', { 
+                style: 'currency', 
+                currency: 'VND' 
+              }).format(totalAmount)}</p>
             </div>
             <br />
             {Array.isArray(cart) && cart.length > 0 && (

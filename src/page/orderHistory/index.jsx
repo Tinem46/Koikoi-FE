@@ -9,6 +9,13 @@ import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/features/cartSlice';
 import { toast } from 'react-toastify';
 
+const formatToVND = (price) => {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+  }).format(price);
+};
+
 function OrderHistory() {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -65,14 +72,12 @@ function OrderHistory() {
         orderDetails = response.data;
       }
 
-      // Calculate subtotal
       const subTotal = orderDetails.reduce((total, item) => total + (item.quantity * item.price), 0);
 
-      // Fetch cart total (keeping this for shippingPee and totalAmount)
       const cartTotalResponse = await api.get(`Cart/total`, {
         params: {
           cartId: order.id,
-          voucherCode: '' // You can add voucher handling if needed
+          voucherCode: '' 
         }
       });
 
@@ -90,7 +95,7 @@ function OrderHistory() {
       navigate('/checkout', { 
         state: { 
           orderId: order.id,
-          subTotal, // Use the calculated subTotal
+          subTotal, 
           shippingPee,
           totalAmount,
           cart: cartData,
@@ -165,7 +170,7 @@ function OrderHistory() {
       title: 'Total Amount',
       dataIndex: 'totalAmount',
       key: 'totalAmount',
-      render: (text) => `$${parseFloat(text).toFixed(2)}`,
+      render: (text) => formatToVND(text),
     },
     {
       title: 'Status',
