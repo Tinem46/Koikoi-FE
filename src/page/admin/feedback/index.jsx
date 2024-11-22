@@ -4,14 +4,9 @@ import DashboardTemplate from '../../../dashboard-template';
 function ManagementFeedback() {
     const columns = [
         {
-            title: 'User',
-            dataIndex: 'userName',
-            key: 'userName',
-        },
-        {
-            title: 'Product',
-            dataIndex: 'productName',
-            key: 'productName',
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
         },
         {
             title: 'Feedback Content',
@@ -19,14 +14,13 @@ function ManagementFeedback() {
             key: 'feedBackContent',
         },
         {
-            title: 'Created Date',
-            dataIndex: 'createDate',
-            key: 'createDate',
+            title: 'Feedback Day',
+            dataIndex: 'feedBackDay',
+            key: 'feedBackDay',
             render: (date) => new Date(date).toLocaleDateString(),
         }
     ];
 
-    // Empty form items since we don't need to create/edit feedback
     const formItems = (
         <>
         </>
@@ -38,7 +32,8 @@ function ManagementFeedback() {
             apiURI="feedback" 
             formItems={formItems} 
             title="Feedback" 
-            disableCreate={true} // Disable create button since admin only views feedback
+            disableCreate={true} 
+            hideEdit={true}
         />
     );
 }

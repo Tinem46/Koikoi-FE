@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../../config/api';
 import './index.scss';
 import { alertSuccess } from '../../assets/image/hook';
 import { Table, Image } from 'antd';
 
+function formatToVND(amount) {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+  }).format(amount);
+}
+
 function OrderSuccess() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [orderDetails, setOrderDetails] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
 
@@ -14,18 +22,36 @@ function OrderSuccess() {
     alertSuccess('Order placed successfully!');
 
     const fetchOrderDetails = async () => {
-      try {
-        if (location.state?.cart && location.state?.userProfile) {
-          setOrderDetails({
-            id: location.state.orderId,
-            items: location.state.cart,
-            subTotal: location.state.subTotal,
-            shippingFee: location.state.shippinPee,
-            totalAmount: location.state.totalAmount,
-            paymentMethod: location.state.paymentMethod,
+      
+        const urlParams = new URLSearchParams(window.location.search);
+        const vnp_TxnRef = urlParams.get('vnp_TxnRef');
+        const vnp_ResponseCode = urlParams.get('vnp_ResponseCode');
+        
+        if (vnp_TxnRef && vnp_ResponseCode) {
+          await api.get('payment/response', {
+            params: {
+              vnp_TxnRef,
+              vnp_ResponseCode
+            }
           });
-          setUserProfile(location.state.userProfile);
+        }
+
+        const pendingOrderDetails = localStorage.getItem('pendingOrderDetails');
+        if (pendingOrderDetails) {
+          const orderData = JSON.parse(pendingOrderDetails);
+          setOrderDetails({
+            id: orderData.orderId,
+            items: orderData.cart,
+            subTotal: orderData.subTotal,
+            shippingFee: orderData.shippingPee,
+            totalAmount: orderData.totalAmount,
+            paymentMethod: orderData.paymentMethod,
+            paymentType: orderData.paymentType
+          });
+          setUserProfile(orderData.userProfile);
+          localStorage.removeItem('pendingOrderDetails');
         } else {
+          
           const lastOrderResponse = await api.get('payment/lastPaidOrder');
           const orderData = lastOrderResponse.data;
           
@@ -51,13 +77,11 @@ function OrderSuccess() {
             country: orderData.country
           });
         }
-      } catch (error) {
-        console.error('Error fetching order details:', error);
-      }
+      
     };
 
     fetchOrderDetails();
-  }, [location]);
+  }, [location, navigate]);
 
   const detailColumns = [
     {
@@ -111,8 +135,8 @@ function OrderSuccess() {
         <div className="order-info">
           <h2>Order Summary</h2>
           <p>Order ID: {orderDetails.id}</p>
-          <p>Shipping Fee: ${parseFloat(orderDetails.shippingFee).toFixed(2)}</p>
-          <p>Total Amount: ${parseFloat(orderDetails.totalAmount).toFixed(2)}</p>
+          <p>Shipping Fee: {formatToVND(orderDetails.shippingFee)}</p>
+          <p>Total Amount: {formatToVND(orderDetails.totalAmount)}</p>
           <p>Payment Method: {orderDetails.paymentMethod}</p>
           
           <h2>Order Details</h2>

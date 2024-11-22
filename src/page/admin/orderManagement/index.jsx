@@ -3,7 +3,7 @@ import DashboardTemplate from '../../../dashboard-template';
 import { toast } from 'react-toastify';
 import OrderDetails from '../../../components/orderDetails';
 import OrderInformation from '../../../components/OrderInformation';
-import { Button } from 'antd';
+import { Button, Modal, Input } from 'antd';
 import api from '../../../config/api';
 
 function OrderManagement() {
@@ -82,13 +82,19 @@ function OrderManagement() {
       title: 'Total Amount',
       dataIndex: 'totalAmount',
       key: 'totalAmount',
-      render: (amount) => `$${amount.toFixed(2)}`,
+      render: (text) => `${parseFloat(text).toLocaleString('vi-VN')}đ`,
     },
     {
-      title: 'Status',
-      dataIndex: 'orderStatus',
+        title: 'Status',
+        dataIndex: 'orderStatus',
       key: 'orderStatus',
     },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    
     {
       title: 'Details',
       key: 'actions',
@@ -128,6 +134,59 @@ function OrderManagement() {
       toast.success('Order refunded successfully');
   };
 
+  const handleCreateShipping = async (orderId, tempShippingCode,tempDeliveryDate,tempDeliveredDate) => {
+  
+    
+    Modal.confirm({
+      title: 'Create Shipping',
+      content: (
+        <div>
+          <Input
+            placeholder="Enter shipping code"
+            onChange={(e) => {
+              tempShippingCode = e.target.value;
+            }}
+            style={{ marginBottom: '10px' }}
+          />
+          <Input
+            type="date"
+            placeholder="Delivery Date"
+            onChange={(e) => {
+              tempDeliveryDate = e.target.value;
+            }}
+            style={{ marginBottom: '10px' }}
+          />
+          <Input
+            type="date"
+            placeholder="Delivered Date"
+            onChange={(e) => {
+              tempDeliveredDate = e.target.value;
+            }}
+          />
+        </div>
+      ),
+      onOk: async () => {
+        if (!tempShippingCode.trim()) {
+          toast.error('Please enter a shipping code');
+          return;
+        }
+        try {
+          await api.post(`shipping/create/${orderId}`, {
+            shippingCode: tempShippingCode,
+            deliveryDate: tempDeliveryDate,
+            deliveredDate: tempDeliveredDate
+          });
+          toast.success('Shipping created successfully');
+          window.location.reload();
+        } catch (error) {
+          console.error('Error creating shipping:', error);
+          toast.error('Failed to create shipping');
+        }
+      },
+      onCancel: () => {},
+    });
+  };
+
   return (
     <div>
       <DashboardTemplate 
@@ -151,6 +210,11 @@ function OrderManagement() {
             condition: (record) => record.orderStatus === 'CANCELED',
             action: handleRefund,
           },
+          {
+            label: 'Create Shipping',
+            condition: (record) => record.orderStatus === 'CONFIRMED' && !record.hasShipping,
+            action: handleCreateShipping,
+          },
         ]}
         disableCreate={true}
         combineActions={true}
@@ -160,7 +224,8 @@ function OrderManagement() {
         <OrderDetails 
           selectedOrder={selectedOrder} 
           onClose={handleCloseDetails} 
-          onPreview={(image) => console.log('Preview image:', image)} 
+          onPreview={(image) => console.log('Preview image:', image)}
+          isCareManagement={false}
         />
       )}
       

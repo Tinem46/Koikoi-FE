@@ -60,10 +60,18 @@ function ManageVoucher() {
     <Form.Item name="discount_amount" label="Discount Amount">
         <Input type='number'/>
     </Form.Item>
-    <Form.Item name="start_date" label="Start Date">
+    <Form.Item 
+        name="start_date" 
+        label="Start Date"
+        getValueProps={(i) => ({ value: i ? dayjs(i) : null })}
+    >
         <DatePicker showTime/>
     </Form.Item>
-    <Form.Item name="end_date" label="End Date">
+    <Form.Item 
+        name="end_date" 
+        label="End Date"
+        getValueProps={(i) => ({ value: i ? dayjs(i) : null })}
+    >
         <DatePicker showTime/>
     </Form.Item>
     <Form.Item name="is_active" label="Is Active" valuePropName="checked">

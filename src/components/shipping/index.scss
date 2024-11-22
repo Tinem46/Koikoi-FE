@@ -1,0 +1,49 @@
+.shipping-container {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  
+
+  .ant-table-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 0 auto;
+    margin-top: 50px;
+
+    .ant-table {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #fff;
+      table-layout: fixed;
+
+      &-body {
+        overflow-x: auto;
+      }
+
+      .ant-table-cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .ant-table-tbody > tr > td {
+        text-align: center;
+        padding: 12px;
+        white-space: nowrap;
+      }
+    }
+
+    .ant-table-thead > tr > th {
+      background-color: black;
+      color: #ffffff;
+      font-weight: bold;
+      text-align: center;
+      white-space: nowrap;
+    }
+  }
+} 

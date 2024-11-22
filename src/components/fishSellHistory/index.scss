@@ -1,8 +1,9 @@
-.fish-sell-history-container {
+.fishsell-history-container {
   background-color: #f8f9fa;
-  min-height: 100vh;
-  padding: 15px;
-  font-family: 'Poppins', sans-serif;
+  padding: 50px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
 
   .ant-table-wrapper {
     max-width: 1200px;

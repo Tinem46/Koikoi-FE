@@ -60,7 +60,7 @@ function CustomerAccount() {
     return (
         <DashboardTemplate 
             columns={columns} 
-            apiURI="account"
+            apiURI="account/customer"
             title="Customer Accounts" 
             showAddButton={false}
             disableCreate={true}

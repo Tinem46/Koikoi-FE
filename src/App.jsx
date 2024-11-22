@@ -18,23 +18,23 @@ import ConsignmentScreen from "./page/consignmentScreen"
 import ProductDetails from "./page/ProductDetails"
 import ConsignmentPage from "./page/consigment"
 import CreateStaffAccount from "./page/admin/createStaffAccount"
-import OrderHistory from "./page/orderHistory"
-import OrderManagement from "./page/admin/orderManagement"
 import OrderSuccess from "./page/orderSuccess"
 import RevenueManagement from "./page/admin/revenueManagement"
 import ManagementFeedback from "./page/admin/feedback"
 import Feedback from "./page/feedbacks";
 import ConginmentCare from "./page/consingmentCare";
-import ConsignmentManager from "./page/admin/consigmentManager";
 import WalletManager from "./page/admin/wallet";
 import WalletUser from "./page/walletUser";
 import ConsignmentForm from "./page/cosingmentForm";
-import ConsignmentHistory from "./page/consignmentHistory";
 import PendingPage from "./page/pending";
-import FishSellHistory from "./page/fishSellHistory";
 import CancelManagement from "./page/admin/cancleManagement";
 import CustomerAccount from "./page/admin/customerAccount";
 import FishSellManagement from "./page/admin/fishSellManagement";
+import CareManagement from "./page/admin/careManagement";
+import OrderManagement from "./page/admin/orderManagement";
+import History from "./page/history";
+import ShippingManagement from "./page/admin/shippingManagement";
+import Certificate from "./page/admin/Certificate";
 
 function App() {
   const router = createBrowserRouter([
@@ -100,8 +100,8 @@ function App() {
           element: <ConsignmentForm />,
         },
         {
-          path: "/order-history",
-          element: <OrderHistory />,
+          path: "/history",
+          element: <History />,
         },
         {
           path: "orderSuccess",
@@ -125,23 +125,30 @@ function App() {
           element: <ConginmentCare />,
         },
         {
-          path:"walletUser",
+          path:"wallet",
           element: <WalletUser />,
         },
-        {
-          path:"ConsignmentHistory",
-          element: <ConsignmentHistory />,
-        },
-
         {
           path:"PendingPage",
           element: <PendingPage />,
         },
         {
-          path:"fishSellHistory",
-          element: <FishSellHistory />,
+          path:"cancelManagement",
+          element: <CancelManagement />,
         },
-       
+        {
+          path:"customerAccount",
+          element: <CustomerAccount />,
+        },
+        {
+          path:"fishSellManagement",
+          element: <FishSellManagement />,
+        },
+        {
+          path: "history",
+          element: <History />,
+        },
+
       ],
     },
     {
@@ -177,8 +184,8 @@ function App() {
           element: <ManagementFeedback />,
         },
         {
-          path: "consignmentManagement",
-          element: <ConsignmentManager />,
+          path: "careManagement",
+          element: <CareManagement />,
         },
         {
           path: "walletManager",
@@ -195,6 +202,14 @@ function App() {
         {
           path: "fishSellManagement",
           element: <FishSellManagement />,
+        },
+        {
+          path: "shippingManagement",
+          element: <ShippingManagement />,
+        },
+        {
+          path: "certificate",
+          element: <Certificate />,
         },
 
       ],

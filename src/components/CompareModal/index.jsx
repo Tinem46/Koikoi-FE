@@ -57,40 +57,32 @@ function CompareModal({ isOpen, onClose }) {
         }
         const value = record[fish.id];
         return (
-          <span>
-            {(() => {
-              switch (record.attribute.toLowerCase()) {
-                case 'price':
-                  return `$${new Intl.NumberFormat('en-US').format(value)}`;
-                case 'age':
-                  return `${value} months`;
-                case 'size':
-                  return `${value} cm`;
-                case 'origin':
-                  return value ? value.charAt(0).toUpperCase() + value.slice(1) : '';
-                default:
-                  return value;
-              }
-            })()}
-          </span>
+          <span>{value}</span>
         );
       },
     })),
   ];
 
-  const dataSource = ['price', 'category', 'age', 'size', 'origin', 'gender', 'Action'].map(
+  const dataSource = ['price', 'category', 'age', 'size', 'origin', 'gender', 'status', 'author', 'Action'].map(
     (attribute) => ({
       key: attribute,
       attribute: attribute.charAt(0).toUpperCase() + attribute.slice(1),
       ...compareItems.reduce((acc, fish) => {
-        acc[fish.id] = attribute === 'Action' ? null : fish[attribute];
+        if (attribute === 'price') {
+          acc[fish.id] = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+          }).format(fish[attribute]);
+        } else {
+          acc[fish.id] = attribute === 'Action' ? null : fish[attribute];
+        }
         return acc;
       }, {}),
     })
   );
 
   return (
-    <Modal
+    <Modal className = "compare-modal"
       visible={isOpen}
       onCancel={onClose}
       width="90%"

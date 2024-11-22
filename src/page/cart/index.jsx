@@ -1,37 +1,25 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux"; // Corrected import
 import "./index.scss";
-import { Image, Table, InputNumber, Button, Space, Input, Popconfirm } from "antd";
+import { Image, Table, Button, Space, Select, Popconfirm } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
-import Naviagtion from "../../components/navigation";
 import api from "../../config/api";
 import { reset, syncWithApi } from "../../redux/features/cartSlice";
 import { toast } from 'react-toastify';
+import NavBar from "../../components/navigation2";
 
 function Cart() {
   const [cart, setCart] = useState([]);
-  const [dataSource, setDataSource] = useState([]);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [voucherCode, setVoucherCode] = useState(""); 
   const [cartId, setCartId] = useState(null);
-
+  const [voucherCode, setVoucherCode] = useState(""); 
   const [subTotal, setSubTotal] = useState(0);
   const [shippingPee, setShippingPee] = useState(0);    
   const [totalAmount, setTotalAmount] = useState(0);
-
-  const [userProfile, setUserProfile] = useState(null);
-
-  const fetchUserProfile = async () => {
-    try {
-      const response = await api.get(`account/Profile`);
-      setUserProfile(response.data);
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
-      toast.error("Failed to load user profile. Please try again.");
-    }
-  };
+  const [vouchers, setVouchers] = useState([]);
+  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const fetchCart = async () => {
     try {
@@ -48,9 +36,20 @@ function Cart() {
     }
   };
 
+  const fetchVouchers = async () => {
+    try {
+      const response = await api.get('voucher');
+      const activeVouchers = response.data.filter(v => v.is_active);
+      setVouchers(activeVouchers);
+    } catch (error) {
+      console.error("Failed to fetch vouchers:", error);
+      toast.error("Failed to load vouchers");
+    }
+  };
+
   useEffect(() => {
     fetchCart();
-    fetchUserProfile(); 
+    fetchVouchers();
   }, []);
 
   const handleRemove = async (id) => {
@@ -67,25 +66,7 @@ function Cart() {
     }
   };
 
-  const handleIncreaseQuantity = async (id) => {
-    try {
-      await api.put(`Cart/increase/${id}`);
-      setCart(cart.map(item => item.id === id ? { ...item, quantity: item.quantity + 1 } : item));
-      await updateCartTotal(cartId); // Update cart total after increasing quantity
-    } catch (error) {
-      console.error("Failed to increase quantity:", error.response ? error.data : error);
-    }
-  };
-
-  const handleDecreaseQuantity = async (id) => {
-    try {
-      await api.put(`Cart/decrease/${id}`);
-      setCart(cart.map(item => item.id === id ? { ...item, quantity: item.quantity - 1 } : item));
-      await updateCartTotal(cartId); // Update cart total after decreasing quantity
-    } catch (error) {
-      console.error("Failed to decrease quantity:", error.response ? error.data : error);
-    }
-  };
+  
 
   const handleApplyVoucher = () => {
     updateCartTotal(cartId, voucherCode);
@@ -116,27 +97,6 @@ function Cart() {
     }
   };
 
-  useEffect(() => {
-    if (Array.isArray(cart)) {
-      const tableData = cart.map((item) => ({
-        key: item.id,
-        name: item.name,
-        price: new Intl.NumberFormat('vi-VN', { 
-          style: 'currency', 
-          currency: 'VND' 
-        }).format(item.price * item.quantity),
-        image: item.image,
-        quantity: item.quantity,
-        totalPrice: item.price * item.quantity,
-        id: item.id,
-      }));
-      setDataSource(tableData);
-    } else {
-      console.error("Cart is not an array:", cart);
-      setDataSource([]); 
-    }
-  }, [cart]);
-
   const columns = [
     {
       title: "Picture",
@@ -154,24 +114,7 @@ function Cart() {
       dataIndex: "price",
       key: "price",
     },
-    {
-      title: "Quantity",
-      dataIndex: "quantity",
-      key: "quantity",
-      render: (quantity, record) => (
-        <InputNumber
-          min={1}
-          value={quantity}
-          onChange={(value) => {
-            if (value > quantity) {
-              handleIncreaseQuantity(record.id);
-            } else if (value < quantity) {
-              handleDecreaseQuantity(record.id);
-            }
-          }}
-        />
-      ),
-    },
+    
     {
       title: "Action",
       key: "action",
@@ -187,19 +130,10 @@ function Cart() {
   ];
 
   const handleProceedToCheckout = async () => {
-    if (!userProfile) {
-      toast.error("User profile information is not available. Please try again.");
-      return;
-    }
-
     try {
       // Create the order here
       const orderData = {
-        phone: userProfile?.phone_number || "",
-        fullName: `${userProfile?.firstName || ""} ${userProfile?.lastName || ""}`.trim(),
         orderDate: new Date().toISOString(),
-        note: "",
-        address: userProfile?.streetAddress || "",
         voucherCode: voucherCode,
         orderStatus: "PENDING",
         subTotal,
@@ -217,7 +151,6 @@ function Cart() {
           shippingPee, 
           totalAmount,
           cart,
-          userProfile
         }
       });
     } catch (error) {
@@ -229,14 +162,27 @@ function Cart() {
   return (
     <>
       <div className="outlet-Cart">
-        <Naviagtion name="Cart" link="/cart"/>
+        <NavBar standOn="Cart" />
         <div className="cart">
           <span className="title-Cart">Cart</span>
           <ShoppingCartOutlined className="icon-Cart" />
-          {Array.isArray(cart) && cart.length === 0 ? ( // Ensure cart is an array
+          {Array.isArray(cart) && cart.length === 0 ? (
             <p className="empty-p">Your cart is empty</p>
           ) : (
-            <Table columns={columns} dataSource={dataSource} />
+            <Table 
+              columns={columns} 
+              dataSource={cart.map((item) => ({
+                key: item.id,
+                name: item.name,
+                price: new Intl.NumberFormat('vi-VN', { 
+                  style: 'currency', 
+                  currency: 'VND' 
+                }).format(item.price),
+                image: item.image,
+                totalPrice: item.price * item.quantity,
+                id: item.id,
+              }))} 
+            />
           )}
         </div>
         <div className="return-update-cart">
@@ -246,12 +192,17 @@ function Cart() {
         </div>
         <div className="coupon-Checkout">
           <Space.Compact className="coupon-Input">
-            <Input 
-              placeholder="Enter your voucher"
+            <Select
+              style={{ width: 200 }}
+              placeholder="Select a voucher"
               value={voucherCode}
-              onChange={(e) => setVoucherCode(e.target.value)}
+              onChange={(value) => setVoucherCode(value)}
+              options={vouchers.map(v => ({
+                label: `${v.description}`,
+                value: v.code
+              }))}
             />
-            <Button type="primary" onClick={handleApplyVoucher}>Apply Voucher</Button> 
+            <Button type="primary" onClick={handleApplyVoucher}>Apply Voucher</Button>
           </Space.Compact>
           <section className="checkOut-Box">
             <h1>Cart Total</h1>

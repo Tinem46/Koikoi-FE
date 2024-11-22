@@ -1,14 +1,22 @@
-.ant-modal {
+.compare-modal {
   .ant-modal-content {
-    max-height: 80vh;
     overflow-y: auto;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ant-modal-body {
+    flex: 1;
+    overflow: auto;
   }
 
   .ant-table-wrapper {
-    margin-top: 20px;
+    margin-top: 10px;
 
     .ant-table {
       border: 1px solid #f0f0f0;
+      table-layout: fixed;
     }
 
     .ant-table-thead > tr > th,
@@ -22,6 +30,12 @@
       text-align: left;
       padding-left: 16px;
       width: 200px;
+    }
+
+    .ant-table-cell {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -52,5 +66,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    img {
+      max-height: 100px;
+      width: auto;
+    }
   }
 }

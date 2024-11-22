@@ -38,8 +38,6 @@ function Naviagtion({ selectedMenu="", triggerReset=()=>{}, name="shop", link="/
                 {name}
               </span>
             </Breadcrumb.Item>
-
-            {/* selectedMenu (like Asagi) will be bold if it exists */}
             {selectedMenu && (
               <Breadcrumb.Item style={{ fontWeight: "bold" }}>
                 {selectedMenu.charAt(0).toUpperCase() + selectedMenu.slice(1)}

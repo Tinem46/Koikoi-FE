@@ -3,7 +3,7 @@ import { Breadcrumb } from "antd";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
 
-function NarBar({ preOn, standOn }) {
+function NavBar({ preOn, standOn,selectedMenu="" }) {
   const navigate = useNavigate();
 
   return (
@@ -36,10 +36,18 @@ function NarBar({ preOn, standOn }) {
               {standOn}
             </span>
           </Breadcrumb.Item>
+
+          {selectedMenu && (
+              <Breadcrumb.Item style={{ fontWeight: "bold" }}>
+                {selectedMenu.split(' ').map(word => 
+                  word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ')}
+              </Breadcrumb.Item>
+            )}
         </Breadcrumb>
       </div>
     </div>
   );
 }
 
-export default NarBar;
+export default NavBar;

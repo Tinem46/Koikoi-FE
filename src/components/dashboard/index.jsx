@@ -8,7 +8,8 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 import { Wallet as WalletIcon } from "@mui/icons-material";
-
+import "./index.scss";
+import LogoutIcon from '@mui/icons-material/Logout';
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -40,6 +41,8 @@ const Dashboard = () => {
         getItem('Cancel Management', 'cancelManagement', <PieChartOutlined />),
 
     ] : [
+
+        getItem('Certificate', 'certificate', <PieChartOutlined />),
         getItem('Category', 'category', <PieChartOutlined />),
         getItem('Voucher', 'voucher', <PieChartOutlined />),
         getItem('Fish', 'fish', <PieChartOutlined />),
@@ -47,10 +50,12 @@ const Dashboard = () => {
         getItem('Feedback', 'feedback', <PieChartOutlined />), 
         getItem('Order Management', 'orderManagement', <PieChartOutlined />),
         getItem('Revenue Management', 'revenueManagement', <PieChartOutlined />),
-        getItem('Consignment Management', 'consignmentManagement', <PieChartOutlined />),
+        getItem('Care Management', 'careManagement', <PieChartOutlined />),
         getItem('Cancel Management', 'cancelManagement', <PieChartOutlined />),
         getItem('Customer Account', 'customerAccount', <PieChartOutlined />),
         getItem('Fish Sell Management', 'fishSellManagement', <PieChartOutlined />),
+        getItem('Shipping Management', 'shippingManagement', <PieChartOutlined />),
+        
     ];
 
   function handleLogout() {
@@ -60,7 +65,7 @@ const Dashboard = () => {
   }
 
     return (
-        <Layout style={{ minHeight: '100vh' }} >
+        <Layout className="dashboard-layout" style={{ minHeight: '100vh' }} >
             <Header style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#000038' }}>
                 <h1 style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>{role === "MANAGER" ? "Manager" : "Staff"}</h1>
                 {role === "MANAGER" && (
@@ -71,23 +76,27 @@ const Dashboard = () => {
                 )}
             </Header>
             <Layout>
-                <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}  >
+                <Sider 
+                    width={250}
+                    collapsible 
+                    collapsed={collapsed} 
+                    onCollapse={(value) => setCollapsed(value)}
+                >
                     <div className="demo-logo-vertical" />
-                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
-                    <Button 
-                        onClick={handleLogout} 
-                        style={{ 
-                            position: 'absolute',
-                            bottom: '80px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        <LogoutOutlined style={{ fontSize: '18px', color: 'blue' }} /> 
-                    </Button>
+                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+                        <Button 
+                            onClick={handleLogout} 
+                            style={{ 
+                                margin: '200px auto',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            <LogoutIcon style={{ fontSize: '18px', color: 'blue' }} /> 
+                        </Button>
+                    </div>
                 </Sider>
                 <Layout>
                     <Content style={{ margin: '0 16px'}}>

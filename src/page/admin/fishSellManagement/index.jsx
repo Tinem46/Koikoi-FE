@@ -1,6 +1,7 @@
 import DashboardTemplate from '../../../dashboard-template';
 import { toast } from 'react-toastify';
 import api from '../../../config/api';
+import { Button, Modal, Input } from 'antd';
 
 function FishSellManagement() {
     const handleApprove = async (id) => {
@@ -17,6 +18,37 @@ function FishSellManagement() {
         } catch (error) {
             toast.error(error.response?.data || 'Failed to rejected consignment');
         }
+    };
+
+    const handleCreateShipping = async (id, tempShippingCode) => {
+        Modal.confirm({
+            title: 'Create Shipping',
+            content: (
+                <Input
+                    placeholder="Enter shipping code"
+                    onChange={(e) => {
+                        tempShippingCode = e.target.value;
+                    }}
+                />
+            ),
+            onOk: async () => {
+                if (!tempShippingCode?.trim()) {
+                    toast.error('Please enter a shipping code');
+                    return;
+                }
+                try {
+                    await api.post(`shipping/create/${id}`, {
+                        shippingCode: tempShippingCode
+                    });
+                    toast.success('Shipping created successfully');
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Error creating shipping:', error);
+                    toast.error('Failed to create shipping');
+                }
+            },
+            onCancel: () => {},
+        });
     };
 
     const columns = [
@@ -47,7 +79,18 @@ function FishSellManagement() {
             dataIndex: 'type',
             key: 'type',
         },
-       
+        {
+            title: 'Shipping',
+            key: 'shipping',
+            render: (_, record) => (
+                <Button 
+                    onClick={() => handleCreateShipping(record.id)} 
+                    disabled={record.hasShipping || record.approvalStatus !== 'APPROVED'}
+                >
+                    Create Shipping
+                </Button>
+            ),
+        },
         {
             title: 'Approval Status',
             dataIndex: 'approvalStatus',
@@ -78,6 +121,7 @@ function FishSellManagement() {
                 }
             ]}
             showEditDelete={false}
+            disableCreate={true}
         />
     );
 }

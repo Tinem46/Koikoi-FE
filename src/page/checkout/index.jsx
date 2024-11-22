@@ -1,10 +1,11 @@
-import { Button, Input, Select, Radio} from 'antd';
+import { Button, Input, Select} from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './index.scss';
 import { toast } from 'react-toastify';
 import api from '../../config/api';
 import Navigation from '../../components/navigation'; 
+import NavBar from '../../components/navigation2';
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -16,14 +17,35 @@ function Checkout() {
         totalAmount: cartTotalAmount, 
         cart, 
         orderId,
-        userProfile,
-        paymentType 
+        paymentType,
+        orderDetails 
     } = location.state || {};
 
     const finalTotalAmount = paymentType === 'consignment' ? cartTotalAmount : cartTotalAmount; 
 
     const navigate = useNavigate();
-    const [userDetails, setUserDetails] = useState(userProfile || {});
+    const [userDetails, setUserDetails] = useState({});
+
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    toast.error("Please login to proceed to checkout");
+                    navigate('/login');
+                    return;
+                }
+
+                const response = await api.get('account/Profile');
+                setUserDetails(response.data);
+            } catch (error) {
+                console.error("Error fetching user profile:", error);
+                toast.error("Failed to load user profile. Please try again.");
+            }
+        };
+
+        fetchUserProfile();
+    }, [navigate]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -59,6 +81,18 @@ function Checkout() {
                 address: userDetails.specific_Address
             };
 
+            const pendingOrderDetails = {
+                orderId,
+                cart: paymentType === 'consignment' ? orderDetails : cart,
+                subTotal,
+                shippingPee,
+                totalAmount: cartTotalAmount,
+                userProfile: userDetails,
+                paymentMethod: 'Bank Transfer',
+                paymentType
+            };
+            localStorage.setItem('pendingOrderDetails', JSON.stringify(pendingOrderDetails));
+
             const paymentResponse = await api.post('payment/VNPay', paymentData, {
                 params: {
                     koiOrderId: orderId
@@ -75,7 +109,7 @@ function Checkout() {
 
     return (
         <div className="checkout-container">
-           <Navigation name="Checkout" link="/checkout"/> 
+            <NavBar standOn="Checkout" />
             <div className="checkout">
                 <div className="billing-details">
                     <h2>Billing Details</h2>
@@ -156,20 +190,20 @@ function Checkout() {
                                         </div>
                                         <div className="item-details">
                                             <span>Quantity: {item.quantity}</span>
-                                            <span>Price: ${new Intl.NumberFormat('en-US').format(item.price * item.quantity)}</span>
+                                            <span>Price: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price * item.quantity)}</span>
                                         </div>
                                     </li>
                                 ))}
                             </ul>
                             <div className="cart-totals">
-                                <p>Subtotal: ${new Intl.NumberFormat('en-US').format(subTotal)}</p>
-                                <p>Shipping: ${new Intl.NumberFormat('en-US').format(shippingPee)}</p>
-                                <h3>Total: ${new Intl.NumberFormat('en-US').format(finalTotalAmount)}</h3>
+                                <p>Subtotal: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(subTotal)}</p>
+                                <p>Shipping: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(shippingPee)}</p>
+                                <h3>Total: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(finalTotalAmount)}</h3>
                             </div>
                         </>
                     ) : (
                         <div className="cart-totals">
-                            <h3>Consignment Total: ${new Intl.NumberFormat('en-US').format(finalTotalAmount)}</h3>
+                            <h3>Consignment Total: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(finalTotalAmount)}</h3>
                         </div>
                     )}
                     

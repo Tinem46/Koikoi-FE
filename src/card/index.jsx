@@ -6,19 +6,32 @@ import api from "../config/api";
 import { setSelectedFish } from "../redux/features/fishSlice";
 import { useNavigate } from "react-router-dom";
 import { addToCompare } from '../redux/features/compareSlice';
+import { toast } from "react-toastify";
 
 function Card({ fish }) {
   const dispatch = useDispatch();
    const navigate = useNavigate();
 
   const handleAddToCart = async () => {
+    if (fish.status.toLowerCase() === "SOLD OUT") {
+      toast.error("This fish is sold out!");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      toast.error("Please login to add to cart");
+      return;
+    }
+
     try {
       const response = await api.post(`Cart/${fish.id}`);
       console.log(response.data);
+      dispatch(addToCart(fish));
     } catch (err) {
       console.error(err.response.data);
     }
-    dispatch(addToCart(fish))
   };
 
 
@@ -50,14 +63,17 @@ function Card({ fish }) {
             }).format(fish.price)}
           </div>
           <div className="category">Category: {fish.category}</div>
-          <div className="author">Author: {fish.author}</div>
+          <div className="status" title={fish.status.toLowerCase() === "sold out" ? "×" : ""}>
+            Status: {fish.status}
+          </div>
         </div>
-        {/* <p className="fish-card__description">Description:
-          {fish.description && fish.description.length > 100
-            ? `${fish.description.substring(0, 100)}...`
-            : fish.description || "No description available"}
-        </p> */}
-        <button className="button" onClick={handleAddToCart}>Add To Cart</button>
+        <button 
+          className={`button ${fish.status.toLowerCase() === "sold out" ? "disabled" : ""}`} 
+          onClick={handleAddToCart}
+          disabled={fish.status.toLowerCase() === "sold out"}
+        >
+          {fish.status.toLowerCase() === "sold out" ? "Sold Out" : "Add to Cart"}
+        </button>
       </div>
     </div>
   );

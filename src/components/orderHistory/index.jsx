@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Table, Button, Image, Modal } from 'antd';
+import { Table, Button, Modal } from 'antd';
 import api from '../../config/api';
-import Navigation from '../../components/navigation';
 import OrderDetails from '../../components/orderDetails';
 import './index.scss';
 import { useNavigate } from 'react-router-dom';
@@ -199,10 +198,14 @@ function OrderHistory() {
 
   return (
     <div className="order-history-container">
-      <Navigation name="Order History" link="/order-history" />
       <div className="order-history">
-        <h1>Order History</h1>
-        <Table dataSource={orders} columns={columns} rowKey="id" />
+        <Table 
+          dataSource={orders} 
+          columns={columns} 
+          rowKey="id"
+          locale={{ emptyText: "No orders found" }}
+          pagination={{ pageSize: 20 }}
+        />
       </div>
       {selectedOrder && (
         <OrderDetails

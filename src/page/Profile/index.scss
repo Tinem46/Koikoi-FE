@@ -1,150 +1,219 @@
+.profile-container {
 
-.profile-table {
-    background-color: white;
-    border-collapse: separate;
-    border-spacing: 0;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 100%;
-    max-width: 1200px;
-    margin: 100px auto; /* This centers the table horizontally */
-    position: relative;
-    z-index: 1;
+  .profile-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin: 30px auto;
+    max-width: 1800px;
+    padding: 20px;
+  }
 
-    th, td {
-        padding: 20px;
-        text-align: center;
-        font-size: 1em;
+  .edit-form {
+    background-color: #fff;
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    max-width: 800px;
+    margin: 30px auto;
+    animation: slideIn 0.3s ease-out;
+    background: linear-gradient(to bottom right, #fff, #f8f9fa);
+
+    h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #333;
+      font-size: 28px;
+      font-weight: 600;
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background-color: #000;
+      }
     }
 
-    th {
-        background-color: #333;
-        color: white;
-        font-size: 1.2em;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-    }
-
-    tr:last-child td {
-        border-bottom: none;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f8f8f8;
-    }
-
-    td:first-child {
-        font-weight: bold;
-        width: 40%;
-        color: #333;
-    }
-
-    td:last-child {
-        color: #555;
-    }
-}
-
-/* New styles for the edit form */
-.edit-form {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    width: 100%;
-    max-width: 1000px;
-    margin: 30px auto; /* Centers the form horizontally */
-    
-    .form-group {
-        margin-bottom: 20px;
-
+    .ant-form-item {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      margin-bottom: 25px;
+      
+      .ant-form-item-label {
+        min-width: 180px;
+        padding-left: 25px;
+        width: 180px;
+        text-align: left;
+        padding-top: 8px;
+        
         label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: #555;
+          font-weight: 700;
+          color: #333;
+          font-size: 18px;
+          letter-spacing: 0.5px;
         }
+      }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
+      .ant-form-item-control {
+        flex: 1;
+        max-width: 600px;
+        width: 100%;
+        
+        .ant-input {
+          width: 350px;
+          border: 2px solid #eee;
+          margin-left: 30px;
+          border-radius: 8px;
+          font-size: 16px;
+          transition: border-color 0.3s ease;
+          background-color: #f8f9fa;
 
-            &:focus {
-                outline: none;
-                border-color: #4a90e2;
-                box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-            }
+          &:focus {
+            outline: none;
+            border-color: #000;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+          }
         }
+      }
     }
 
     .button-group {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 30px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
 
-        button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+      button {
+        min-width: 150px;
+        padding: 14px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        cursor: pointer;
 
-            &[type="button"] {
-                background-color: #777;
-                color: white;
-                order: 1;
+        &[type="submit"] {
+          background: linear-gradient(45deg, #000, #333);
+          color: #fff;
+          border: none;
 
-                &:hover {
-                    background-color: #555;
-                }
-            }
-
-            &[type="submit"] {
-                background-color: #333;
-                color: white;
-                order: 2;
-
-                &:hover {
-                    background-color: #111;
-                }
-            }
+          &:hover {
+            background: linear-gradient(45deg, #333, #000);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          }
         }
+
+        &[type="button"] {
+          background-color: #fff;
+          color: #000;
+          border: 2px solid #000;
+
+          &:hover {
+            background-color: #f5f5f5;
+            transform: translateY(-2px);
+          }
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
     }
+  }
 
-    h2 {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-}
-
-/* Style for the "Edit Profile" button */
-.edit-button {
-    padding: 10px 20px;
-    background-color:  #555;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 54%;
-    margin: 0 auto 0; /* Center the button horizontally */
-    display: block;
-
-    &:hover {
-        background-color: #334965;
-    }
-}
-
-/* Style for the new heading */
-.profile-heading {
+  .profile-table {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
     width: 100%;
-    text-align: center;
-    margin-bottom: 20px;
-    margin-top: 100px;
-    background-color: #333;
-    color: white;
+    max-width: 1000px;
+    margin: 30px auto;
+
+    thead tr th {
+      background-color: black;
+      color: #ffffff;
+      font-weight: bold;
+      text-align: center;
+      padding: 16px;
+      font-size: 1.2rem;
+    }
+
+    tbody {
+      tr {
+        &:hover {
+          background-color: #f0f7ff;
+        }
+
+        td {
+          text-align: center;
+          padding: 16px;
+          border-bottom: 1px solid #f0f0f0;
+          font-size: 1.1rem;
+
+          &:first-child {
+            font-weight: 600;
+            background-color: #f5f5f5;
+            width: 200px;
+          }
+        }
+      }
+
+      
+    }
+
+    .ant-table-footer {
+      text-align: center;
+      padding: 20px 0;
+      background-color: #ffffff;
+
+      button {
+        height: auto;
+        min-width: 150px;
+        padding: 14px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: linear-gradient(45deg, #000, #333);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+
+        &:hover {
+          background: linear-gradient(45deg, #333, #000);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

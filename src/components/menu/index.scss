@@ -1,5 +1,5 @@
 .containerMenuAndFishList {
-  margin-top: 50px;
+  margin-top: 30px;
   width: 100%;
   display: flex;
   margin-bottom: 20px;
@@ -35,6 +35,7 @@
 .fish-list .card {
   width: 100%;
   box-sizing: border-box;
+  height: 10%;
 }
 
 .fish-card {
@@ -116,9 +117,9 @@
   .category-button {
     width: 100%;
     text-align: left;
-    font-size: 26px;
+    font-size: 16px;
     font-weight: bold;
-    padding: 40px;
+    padding: 20px;
     border: none;
     background: transparent;
     cursor: pointer;

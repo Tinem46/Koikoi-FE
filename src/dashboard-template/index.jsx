@@ -10,7 +10,7 @@ import React from 'react';
 import uploadFile from '../utils/upload'; // Import the uploadFile utility
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'; // Import the EditOutlined icon
 
-function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, customActions, disableCreate, combineActions, showEditDelete }) {
+function DashboardTemplate({ columns, apiURI, formItems, title, customActions, disableCreate, showEditDelete, hideEdit, resetImage, onEdit }) {
     const [dashboard, setDashboard] = useState([]);
     const [open, setOpen] = useState(false);
     const [form] = useForm();
@@ -49,10 +49,11 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
             } else {
                 const response = await api.post(`${uri}`, values);
                 setDashboard((prevDashboard) => [...prevDashboard, response.data]); 
+                resetImage && resetImage();
             }
             setOpen(false);
             setEditingRecord(null);
-            fetchDashboard(); // Refresh the data after successful operation
+            fetchDashboard(); 
         } catch (err) {
             toast.error(err.response?.data || "An error occurred");
         } finally {
@@ -73,9 +74,10 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
     };
 
     const handleEdit = (record) => {
-        setEditingRecord(record); 
-        form.setFieldsValue(record); 
-        setOpen(true); 
+        setEditingRecord(record);
+        onEdit(record);
+        form.setFieldsValue(record);
+        setOpen(true);
     };
 
     const handleCustomAction = async (actionConfig, recordId) => {
@@ -113,13 +115,15 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
                     ))}
                     {showEditDelete && (
                         <>
-                            <Button 
-                                type="primary" 
-                                onClick={() => handleEdit(record)} 
-                                style={{ marginRight: '8px' }}
-                            >
-                                <EditOutlined />
-                            </Button>
+                            {!hideEdit && (
+                                <Button 
+                                    type="primary" 
+                                    onClick={() => handleEdit(record)} 
+                                    style={{ marginRight: '8px' }}
+                                >
+                                    <EditOutlined />
+                                </Button>
+                            )}
                             <Popconfirm 
                                 title={`Are you sure you want to delete ${record.name}?`}
                                 onConfirm={() => handleDelete(record.id)}
@@ -146,14 +150,16 @@ function DashboardTemplate({ columns, apiURI, formItems, title, resetImage, cust
     const handleCancel = () => {
         setOpen(false);
         form.resetFields();
-        setFileList([]);
+        if (!editingRecord) {
+            setFileList([]);
+        }
         setEditingRecord(null); 
     };
 
     return (
         <div>
             {!disableCreate && (
-                <Button onClick={() => { form.resetFields(); setOpen(true); setEditingRecord(null); }}>
+                <Button onClick={() => { form.resetFields(); setOpen(true); setEditingRecord(null); setFileList([]); }}>
                     Create new {title.toLowerCase()}
                 </Button>
             )}
@@ -205,10 +211,13 @@ DashboardTemplate.propTypes = {
     disableCreate: PropTypes.bool,
     combineActions: PropTypes.bool,
     showEditDelete: PropTypes.bool,
+    hideEdit: PropTypes.bool,
+    onEdit: PropTypes.func,
 };
 
 DashboardTemplate.defaultProps = {
-    showEditDelete: true, // Default to true to show buttons unless specified otherwise
+    showEditDelete: true,
+    hideEdit: false,
 };
 
 export default DashboardTemplate;

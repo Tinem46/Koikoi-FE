@@ -5,6 +5,7 @@ import api from "../../config/api";
 import dayjs from "dayjs";
 import "./index.scss";
 import Navigation from "../../components/Navigation";
+import NavBar from "../../components/navigation2";
 function ConsignmentCare() {
   const [orders, setOrders] = useState([]);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState([]);
@@ -113,6 +114,7 @@ function ConsignmentCare() {
           totalAmount: totalAmount,
           orderId: response.data.id,
           paymentType: "consignment",
+          orderDetails: selectedOrderDetails,
         },
       });
     } catch (error) {
@@ -134,7 +136,7 @@ function ConsignmentCare() {
       title: "Total Amount",
       dataIndex: "totalAmount",
       key: "totalAmount",
-      render: (text) => `$${parseFloat(text).toFixed(2)}`,
+      render: (text) => `${parseFloat(text).toLocaleString('vi-VN')}₫`,
     },
     {
       title: "Status",
@@ -161,12 +163,12 @@ function ConsignmentCare() {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      render: (text) => `$${parseFloat(text).toFixed(2)}`,
+      render: (text) => `${parseFloat(text).toLocaleString('vi-VN')}₫`,
     },
     {
       title: "Total",
       key: "total",
-      render: (record) => `$${(record.quantity * record.price).toFixed(2)}`,
+      render: (record) => `${(record.quantity * record.price).toLocaleString('vi-VN')}₫`,
     },
     {
       title: "Consignment",
@@ -180,7 +182,7 @@ function ConsignmentCare() {
   ];
   return (
     <div className="consignment-care-container1">
-      <Navigation name="Consignment Care" link="/consignmentCare" />
+      <NavBar standOn="Consignment Care" />
       <Table
         dataSource={orders}
         columns={orderColumns}
@@ -239,7 +241,7 @@ function ConsignmentCare() {
         {totalAmount > 0 && (
           <div style={{ marginTop: "20px" }}>
             <h3>Consignment Total</h3>
-            <p>Total amount: ${totalAmount.toFixed(2)}</p>
+            <p>Total amount: {totalAmount.toLocaleString('vi-VN')}₫</p>
           </div>
         )}
       </Modal>

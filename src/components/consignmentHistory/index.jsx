@@ -11,7 +11,6 @@ import {
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import api from "../../config/api";
 import "./index.scss";
-import NarBar from "../../components/navigation2";
 import dayjs from "dayjs";
 
 const { Text } = Typography;
@@ -33,7 +32,7 @@ function ConsignmentHistory() {
     const fetchConsignmentData = async () => {
       try {
         setLoading(true);
-        const response = await api.get("/Consignment/my-consignments");
+        const response = await api.get("/Consignment/showConsign");
         setConsignmentData(response.data);
       } catch (error) {
         console.error("Error fetching consignment data:", error);
@@ -76,7 +75,7 @@ function ConsignmentHistory() {
       setCancelEndDate(null);
 
       // Fetch updated data after cancellation
-      const updatedData = await api.get("/Consignment/my-consignments");
+      const updatedData = await api.get("/Consignment/showConsign");
       setConsignmentData(updatedData.data);
     } catch (error) {
       console.error("Error cancelling consignment:", error);
@@ -85,23 +84,64 @@ function ConsignmentHistory() {
   };
 
   const handleConfirmExtend = async () => {
-    if (isCheckoutStage) {
-      navigate('/checkout', {
-        state: {
-          totalAmount: totalAmount,
-          orderId: selectedConsignment.id,
-          paymentType: 'consignment',
-        },
-      });
-    } else {
-      try {
-        const response = await api.get(`/Consignment/showConsignment/${selectedConsignment.id}`);
-        setTotalAmount(response.data.totalAmount);
+    if (!newEndDate) {
+      message.error("Please select an end date");
+      return;
+    }
+
+    try {
+      if (!isCheckoutStage) {
+        // First stage - Show total amount
+        const response = await api.post(
+          `Consignment/care/${selectedConsignment.id}`,
+          {
+            start_date: dayjs(selectedConsignment.end_date).add(1, 'day').format("YYYY-MM-DD"),
+            end_date: newEndDate.format("YYYY-MM-DD"),
+          }
+        );
+
+        const detailsResponse = await api.get(
+          `Consignment/showConsignment/${response.data.id}`
+        );
+
+        setTotalAmount(detailsResponse.data.totalAmount);
         setIsCheckoutStage(true);
-      } catch (error) {
-        console.error("Error fetching consignment total amount:", error);
-        message.error("Failed to fetch total amount.");
+      } else {
+        // Second stage - Process to checkout
+        const createResponse = await api.post(
+          `Consignment/care/${selectedConsignment.id}`,
+          {
+            start_date: dayjs(selectedConsignment.end_date).add(1, 'day').format("YYYY-MM-DD"),
+            end_date: newEndDate.format("YYYY-MM-DD"),
+          }
+        );
+
+        const orderResponse = await api.post(
+          `order/consignOrder`,
+          {
+            id: createResponse.data.id,
+            totalAmount: totalAmount,
+          },
+          {
+            params: { id: createResponse.data.id },
+          }
+        );
+
+        // Navigate to checkout
+        navigate('/checkout', {
+          state: {
+            totalAmount: totalAmount,
+            orderId: orderResponse.data.id,
+            paymentType: 'consignment',
+          },
+        });
+        setIsModalVisible(false);
       }
+    } catch (error) {
+      console.error("Error extending consignment:", error);
+      message.error(
+        error.response?.data?.message || "Failed to extend consignment"
+      );
     }
   };
 
@@ -117,6 +157,13 @@ function ConsignmentHistory() {
     setCancelEndDate(null);
   };
 
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND'
+    }).format(amount);
+  };
+
   const columns = [
     {
       title: "ID",
@@ -126,8 +173,8 @@ function ConsignmentHistory() {
     },
     {
       title: "Product Name",
-      dataIndex: "product_name",
-      key: "product_name",
+      dataIndex: "name",
+      key: "name",
       className: "consignment-column-product-name",
     },
     {
@@ -210,7 +257,7 @@ function ConsignmentHistory() {
 
   return (
     <div className="consignment-history-page">
-      <NarBar standOn="Consignment Care History" />
+      
       <div className="consignment-history-container">
         {loading ? (
           <Spin tip="Loading..." className="consignment-loading" />
@@ -256,7 +303,7 @@ function ConsignmentHistory() {
         />
         {isCheckoutStage && totalAmount && (
           <p>
-            <strong>Total Amount:</strong> ${totalAmount}
+            <strong>Total Amount:</strong> {formatCurrency(totalAmount)}
           </p>
         )}
       </Modal>

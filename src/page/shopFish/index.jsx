@@ -1,23 +1,22 @@
 import { useState } from "react";
 import MenuForShop from "../../components/menu";
-import Naviagtion from "../../components/navigation";
+import NavBar from "../../components/navigation2";
 
 function FishShop() {
-  const [selectedMenu, setSelectedMenu] = useState("");
-  const [resetFish, setResetFish] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState("All Koi");
 
-  const triggerReset = () => {
-    setResetFish(true); // Trigger the reset
-    setTimeout(() => setResetFish(false), 100); // Reset the flag after triggering
-  };
+ 
 
   return (
     <>
-      <Naviagtion selectedMenu={selectedMenu} triggerReset={triggerReset} name="Shop" />
+      <NavBar 
+        standOn="FishShop" 
+        selectedMenu={selectedMenu}  
+        className="Navigation"
+      />
       <MenuForShop 
         selectedMenu={selectedMenu}
         setSelectedMenu={setSelectedMenu}
-        resetFish={resetFish}
       />
     </>
   );

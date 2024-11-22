@@ -5,8 +5,9 @@ import { toast } from 'react-toastify';
 import OrderDetails from '../../../components/orderDetails';
 import OrderInformation from '../../../components/OrderInformation';
 import { Button } from 'antd';
+import dayjs from 'dayjs';
 
-function ConsignmentManager() {
+function CareManagement() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [orderInfo, setOrderInfo] = useState(null);
@@ -74,31 +75,50 @@ function ConsignmentManager() {
       key: 'id',
     },
     {
-      title: 'userName',
-      dataIndex: 'userName',
-      key: 'userName',
+      title: 'Full Name',
+      dataIndex: 'fullName',
+      key: 'fullName',
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
     },
     {
       title: 'Total Amount',
       dataIndex: 'totalAmount',
       key: 'totalAmount',
-      render: (amount) => `$${amount.toFixed(2)}`,
+      render: (text) => `${parseFloat(text).toLocaleString('vi-VN')}đ`,
+    },
+   
+    {
+      title: 'Confirm Date',
+      dataIndex: 'confirmDate',
+      key: 'confirmDate',
+      render: (date) => date ? dayjs(date).format('YYYY-MM-DD HH:mm:ss') : '-',
+    },
+    {
+      title: 'Processing Date',
+      dataIndex: 'processingDate',
+      key: 'processingDate',
+      render: (date) => date ? dayjs(date).format('YYYY-MM-DD HH:mm:ss') : '-',
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
+      title: 'Note',
+      dataIndex: 'note',
+      key: 'note',
     },
     {
       title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      dataIndex: 'orderStatus',
+      key: 'orderStatus',
     },
-    {
-      title: 'Start Date',
-      dataIndex: 'start_date',
-      key: 'start_date',
-  },
-  {
-      title: 'End Date',
-      dataIndex: 'end_date',
-      key: 'end_date',
-  },
+  
     {
       title: 'Details',
       key: 'actions',
@@ -109,21 +129,25 @@ function ConsignmentManager() {
           </Button>
           <Button onClick={() => handleViewOrderInfo(record.id)}>
             Information
-</Button>
+    </Button>
         </>
       ),
     },
   ];
 
-  const handleConfirmPayment = async (orderId) => {
-    try {
-      await api.post(`transactions/transactionsCosign?koiOrderId=${Number(orderId)}`);
-      toast.success('Payment confirmed successfully');
-    } catch (error) {
-      console.error('Error confirming payment:', error);
-      throw error;
-    }
-  };
+  const handleConfirmPayment = async (koiOrderId) => {
+    try{
+    await api.post(`transactions/transactionsCosign`, {}, { 
+      params: { 
+        koiOrderId: Number(koiOrderId) 
+      } 
+    });
+    toast.success('Order refunded successfully');
+  }catch(error){
+    console.error('Error confirming payment:', error);
+    toast.error(error.response?.data?.message || 'Failed to confirm payment');
+  }
+};
 
   const handleCancelOrder = async (orderId) => {
     try {
@@ -135,34 +159,26 @@ function ConsignmentManager() {
     }
   };
 
-  
-
   return (
     <div>
       <DashboardTemplate 
         columns={columns} 
-        apiURI="Consignment/allOfCare"
+        apiURI="order/consign"
         title="Consignment Management"
         customActions={[
           {
             label: 'Confirm Payment',
-            condition: (record) => record.orderStatus === 'PAID',
             action: handleConfirmPayment,
             successMessage: 'Payment confirmed successfully',
             errorMessage: 'Failed to confirm payment',
+            condition: (record) => record.orderStatus === 'PAID',
           },
           {
             label: 'Cancel Order',
-            condition: (record) => !['CANCELED', 'REFUND'].includes(record.orderStatus),
             action: handleCancelOrder,
             successMessage: 'Order cancelled successfully',
             errorMessage: 'Failed to cancel order',
-          },
-          {
-            label: 'Refund Order',
-            condition: (record) => record.orderStatus === 'CANCELED',
-            successMessage: 'Order refunded successfully',
-            errorMessage: 'Failed to refund order',
+            condition: (record) => !['CANCELED', 'REFUND'].includes(record.orderStatus),
           },
         ]}
         disableCreate={true}
@@ -173,7 +189,7 @@ function ConsignmentManager() {
         <OrderDetails 
           selectedOrder={selectedOrder} 
           onClose={handleCloseDetails} 
-          onPreview={(image) => console.log('Preview image:', image)} 
+          onPreview={(image) => console.log('Preview image:', image)}
         />
       )}
       
@@ -187,4 +203,4 @@ function ConsignmentManager() {
   );
 }
 
-export default ConsignmentManager;
+export default CareManagement;

@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../redux/features/userSlice';
 import './index.scss'; // Add this import
 import { alertSuccess } from '../../assets/image/hook';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup } from "firebase/auth";
 import { useState } from 'react';
 import { googleProvider } from '../../config/firebase';
 
@@ -53,35 +53,36 @@ function Login() {
       setLoading(false);
     }
   };
-const handleLoginGoogle = () =>{
+const handleLoginGoogle = () => {
   setLoading(true);
   const auth = getAuth();
   signInWithPopup(auth, googleProvider)
     .then(async (result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      console.log(token);
       const user = result.user;
-      console.log(user);
-      console.log(user.accessToken);
-
-      const response = await api.post("account/loginGoogle", {
-        token: user.accessToken
-      });
-      localStorage.setItem("token", token);
-      console.log(response.data);
-
-      // Dispatch login action with user data
-      dispatch(login({
-        id: user.uid,
-        username: user.displayName,
-        token: user.accessToken
-      }));
       
-      navigate("/");
-      alertSuccess("Login success!");
-    }).catch((error) => {
-      console.log(error);
+      try {
+        const response = await api.post("account/loginGoogle", {
+          token: user.accessToken
+        });
+
+        const { token, role } = response.data;
+        localStorage.setItem("token", token); 
+        localStorage.setItem("role", role);
+
+        dispatch(login(response.data));
+        
+        navigate("/");
+        alertSuccess("Login success!");
+      } catch (error) {
+        console.error("Server login error:", error);
+        toast.error("Failed to login with Google. Please try again.");
+      }
+    })
+    .catch((error) => {
+      console.error("Google login error:", error);
+      toast.error("Google login failed. Please try again.");
+    })
+    .finally(() => {
       setLoading(false);
     });
 }

@@ -3,6 +3,7 @@ import { Form, Input, Button, message } from 'antd';
 import api from '../../config/api';
 import { useState, useEffect } from 'react';
 import Navigation from '../../components/navigation';
+import NavBar from '../../components/navigation2';
 function WalletUser() {
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
@@ -55,7 +56,7 @@ function WalletUser() {
   return (
     
     <div className="wallet-user">
-        <Navigation name="Wallet" link="/walletUser"/>
+      <NavBar standOn="Wallet" />
       <div className="wallet-balance">
         <h3>Current Balance: ${balance}</h3>
       </div>
@@ -93,7 +94,7 @@ function WalletUser() {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading} block>
+          <Button type="primary" htmlType="submit" loading={loading} block style={{ backgroundColor: '#000', color: '#fff' }}>
             Submit Withdrawal
           </Button>
         </Form.Item>

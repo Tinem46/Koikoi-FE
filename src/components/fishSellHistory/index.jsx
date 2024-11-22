@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import api from '../../config/api';
 import { toast } from 'react-toastify';
 import './index.scss';
-import Navigation from '../../components/navigation';
 function FishSellHistory() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -74,8 +73,8 @@ function FishSellHistory() {
   }, []);
 
   return (
-    <div className="fish-sell-history-container">
-      <Navigation name="Fish Sell History" link="/fishSellHistory" />
+    <div className="fishsell-history-container">
+    
       <div style={{ padding: '24px' }}>
         <Table 
           columns={columns}
@@ -83,6 +82,8 @@ function FishSellHistory() {
           loading={loading}
           rowKey="id"
           scroll={{ x: true }}
+          locale={{ emptyText: "No fish sell history found" }}
+          pagination={{ pageSize: 20 }}
         />
       </div>
     </div>

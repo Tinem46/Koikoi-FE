@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 import { Dropdown} from "antd";
 import { Wallet as WalletIcon } from '@mui/icons-material';
+import { toast } from "react-toastify";
 
 
 function Header() {
@@ -20,15 +21,10 @@ function Header() {
   const userMenu = (
     <ul className="header__dropdown-menu">
       {isLoggedIn && <li onClick={handleProfile}>Profile</li>}
-      {isLoggedIn && <li onClick={() => navigate("/order-history")}>Order History</li>}
-      {isLoggedIn && <li onClick={() => navigate("/ConsignmentHistory")}>Consignment History</li>}
-      {isLoggedIn && <li onClick={() => navigate("/fishSellHistory")}>Fish Sell History</li>}
+      {isLoggedIn && <li onClick={() => navigate("/history")}>History</li>}
       {isLoggedIn ? (
-        <>
-          <li onClick={handleLogout}>Logout</li>
-        </>
-      ) 
-      : (
+        <li onClick={handleLogout}>Logout</li>
+      ) : (
         <li onClick={() => navigate("/login")}>Login</li>
       )}
     </ul>
@@ -87,7 +83,7 @@ function Header() {
             {isLoggedIn && (
               <li>
                 <WalletIcon 
-                  onClick={() => navigate('/walletUser')} 
+                  onClick={() => navigate('/wallet')} 
                   style={{ color: 'white', cursor: 'pointer', fontSize: '35px' }}
                 />
               </li>
@@ -98,7 +94,18 @@ function Header() {
               </Dropdown>
             </li>
             <li>
-              <ShoppingCartOutlined style={{ cursor: 'pointer' }} onClick={() => navigate("/cart")} />
+              <ShoppingCartOutlined 
+                style={{ cursor: 'pointer' }} 
+                onClick={() => {
+                  const token = localStorage.getItem("token");
+                  if (!token) {
+                    navigate("/login");
+                    toast.error("Please login to view cart");
+                  } else {
+                    navigate("/cart");
+                  }
+                }} 
+              />
               <span className="cart-count">{cartItemCount}</span>
             </li>
           </ul>

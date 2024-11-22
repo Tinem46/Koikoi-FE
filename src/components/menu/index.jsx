@@ -8,9 +8,10 @@ import Card from "../../card";
 function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
   const [fish, setFish] = useState([]);
   const [filteredFish, setFilteredFish] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(4);
+  const [visibleCount, setVisibleCount] = useState(8);
   const [sortOrder, setSortOrder] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const fetchFish = async () => {
     try {
@@ -22,8 +23,25 @@ function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const response = await api.get("KoiTypes");
+      const categoryList = [
+        { value: "All Koi", label: "All Koi" },
+        ...response.data.map(cat => ({
+          value: cat.category.toLowerCase(),
+          label: cat.category
+        }))
+      ];
+      setCategories(categoryList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchFish();
+    fetchCategories();
   }, []);
 
   useEffect(() => {
@@ -37,7 +55,7 @@ function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
   useEffect(() => {
     let results = [...fish];
 
-    if (selectedMenu && selectedMenu !== "all") {
+    if (selectedMenu && selectedMenu !== "All Koi") {
       results = results.filter(
         (item) => item.category.toLowerCase() === selectedMenu.toLowerCase()
       );
@@ -50,23 +68,12 @@ function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
     }
 
     setFilteredFish(results);
-    setVisibleCount(36);
   }, [searchTerm, selectedMenu, fish]);
 
   const sortOptions = [
     { value: "", label: "Default" },
     { value: "price_asc", label: "Price: Low to High" },
     { value: "price_desc", label: "Price: High to Low" },
-  ];
-
-  const categories = [
-    { value: "all", label: "All Koi" },
-    { value: "kohaku", label: "Kohaku" },
-    { value: "sanke", label: "Sanke" },
-    { value: "showa", label: "Showa" },
-    { value: "tancho", label: "Tancho" },
-    { value: "utsurimono", label: "Utsurimono" },
-    { value: "asagi", label: "Asagi" },
   ];
 
   const handleCategoryChange = (value) => {
@@ -80,7 +87,7 @@ function MenuForShop({ selectedMenu, setSelectedMenu, resetFish }) {
 
     setSelectedMenu(value);
     setFilteredFish(newFilteredFish);
-    setVisibleCount(4);
+    setVisibleCount(8);
   };
 
   const handleSortChange = (value) => {
